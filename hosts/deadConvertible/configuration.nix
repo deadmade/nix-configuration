@@ -8,6 +8,8 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ../default/default.nix
+      ../default/user.nix
     ];
 
   # Bootloader.
@@ -96,7 +98,7 @@
   services.xserver.displayManager.autoLogin.user = "deadmade";
 
   # Install firefox.
-  programs.firefox.enable = true;
+  programs.firefox.enable = false;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

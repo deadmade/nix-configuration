@@ -51,6 +51,21 @@ in
      };
 
     home-manager.enable = true;
+    hyprland = {
+        # Install the packages from nixpkgs
+        enable = true;
+        # Whether to enable XWayland
+        xwayland.enable = true;
+    }; 
 
+    greetd = {
+        enable = true;
+        settings = {
+            default_session = {
+                command = "${pkgs.greetd.greetd}/bin/agreety --cmd Hyprland";
+            };
+        };
+
+    };
   };
 }
