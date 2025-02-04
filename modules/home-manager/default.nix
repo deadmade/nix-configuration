@@ -56,9 +56,6 @@ in
     enableZshIntegration = true;
   };
 
-  # Enable Home Manager
-  programs.home-manager.enable = true;
-
   # Install & Configure Hyprland
   programs.hyprland = {
     enable = true;
@@ -74,4 +71,7 @@ in
       };
     };
   };
+
+  # Enable Home Manager
+  programs.home-manager.enable = true;
 }
