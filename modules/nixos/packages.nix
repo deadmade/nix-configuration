@@ -2,8 +2,9 @@
 {
       environment.systemPackages = with pkgs; [
         neofetch
-        python3
-        
+        gh
+        htop
+        curl       
   ];
 
 }
