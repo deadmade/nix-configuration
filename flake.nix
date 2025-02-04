@@ -39,7 +39,7 @@
             "x86_64-linux"
         ];
         forAllSystems = nixpkgs.lib.genAttrs systems;
-        username = import (./variables.nix) username;
+        username = (import ./variables.nix) username;
     in
     {
 
