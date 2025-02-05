@@ -30,6 +30,7 @@
         ];
         forAllSystems = nixpkgs.lib.genAttrs systems;
         username = (import ./variables.nix).username;
+        nixosModules = import ./modules/nixos/default.nix;
     in
     {
 
@@ -42,7 +43,7 @@
 
       # Reusable nixos modules you might want to export
       # These are usually stuff you would upstream into nixpkgs
-      nixosModules = [./modules/nixos/default.nix];
+
 
       # Reusable home-manager modules you might want to export
       # These are usually stuff you would upstream into home-manager
