@@ -46,7 +46,7 @@
 
       # Reusable home-manager modules you might want to export
       # These are usually stuff you would upstream into home-manager
-      homeManagerModules = import ./modules/home-manager;
+      #homeManagerModules = import ./modules/home-manager;
 
       nixosConfigurations = {
         deadConvertible = nixpkgs.lib.nixosSystem {
@@ -66,13 +66,6 @@
           specialArgs = { inherit inputs outputs username; };
           modules = [
             ./hosts/deadTest/config.nix
-            inputs.stylix.nixosModules.stylix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${username} = import ./hosts/deadTest/home.nix;
-            }
           ];
         };
       };
