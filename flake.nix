@@ -30,7 +30,7 @@
         ];
         forAllSystems = nixpkgs.lib.genAttrs systems;
         username = (import ./variables.nix).username;
-        nixosModules = import ./modules/nixos/default.nix;
+        nixosModules = import ./modules/nixos/default.nix { inherit config; inherit pkgs; };
     in
     {
 
