@@ -66,7 +66,15 @@
         deadTest = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs username; };
           modules = [
+            nixosModules
             ./hosts/deadTest/config.nix
+            inputs.stylix.nixosModules.stylix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.${username} = import ./modules/home-manager/default.nix;
+            }
           ];
         };
       };
