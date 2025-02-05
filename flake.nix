@@ -15,8 +15,6 @@
     #hardware.url = "github:nixos/nixos-hardware";
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
-
-    inputs.localProject.url = "path:./modules/nixos";
   };
 
   outputs =
@@ -68,7 +66,7 @@
         deadTest = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs username; };
           modules = [
-            inputs.localProject
+            ./modules/nixos/default.nix
             ./hosts/deadTest/config.nix
           ];
         };
