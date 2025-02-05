@@ -5,6 +5,7 @@
         htop
         curl       
         git
+        floorp
   ];
 
 }
