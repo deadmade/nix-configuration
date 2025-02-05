@@ -42,7 +42,7 @@
 
       # Reusable nixos modules you might want to export
       # These are usually stuff you would upstream into nixpkgs
-      nixosModules = [(import ./modules/nixos)];
+      nixosModules = [import ./modules/nixos/default.nix];
 
       # Reusable home-manager modules you might want to export
       # These are usually stuff you would upstream into home-manager
