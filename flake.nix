@@ -69,7 +69,6 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./hosts/deadConvertible/home.nix;
-              home-manager.stateVersion = "24.11";
             }
           ];
         };
