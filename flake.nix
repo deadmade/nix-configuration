@@ -12,19 +12,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hardware.url = "github:nixos/nixos-hardware";
+    #hardware.url = "github:nixos/nixos-hardware";
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
-
-    stylix = {
-      url = "github:danth/stylix/release-24.11";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nixvim = {
-      url = "github:nix-community/nixvim/nixos-24.11";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -56,7 +46,7 @@
 
       # Reusable home-manager modules you might want to export
       # These are usually stuff you would upstream into home-manager
-      homeManagerModules = import ./modules/home-manager;
+      #homeManagerModules = import ./modules/home-manager;
 
       nixosConfigurations = {
         deadConvertible = nixpkgs.lib.nixosSystem {
@@ -69,8 +59,13 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./hosts/deadConvertible/home.nix;
-              home-manager.stateVersion = "24.11";
             }
+          ];
+        };
+        deadTest = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs username; };
+          modules = [
+            ./hosts/deadTest/config.nix
           ];
         };
       };
