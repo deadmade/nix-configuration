@@ -8,7 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      (../../modules/nixos/default.nix { inherit config; inherit pkgs; })
+      ../../modules/nixos/default.nix
     ];
 
   # Bootloader.

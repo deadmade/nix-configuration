@@ -1,13 +1,6 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+ {
   imports = [
-    (
-        import ./packages.nix { inherit pkgs; }
-                #./user.nix { inherit pkgs; }
-    )
+    ./packages.nix 
+    #(import ./user.nix { inherit pkgs; }) # Uncomment if you need to import user.nix
   ];
-
 }
