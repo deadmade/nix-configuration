@@ -30,7 +30,6 @@
         ];
         forAllSystems = nixpkgs.lib.genAttrs systems;
         username = (import ./variables.nix).username;
-        nixosModules = import ./modules/nixos/default.nix { inherit config; inherit pkgs; };
     in
     {
 
@@ -43,7 +42,7 @@
 
       # Reusable nixos modules you might want to export
       # These are usually stuff you would upstream into nixpkgs
-
+      nixosModules = import ./modules/nixos;
 
       # Reusable home-manager modules you might want to export
       # These are usually stuff you would upstream into home-manager
@@ -67,7 +66,7 @@
         deadTest = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs username; };
           modules = [
-            nixosModules
+            ./modules/nixos/default.nix
             ./hosts/deadTest/config.nix
           ];
         };
