@@ -1,26 +1,20 @@
 {
   pkgs,
   ...
-}:
+}: 
 
 let
   inherit (import ../../variables.nix) username;
 in
 {
-  users.users = {
-    "${username}" = {
-      homeMode = "755";
-      isNormalUser = true;
-      description = "${username}";
-      extraGroups = [
-        "networkmanager"
-        "wheel"
-        "libvirtd"
-        "scanner"
-        "lp"
-      ];
-      shell = pkgs.bash;
-      ignoreShellProgramCheck = true;
-    };
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.${username} = {
+    isNormalUser = true;
+    description = username;
+    extraGroups = [ "networkmanager" "wheel" ];
+    packages = with pkgs; [
+    #  kdePackages.kate
+    #  thunderbird
+    ];
   };
 }

@@ -4,6 +4,7 @@
         neofetch
         htop
         curl       
+        git
   ];
 
 }
