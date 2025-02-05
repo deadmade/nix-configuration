@@ -52,6 +52,7 @@
         deadConvertible = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs username; };
           modules = [
+            nixosModules
             ./hosts/deadConvertible/config.nix
             inputs.stylix.nixosModules.stylix
             home-manager.nixosModules.home-manager
@@ -65,6 +66,7 @@
         deadTest = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs username; };
           modules = [
+            nixosModules
             ./hosts/deadTest/config.nix
           ];
         };
