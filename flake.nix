@@ -66,7 +66,6 @@
         deadTest = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs username; };
           modules = [
-            ./modules/nixos/default.nix
             ./hosts/deadTest/config.nix
           ];
         };
