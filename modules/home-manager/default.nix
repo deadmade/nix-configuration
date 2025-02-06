@@ -8,6 +8,11 @@ let
   inherit (import ../../variables.nix) gitUsername gitEmail;
 in
 {
+
+  imports = [
+    ../../packageConfigurations/hyprland/hyprland.nix
+  ];
+
   # Home Manager Settings
   home.username = "deadmade";
   home.homeDirectory = "/home/deadmade";
