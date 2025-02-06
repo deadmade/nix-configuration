@@ -6,6 +6,10 @@
         curl       
         git
         floorp
+        kitty
   ];
+
+  # Enable hy
+  programs.hyprland.enable = true; # enable Hyprland
 
 }
