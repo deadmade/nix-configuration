@@ -9,9 +9,9 @@ let
 in
 {
 
-  imports = [
-    ../../packageConfigurations/hyprland/hyprland.nix
-  ];
+  # imports = [
+  #   ../../packageConfigurations/hyprland/hyprland.nix
+  # ];
 
   # Home Manager Settings
   home.username = "deadmade";
