@@ -34,6 +34,8 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  nixos.config.allowUnfree = true;
+
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
@@ -72,7 +74,7 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-    virtualisation.virtualbox.guest.enable = true;
+  virtualisation.virtualbox.guest.enable = true;
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
