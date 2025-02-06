@@ -10,7 +10,7 @@ in
 {
   # Home Manager Settings
   home.username = "deadmade";
-  home.homeDirectory = "/home/${username}";
+  home.homeDirectory = "/home/deadmade";
   home.stateVersion = "24.11";
 
   # Install & Configure Git
