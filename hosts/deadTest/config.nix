@@ -17,6 +17,7 @@
     boot.loader.grub.devices = ["nodev"];
     boot.loader.grub.efiSupport = true;
     boot.loader.grub.useOSProber = true;
+
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -50,8 +51,8 @@
   services.xserver.enable = true;
 
   # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = false;
-  services.desktopManager.plasma6.enable = false;
+  services.displayManager.sddm.enable = true;
+  services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -89,7 +90,7 @@
 
 
   # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = false;
+  services.xserver.displayManager.autoLogin.enable = true;
   services.xserver.displayManager.autoLogin.user = "deadmade";
 
   # Install firefox.

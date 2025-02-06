@@ -24,12 +24,12 @@ in
   programs.gh.enable = true;
 
   # Install & Configure btop
-  programs.btop = {
-    enable = true;
-    settings = {
-      vim_keys = true;
-    };
-  };
+  # programs.btop = {
+  #   enable = true;
+  #   settings = {
+  #     vim_keys = true;
+  #   };
+  # };
 
   # Install & Configure Kitty
   programs.kitty = {
@@ -50,17 +50,17 @@ in
   };
 
   # Install & Configure Starship
-  programs.starship = {
-    enable = true;
-    settings = pkgs.lib.importTOML ../../packageConfigurations/starship/starship.toml;
-    enableZshIntegration = true;
-  };
+  # programs.starship = {
+  #   enable = true;
+  #   settings = pkgs.lib.importTOML ../../packageConfigurations/starship/starship.toml;
+  #   enableZshIntegration = true;
+  # };
 
   # Install & Configure Hyprland
-  wayland.windowManager.hyprland.enable = true; # enable Hyprland
+  #wayland.windowManager.hyprland.enable = true; # enable Hyprland
 
   # Optional, hint Electron apps to use Wayland:
-  home.sessionVariables.NIXOS_OZONE_WL = "1";
+  #home.sessionVariables.NIXOS_OZONE_WL = "1";
 
   # Install & Configure Greetd
   # programs.greetd = {
