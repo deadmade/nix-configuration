@@ -9,7 +9,7 @@ let
 in
 {
   # Home Manager Settings
-  home.username = "${username}";
+  home.username = "deadmade";
   home.homeDirectory = "/home/${username}";
   home.stateVersion = "24.11";
 
