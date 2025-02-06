@@ -34,7 +34,7 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  nixos.config.allowUnfree = true;
+  nixpkgs.config.allowUnfree = true;
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
