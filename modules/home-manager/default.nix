@@ -63,14 +63,14 @@ in
   };
 
   # Install & Configure Greetd
-  programs.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.greetd.greetd}/bin/agreety --cmd Hyprland";
-      };
-    };
-  };
+  # programs.greetd = {
+  #   enable = true;
+  #   settings = {
+  #     default_session = {
+  #       command = "${pkgs.greetd.greetd}/bin/agreety --cmd Hyprland";
+  #     };
+  #   };
+  # };
 
   # Enable Home Manager
   programs.home-manager.enable = true;
