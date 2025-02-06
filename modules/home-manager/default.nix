@@ -57,10 +57,10 @@ in
   };
 
   # Install & Configure Hyprland
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
+  wayland.windowManager.hyprland.enable = true; # enable Hyprland
+
+  # Optional, hint Electron apps to use Wayland:
+  home.sessionVariables.NIXOS_OZONE_WL = "1";
 
   # Install & Configure Greetd
   # programs.greetd = {
