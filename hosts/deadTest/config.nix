@@ -88,8 +88,8 @@
 
 
   # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "deadmade";
+  #services.xserver.displayManager.autoLogin.enable = true;
+  #services.xserver.displayManager.autoLogin.user = "deadmade";
 
   # Install firefox.
   programs.firefox.enable = true;
