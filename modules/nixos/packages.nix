@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  pkgs-unstable,
   inputs,
   ...
 }: {
@@ -13,10 +12,10 @@
     floorp
     kitty
     ranger
-    pkgs-unstable.freetube
+    pkgs.unstable.freetube
     onlyoffice-desktopeditors
-    pkgs-unstable.protonmail-desktop
-    pkgs-unstable.protonvpn-gui
+    pkgs.unstable.protonmail-desktop
+    pkgs.unstable.protonvpn-gui
   ];
 
   programs.hyprland = {
