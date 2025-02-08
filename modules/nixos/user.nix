@@ -1,20 +1,17 @@
-{
-  pkgs,
-  ...
-}: 
-
-let
+{pkgs, ...}: let
   inherit (import ../../variables.nix) username;
-in
-{
+in {
+  programs.zsh.enable = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${username} = {
     isNormalUser = true;
     description = username;
-    extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.zsh;
+    extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
-    #  kdePackages.kate
-    #  thunderbird
+      #  kdePackages.kate
+      #  thunderbird
     ];
   };
 }

@@ -1,6 +1,7 @@
- {
+{
   imports = [
-    ./packages.nix 
+    ./packages.nix
     ./user.nix
+    ./themes.nix
   ];
 }
