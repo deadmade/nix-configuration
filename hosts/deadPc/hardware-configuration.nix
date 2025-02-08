@@ -8,20 +8,28 @@
   modulesPath,
   ...
 }: {
-  imports = [];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+  ];
 
-  boot.initrd.availableKernelModules = ["ata_piix" "ohci_pci" "ehci_pci" "ahci" "sd_mod" "sr_mod"];
+  boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
   boot.initrd.kernelModules = [];
-  boot.kernelModules = [];
+  boot.kernelModules = ["kvm-amd"];
   boot.extraModulePackages = [];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/33261d0f-aec1-46d9-95af-e3c831a740eb";
+    device = "/dev/disk/by-uuid/46b0883f-dab4-4718-ad4b-2c7e8c241969";
     fsType = "ext4";
   };
 
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/CB2C-CB87";
+    fsType = "vfat";
+    options = ["fmask=0077" "dmask=0077"];
+  };
+
   swapDevices = [
-    {device = "/dev/disk/by-uuid/93dfae6a-2d27-4954-b287-fa729df6b28f";}
+    {device = "/dev/disk/by-uuid/f778aa03-09d7-4bf3-b527-0ec5ea0f8262";}
   ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
@@ -29,8 +37,13 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp0s3.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp38s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp39s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  virtualisation.virtualbox.guest.enable = true;
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+  #NVIDIA Gpu
+  #Crashed System, Really Strange idk
 }
