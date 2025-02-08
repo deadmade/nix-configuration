@@ -1,8 +1,8 @@
-{pkgs-unstable, ...}: {
+{pkgs, ...}: {
   programs.vscode = {
     enable = true;
-    package = pkgs-unstable.vscodium;
-    extensions = with pkgs-unstable.vscode-extensions; [
+    package = pkgs.unstable.vscodium;
+    extensions = with pkgs.unstable.vscode-extensions; [
       # Theme
       dracula-theme.theme-dracula
 
