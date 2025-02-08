@@ -14,6 +14,8 @@
         consent-o-matic
         gesturefy
         vimium
+        proton-pass
+        proton-vpn
       ];
 
       settings = {

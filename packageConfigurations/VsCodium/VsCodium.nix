@@ -1,8 +1,8 @@
-{pkgs, ...}: {
+{pkgs-unstable, ...}: {
   programs.vscode = {
     enable = true;
-    package = pkgs.vscodium;
-    extensions = with pkgs.vscode-extensions; [
+    package = pkgs-unstable.vscodium;
+    extensions = with pkgs-unstable.vscode-extensions; [
       # Theme
       dracula-theme.theme-dracula
 
@@ -14,6 +14,9 @@
 
       # Nix Support
       jnoortheen.nix-ide
+
+      github.copilot
+      github.copilot-chat
     ];
   };
 }

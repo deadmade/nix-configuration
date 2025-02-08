@@ -16,7 +16,7 @@
     # Fix the overwrite issue with HyprPanel.
     # See below for more information.
     # Default: false
-    overwrite.enable = true;
+    overwrite.enable = false;
 
     # Import a theme from './themes/*.json'.
     # Default: ""
@@ -51,18 +51,10 @@
       bar.launcher.autoDetectIcon = true;
       bar.workspaces.show_icons = true;
 
-      menus.clock = {
-        time = {
-          military = true;
-          hideSeconds = true;
-        };
-        weather.unit = "metric";
-      };
+      #battery
+      bar.battery.label = false;
 
-      menus.dashboard.directories.enabled = false;
-      menus.dashboard.stats.enable_gpu = true;
-
-      theme.bar.transparent = true;
+      bar.bluetooth.label = false;
 
       theme.font = {
         name = "CaskaydiaCove NF";

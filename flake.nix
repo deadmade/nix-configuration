@@ -30,15 +30,24 @@
   outputs = {
     self,
     nixpkgs,
+    nixpkgs-unstable,
     home-manager,
     ...
   } @ inputs: let
     inherit (self) outputs;
-    systems = [
-      "x86_64-linux"
-    ];
-    forAllSystems = nixpkgs.lib.genAttrs systems;
+    system = "x86_64-linux";
+    forAllSystems = nixpkgs.lib.genAttrs system;
     username = (import ./variables.nix).username;
+
+    pkgs = import nixpkgs {
+      inherit system;
+      config = {allowUnfree = true;};
+    };
+
+    pkgs-unstable = import nixpkgs-unstable {
+      inherit system;
+      config = {allowUnfree = true;};
+    };
   in {
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
@@ -83,13 +92,13 @@
         ];
       };
       deadPc = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs username;};
+        specialArgs = {inherit inputs outputs username pkgs-unstable;};
         modules = [
           ./hosts/deadPc/config.nix
           #inputs.stylix.nixosModules.stylix
           home-manager.nixosModules.home-manager
           {
-            home-manager.extraSpecialArgs = {inherit inputs;};
+            home-manager.extraSpecialArgs = {inherit inputs pkgs-unstable;};
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";

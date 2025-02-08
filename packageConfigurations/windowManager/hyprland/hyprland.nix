@@ -16,7 +16,7 @@ in
   with lib; {
     imports = [
       ./hyprpaper/hyprpaper.nix
-      #./hyprpanel/hyprpanel.nix
+      ./hyprpanel/hyprpanel.nix
       # ../waybar/waybar.nix
     ];
 

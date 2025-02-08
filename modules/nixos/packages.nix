@@ -1,6 +1,8 @@
 {
   config,
   pkgs,
+  pkgs-unstable,
+  inputs,
   ...
 }: {
   environment.systemPackages = with pkgs; [
@@ -11,7 +13,10 @@
     floorp
     kitty
     ranger
-    vscodium
+    pkgs-unstable.freetube
+    onlyoffice-desktopeditors
+    pkgs-unstable.protonmail-desktop
+    pkgs-unstable.protonvpn-gui
   ];
 
   programs.hyprland = {

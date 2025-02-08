@@ -4,7 +4,9 @@
 {
   config,
   pkgs,
+  pkgs-unstable,
   username,
+  inputs,
   ...
 }: {
   imports = [
