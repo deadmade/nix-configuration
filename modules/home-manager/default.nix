@@ -64,7 +64,6 @@ in {
 
   home.packages = with pkgs; [
     remnote
-    hyprpanel
   ];
 
   # Enable Home Manager
