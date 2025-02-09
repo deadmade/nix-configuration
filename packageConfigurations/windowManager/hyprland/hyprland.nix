@@ -15,7 +15,7 @@
 in
   with lib; {
     imports = [
-      #./hyprpaper/hyprpaper.nix Testing wpaperd
+      #./hyprpaper/hyprpaper.nix #Testing wpaperd
       ./wpaperd/wpaperd.nix
       #./hyprpanel/hyprpanel.nix -> really strange stuff. I don't know what it is
       ./waybar/waybar.nix
@@ -29,6 +29,7 @@ in
       wofi # App Launcher
       dunst # Benachrichtigungen
       hyprpaper # Wallpaper-Manager
+      #wpaperd # Wallpaper-Manager Daemon
     ];
 
     # Hyprland aktivieren und konfigurieren
