@@ -93,7 +93,7 @@
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
             home-manager.users.${username} = import ./modules/home-manager/default.nix;
-            nixpkgs.overlays = [self.overlays.unstable-packages self.overlays.hyprpanel];
+            nixpkgs.overlays = [self.overlays.unstable-packages];
           }
         ];
       };
