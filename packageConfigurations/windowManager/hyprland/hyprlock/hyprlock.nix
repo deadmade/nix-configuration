@@ -1,5 +1,4 @@
-{ config, ... }:
-{
+{config, ...}: {
   programs.hyprlock = {
     enable = true;
     settings = {
@@ -8,7 +7,7 @@
         {
           text = ''cmd[update:3600000] echo -e "<b> "$(date +'%A, %-d. %B %Y')" </b>"'';
           font_size = 35;
-          color = "rgb(${textColor})";
+          #color = "rgb(${textColor})";
           position = "0, -150";
           halign = "center";
           valign = "top";
