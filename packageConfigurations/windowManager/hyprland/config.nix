@@ -1,24 +1,30 @@
 {
-    wayland.windowManager.hyprland = {
-        settings = {
-        # Drei Bildschirme konfigurieren (Passen die Namen mit `hyprctl monitors` an)
-        monitor = [
-          #"HDMI-A-1,1920x1080@60,0x0,1"    # Hauptmonitor links
-          #"DP-1,2560x1440@144,1920x0,1"    # Mittlerer Monitor (Hauptbildschirm)
-          #"HDMI-A-2,1920x1080@60,4480x0,1" # Rechter Monitor
-        ];
+  wayland.windowManager.hyprland = {
+    settings = {
+      # Drei Bildschirme konfigurieren (Passen die Namen mit `hyprctl monitors` an)
+      monitor = [
+        "DP-1,1920x1080@60,auto-left,1" # Linker Monitor (DP-1)
+        "HDMI-A-1,1920x1080@60,auto,1" # Mittlerer Monitor (HDMI-A-1)
+        "DP-2,1920x1080@60,auto-right,1" # Rechter Monitor (DP-2)
+      ];
 
-        exec-once = ["hyprpaper &"]; # Programme beim Start
+      exec-once = [
+        "hyprctl setcursor Bibata-Modern-Classic 24"
+        "hyprpaper &"
+      ];
 
-        # Eingabe (Tastatur & Maus)
-        input = {
-          kb_layout = "de"; # Tastaturlayout auf Deutsch setzen
-          follow_mouse = 1;
-          touchpad.natural_scroll = false; # Falls ein Touchpad genutzt wird
+      # Eingabe (Tastatur & Maus)
+      input = {
+        kb_layout = "de"; # Tastaturlayout auf Deutsch setzen
+        follow_mouse = 1;
+        touchpad = {
+          natural_scroll = false;
+          tap-to-click = true;
         };
+      };
 
-        # Allgemeine Einstellungen
-        general = {
+      # Allgemeine Einstellungen
+      general = {
         "$mainMod" = "SUPER";
         "$terminal" = "kitty";
         "$fileManager" = "thunar";
@@ -29,15 +35,9 @@
         border_size = 2;
         border_part_of_window = false;
         no_border_on_floating = false;
-        };
-
-        plugin = {
-        hyprsplit = {
-          num_workspaces = 10;
-        };
       };
 
-            misc = {
+      misc = {
         disable_hyprland_logo = true;
         always_follow_on_dnd = true;
         layers_hog_keyboard_focus = true;
@@ -48,32 +48,60 @@
         middle_click_paste = false;
       };
 
-            dwindle = {
+      dwindle = {
         pseudotile = true;
         preserve_split = true;
       };
 
+      # Dekorationen & Effekte
+      decoration = {
+        rounding = 5;
+      };
 
-        # Dekorationen & Effekte
-        decoration = {
-          rounding = 5;
-        };
-        animations = {
-          enabled = true;
-        };
+      animations = {
+        enabled = true;
 
-        # Keybindings
-        bind = [
-          "$mainMod, Q, exec, $terminal"
-          "$mainMod, C, killactive,"
-          "$mainMod, E, exec, $fileManager"
-          "$mainMod, V, togglefloating,"
-          "$mainMod, R, exec, $menu"
-          "$mainMod, P, pseudo," # dwindle
-          "$mainMod, J, togglesplit," # dwindle
-          "$mainMode, W, exec, floorp"
+        bezier = [
+          "easeOutQuint,0.23,1,0.32,1"
+          "easeInOutCubic,0.65,0.05,0.36,1"
+          "linear,0,0,1,1"
+          "almostLinear,0.5,0.5,0.75,1.0"
+          "quick,0.15,0,0.1,1"
+        ];
 
-          # Move focus with mainMod + arrow keys
+        animation = [
+          "global, 1, 10, default"
+          "border, 1, 5.39, easeOutQuint"
+          "windows, 1, 4.79, easeOutQuint"
+          "windowsIn, 1, 4.1, easeOutQuint, popin 87%"
+          "windowsOut, 1, 1.49, linear, popin 87%"
+          "fadeIn, 1, 1.73, almostLinear"
+          "fadeOut, 1, 1.46, almostLinear"
+          "fade, 1, 3.03, quick"
+          "layers, 1, 3.81, easeOutQuint"
+          "layersIn, 1, 4, easeOutQuint, fade"
+          "layersOut, 1, 1.5, linear, fade"
+          "fadeLayersIn, 1, 1.79, almostLinear"
+          "fadeLayersOut, 1, 1.39, almostLinear"
+          "workspaces, 1, 1.94, almostLinear, fade"
+          "workspacesIn, 1, 1.21, almostLinear, fade"
+          "workspacesOut, 1, 1.94, almostLinear, fade"
+        ];
+      };
+
+      # Keybindings
+      bind = [
+        "$mainMod, Q, exec, $terminal"
+        "$mainMod, C, killactive,"
+        "$mainMod, E, exec, $fileManager"
+        "$mainMod, V, togglefloating,"
+        "$mainMod, Space, exec, $menu"
+        "$mainMod, P, pseudo," # dwindle
+        "$mainMod, J, togglesplit," # dwindle
+        "$mainMod, W, exec, floorp"
+        "$mainMod SHIFT, Q, exit" # Currently not really working
+
+        # Move focus with mainMod + arrow keys
         "$mainMod, left, movefocus, l"
         "$mainMod, right, movefocus, r"
         "$mainMod, up, movefocus, u"
@@ -83,19 +111,18 @@
         "$mainMod, k, movefocus, u"
         "$mainMod, l, movefocus, r"
 
-          # Switch workspaces with mainMod + [0-9]
-          "$mainMod, 1, workspace, 1"
-          "$mainMod, 2, workspace, 2"
-          "$mainMod, 3, workspace, 3"
-          "$mainMod, 4, workspace, 4"
-          "$mainMod, 5, workspace, 5"
-          "$mainMod, 6, workspace, 6"
-          "$mainMod, 7, workspace, 7"
-          "$mainMod, 8, workspace, 8"
-          "$mainMod, 9, workspace, 9"
-          "$mainMod, 0, workspace, 10"
+        # Switch workspaces with mainMod + [0-9]
+        "$mainMod, 1, workspace, 1"
+        "$mainMod, 2, workspace, 2"
+        "$mainMod, 3, workspace, 3"
+        "$mainMod, 4, workspace, 4"
+        "$mainMod, 5, workspace, 5"
+        "$mainMod, 6, workspace, 6"
+        "$mainMod, 7, workspace, 7"
+        "$mainMod, 8, workspace, 8"
+        "$mainMod, 9, workspace, 9"
+        "$mainMod, 0, workspace, 10"
 
-          # Move active window to a workspace with mainMod + SHIFT + [0-9]
         # Move active window to a workspace with mainMod + SHIFT + [0-9]
         "$mainMod SHIFT, 1, split:movetoworkspacesilent, 1"
         "$mainMod SHIFT, 2, split:movetoworkspacesilent, 2"
@@ -107,7 +134,17 @@
         "$mainMod SHIFT, 8, split:movetoworkspacesilent, 8"
         "$mainMod SHIFT, 9, split:movetoworkspacesilent, 9"
         "$mainMod SHIFT, 0, split:movetoworkspacesilent, 10"
-        ];
-      };
+
+        # window control
+        "$mainMod SHIFT, left, movewindow, l"
+        "$mainMod SHIFT, right, movewindow, r"
+        "$mainMod SHIFT, up, movewindow, u"
+        "$mainMod SHIFT, down, movewindow, d"
+        "$mainMod SHIFT, h, movewindow, l"
+        "$mainMod SHIFT, j, movewindow, d"
+        "$mainMod SHIFT, k, movewindow, u"
+        "$mainMod SHIFT, l, movewindow, r"
+      ];
     };
+  };
 }
