@@ -26,14 +26,14 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
 
-    textfox.url = "github:adriankarlen/textfox";
+    #textfox.url = "github:adriankarlen/textfox";
 
-    nixvim = {
-        url = "github:nix-community/nixvim";
-        inputs.nixpkgs.follows = "nixpkgs";
-    };
+    #nixvim = {
+     #   url = "github:nix-community/nixvim";
+    #    inputs.nixpkgs.follows = "nixpkgs";
+   # };
 
-    nvix.url = "github:niksingh710/nvix";
+    #nvix.url = "github:niksingh710/nvix";
 
 
   };
