@@ -9,11 +9,11 @@
 in {
   imports = [
     ../../packageConfigurations/windowManager/hyprland/hyprland.nix
-    ../../packageConfigurations/VsCodium/VsCodium.nix
+    ../../packageConfigurations/coding/VsCodium/VsCodium.nix
     ../../packageConfigurations/terminal/kitty/kitty.nix
     ../../packageConfigurations/terminal/tmux/tmux.nix
     ../../packageConfigurations/terminal/zsh/zsh.nix
-    (import ../../packageConfigurations/floorp/floorp.nix {inherit inputs pkgs;})
+    (import ../../packageConfigurations/brwoser/floorp/floorp.nix {inherit inputs pkgs;})
     ../../packageConfigurations/flatpak/flatpak.nix
   ];
 
