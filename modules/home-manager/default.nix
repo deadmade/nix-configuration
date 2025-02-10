@@ -13,7 +13,7 @@ in {
     ../../packageConfigurations/terminal/kitty/kitty.nix
     ../../packageConfigurations/terminal/tmux/tmux.nix
     ../../packageConfigurations/terminal/zsh/zsh.nix
-    (import ../../packageConfigurations/brwoser/floorp/floorp.nix {inherit inputs pkgs;})
+    (import ../../packageConfigurations/browser/floorp/floorp.nix {inherit inputs pkgs;})
     ../../packageConfigurations/flatpak/flatpak.nix
   ];
 
