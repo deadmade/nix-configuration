@@ -16,7 +16,7 @@
     onlyoffice-desktopeditors
     pkgs.unstable.protonmail-desktop
     pkgs.unstable.protonvpn-gui
-    inputs.nvix.packages.${pkgs.system}.default
+    #inputs.nvix.packages.${pkgs.system}.default
   ];
 
   programs.hyprland = {
