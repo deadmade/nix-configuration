@@ -42,20 +42,8 @@ in {
   #   };
   # };
 
-
-
   # Optional, hint Electron apps to use Wayland:
   home.sessionVariables.NIXOS_OZONE_WL = "1";
-
-  # Install & Configure Greetd
-  #programs.greetd = {
-  # enable = true;
-  #settings = {
-  # default_session = {
-  #  command = "${pkgs.greetd.greetd}/bin/agreety --cmd Hyprland";
-  #};
-  #};
-  #};
 
   home.packages = with pkgs; [
     remnote
