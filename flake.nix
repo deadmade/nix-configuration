@@ -21,10 +21,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprpanel = {
-      url = "github:jas-singhfsu/hyprpanel";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # hyprpanel = { currently not in use
+    #   url = "github:jas-singhfsu/hyprpanel";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+
+    textfox.url = "github:adriankarlen/textfox";
+
   };
 
   outputs = {
