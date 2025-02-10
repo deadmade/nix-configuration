@@ -64,6 +64,7 @@ in {
 
   home.packages = with pkgs; [
     remnote
+    texlive.combined.scheme-full
   ];
 
   # Enable Home Manager
