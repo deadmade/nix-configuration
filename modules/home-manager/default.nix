@@ -29,8 +29,6 @@ in {
     userEmail = gitEmail;
   };
 
-  #programs.bash.enable = true;
-
   # Install & Configure GitHub CLI
   programs.gh.enable = true;
 
