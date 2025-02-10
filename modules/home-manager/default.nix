@@ -42,12 +42,7 @@ in {
   #   };
   # };
 
-  # Install & Configure Starship
-  programs.starship = {
-    enable = true;
-    settings = pkgs.lib.importTOML ../../packageConfigurations/starship/starship.toml;
-    enableZshIntegration = true;
-  };
+
 
   # Optional, hint Electron apps to use Wayland:
   home.sessionVariables.NIXOS_OZONE_WL = "1";
