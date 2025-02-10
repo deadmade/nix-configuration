@@ -8,7 +8,7 @@
   inherit (import ../../variables.nix) gitUsername gitEmail;
 in {
   imports = [
-      ( import ../../modules/home-manager/default.nix {inherit inputs pkgs;})
+      ( import ../../modules/home-manager/default.nix {inherit inputs pkgs username host;})
   ];
 
   home.packages = with pkgs; [
