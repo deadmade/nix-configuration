@@ -14,7 +14,7 @@ in {
     ../../packageConfigurations/terminal/tmux/tmux.nix
     ../../packageConfigurations/terminal/zsh/zsh.nix
     (import ../../packageConfigurations/browser/floorp/floorp.nix {inherit inputs pkgs;})
-    ../../packageConfigurations/flatpak/flatpak.nix
+    #../../packageConfigurations/flatpak/flatpak.nix
   ];
 
   # Home Manager Settings
