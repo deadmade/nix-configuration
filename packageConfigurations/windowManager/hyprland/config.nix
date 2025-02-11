@@ -4,6 +4,7 @@
 
       exec-once = [
         "wpaperd &"
+        "hypridle &"
       ];
 
       # Eingabe (Tastatur & Maus)
@@ -14,6 +15,10 @@
           natural_scroll = false;
           tap-to-click = true;
         };
+      };
+
+            gestures = {
+	workspace_swipe = true;
       };
 
       # Allgemeine Einstellungen
@@ -93,6 +98,8 @@
         "$mainMod, J, togglesplit," # dwindle
         "$mainMod, W, exec, floorp"
         "$mainMod SHIFT, Q, exit" # Currently not really working
+        "$mainMod, L, exec, hyprlock --immediate"
+
 
         # Move focus with mainMod + arrow keys
         "$mainMod, left, movefocus, l"

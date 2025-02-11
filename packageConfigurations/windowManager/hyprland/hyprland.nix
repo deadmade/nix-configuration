@@ -21,6 +21,7 @@ in
       ./waybar/waybar.nix
       ./hyprlock/hyprlock.nix
       ./config.nix
+      ./hypridle/hypridle.nix
     ];
 
     # Home Manager Pakete
@@ -28,8 +29,9 @@ in
       waybar # Statusleiste
       wofi # App Launcher
       dunst # Benachrichtigungen
-      hyprpaper # Wallpaper-Manager
+      # hyprpaper # Wallpaper-Manager
       #wpaperd # Wallpaper-Manager Daemon
+      hyprshot # Screenshot-Tool
     ];
 
     # Hyprland aktivieren und konfigurieren
