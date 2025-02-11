@@ -12,13 +12,11 @@ in {
   ];
 
   home.packages = with pkgs; [
-    remnote
-    texlive.combined.scheme-full
-  ];
+     ];
 
     wayland.windowManager.hyprland = {
     settings = {
-      # Drei Bildschirme konfigurieren (Passen die Namen mit `hyprctl monitors` an)
+      # Bildschirme konfigurieren (Passen die Namen mit `hyprctl monitors` an)
       monitor = [
 
       ];

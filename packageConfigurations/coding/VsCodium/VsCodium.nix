@@ -2,9 +2,10 @@
   programs.vscode = {
     enable = true;
     package = pkgs.unstable.vscodium;
+    enableUpdateCheck = false;
     extensions = with pkgs.unstable.vscode-extensions; [
       # Theme
-      dracula-theme.theme-dracula
+      catppuccin.catppuccin-vsc
 
       # Productivity
       vscodevim.vim
@@ -18,5 +19,11 @@
       github.copilot
       github.copilot-chat
     ];
+
+      userSettings = {
+      #Disable AutoUpdate 
+      "extensions.autoCheckUpdates" = false;
+      "extensions.autoUpdate" = false;
+    };
   };
 }
