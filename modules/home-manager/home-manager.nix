@@ -23,11 +23,11 @@ in {
   home.stateVersion = "24.11";
 
   # # Install & Configure Git
-  # programs.git = {
-  #   enable = true;
-  #   userName = gitUsername;
-  #   userEmail = gitEmail;
-  # };
+   programs.git = {
+     enable = true;
+     userName = gitUsername;
+     userEmail = gitEmail;
+   };
 
   # Install & Configure GitHub CLI
   programs.gh.enable = true;

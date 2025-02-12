@@ -105,7 +105,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
-            home-manager.users.${var.username} = import ./hosts/deadPc/home.nix;
+            home-manager.users.${var.username} = import ./modules/home-manager/home-manager.nix;
             nixpkgs.overlays = [self.overlays.unstable-packages];
           }
         ];
