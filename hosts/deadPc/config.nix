@@ -13,7 +13,7 @@
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ../../modules/nixos/default.nix
-    ]
+    ];
 
   # Bootloader.
   boot.loader.efi.canTouchEfiVariables = true;
