@@ -12,6 +12,9 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../modules/nixos/default.nix
+    inputs.hardware.nixosModules.common-cpu-amd-pstate
+    inputs.hardware.nixosModules.common-gpu-nvidia-nonprime
+    inputs.hardware.nixosModules.common-pc-ssd
   ];
 
   # Bootloader.
@@ -106,6 +109,15 @@
         --theme border=magenta;text=cyan;prompt=green;time=red;action=blue;button=yellow;container=black;input=red
         --cmd Hyprland"; # start Hyprland with a TUI login manager
       };
+    };
+  };
+
+  hardware = {
+    graphics.enable = true;
+    opentabletdriver.enable = true;
+    nvidia = {
+      open = false;
+      powerManagement.enable = true;
     };
   };
 
