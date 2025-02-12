@@ -15,6 +15,7 @@ in {
     ../../packageConfigurations/terminal/zsh/zsh.nix
     (import ../../packageConfigurations/browser/floorp/floorp.nix {inherit inputs pkgs;})
     ../../packageConfigurations/flatpak/flatpak.nix
+    ../../packageConfigurations/terminal/starship.nix
   ];
 
   # Home Manager Settings
@@ -23,11 +24,11 @@ in {
   home.stateVersion = "24.11";
 
   # # Install & Configure Git
-   programs.git = {
-     enable = true;
-     userName = gitUsername;
-     userEmail = gitEmail;
-   };
+  programs.git = {
+    enable = true;
+    userName = gitUsername;
+    userEmail = gitEmail;
+  };
 
   # Install & Configure GitHub CLI
   programs.gh.enable = true;

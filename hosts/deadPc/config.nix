@@ -4,16 +4,15 @@
 {
   config,
   pkgs,
- # var,
+  # var,
   inputs,
   ...
 }: {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
     ../../modules/nixos/default.nix
-    ];
+  ];
 
   # Bootloader.
   boot.loader.efi.canTouchEfiVariables = true;

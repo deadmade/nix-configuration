@@ -2,7 +2,7 @@
   # Install & Configure Starship
   programs.starship = {
     enable = true;
-    settings = pkgs.lib.importTOML ../../packageConfigurations/starship/starship.toml;
+    settings = pkgs.lib.importTOML ./starship.toml;
     enableZshIntegration = true;
   };
 }
