@@ -1,6 +1,8 @@
 {
-  packages = import ./packages.nix;
-  users = import ./user.nix;
-  themes = import ./themes.nix;
-  localization = import ./localization.nix;
+imports = [
+  ./localization.nix
+  ./packages.nix
+  ./themes.nix
+  ./user.nix
+]
 }
