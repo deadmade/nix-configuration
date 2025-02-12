@@ -15,13 +15,13 @@
 in
   with lib; {
     imports = [
-      #./hyprpaper/hyprpaper.nix #Testing wpaperd
-      ./wpaperd/wpaperd.nix
+      #./hyprpaper #Testing wpaperd
+      ./wpaperd
       #./hyprpanel/hyprpanel.nix -> really strange stuff. I don't know what it is
-      ./waybar/waybar.nix
-      ./hyprlock/hyprlock.nix
+      ./waybar
+      ./hyprlock
       ./config.nix
-      ./hypridle/hypridle.nix
+      ./hypridle
     ];
 
     # Home Manager Pakete
