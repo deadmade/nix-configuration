@@ -4,5 +4,5 @@ imports = [
   ./packages.nix
   ./themes.nix
   ./user.nix
-]
+];
 }
