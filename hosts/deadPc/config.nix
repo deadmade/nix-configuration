@@ -6,15 +6,14 @@
   pkgs,
   username,
   inputs,
-  outputs,
   ...
 }: {
   imports =
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+    ../../modules/nixos/default.nix
     ]
-    ++ (builtins.attrValues outputs.nixosModules);
 
   # Bootloader.
   boot.loader.efi.canTouchEfiVariables = true;
