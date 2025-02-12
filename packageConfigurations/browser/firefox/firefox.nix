@@ -124,7 +124,7 @@
     enable = true;
     profile = "Default";
     config = {
-        # Optional config
+      # Optional config
     };
-};
+  };
 }

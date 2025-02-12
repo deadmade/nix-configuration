@@ -20,8 +20,8 @@
       github.copilot-chat
     ];
 
-      userSettings = {
-      #Disable AutoUpdate 
+    userSettings = {
+      #Disable AutoUpdate
       "extensions.autoCheckUpdates" = false;
       "extensions.autoUpdate" = false;
     };

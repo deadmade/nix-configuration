@@ -12,7 +12,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    #hardware.url = "github:nixos/nixos-hardware";
+    hardware.url = "github:nixos/nixos-hardware";
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
@@ -21,34 +21,35 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # hyprpanel = { currently not in use
-    #   url = "github:jas-singhfsu/hyprpanel";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+
+    hyprpanel = {
+      url = "github:jas-singhfsu/hyprpanel";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     #textfox.url = "github:adriankarlen/textfox";
 
-    #nixvim = {
-     #   url = "github:nix-community/nixvim";
-    #    inputs.nixpkgs.follows = "nixpkgs";
-   # };
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     #nvix.url = "github:niksingh710/nvix";
-
-
   };
 
   outputs = {
     self,
     nixpkgs,
     nixpkgs-unstable,
+    nixos-wsl,
     home-manager,
     ...
   } @ inputs: let
-    inherit (self) outputs;
     systems = ["x86_64-linux"];
     forAllSystems = nixpkgs.lib.genAttrs systems;
-    username = (import ./variables.nix).username;
+    var = import ./variables.nix;
+    homeManagerModules = import ./modules/home-manager;
   in {
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
@@ -59,15 +60,14 @@
 
     # Reusable nixos modules you might want to export
     # These are usually stuff you would upstream into nixpkgs
-    #nixosModules = import ./modules/nixos;
+    nixosModules = import ./modules/nixos;
 
     # Reusable home-manager modules you might want to export
     # These are usually stuff you would upstream into home-manager
-    #homeManagerModules = import ./modules/home-manager;
 
     nixosConfigurations = {
       deadConvertible = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs username;};
+        specialArgs = {inherit inputs homeManagerModules var;};
         modules = [
           ./hosts/deadConvertible/config.nix
           #inputs.stylix.nixosModules.stylix
@@ -75,14 +75,13 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.${username} = import ./hosts/deadConvertible/home.nix;
+            home-manager.users.${var.username} = import ./hosts/deadConvertible/home.nix;
             nixpkgs.overlays = [self.overlays.unstable-packages];
-
           }
         ];
       };
       deadTest = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs username;};
+        specialArgs = {inherit inputs self var;};
         modules = [
           ./hosts/deadTest/config.nix
           #inputs.stylix.nixosModules.stylix
@@ -90,13 +89,13 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.${username} = import ./hosts/deadTest/home.nix;
+            home-manager.users.${var.username} = import ./hosts/deadTest/home.nix;
             nixpkgs.overlays = [self.overlays.unstable-packages];
           }
         ];
       };
       deadPc = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs username;};
+        specialArgs = {inherit inputs self var;};
         modules = [
           ./hosts/deadPc/config.nix
           #inputs.stylix.nixosModules.stylix
@@ -106,7 +105,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
-            home-manager.users.${username} = import ./hosts/deadPc/home.nix;
+            home-manager.users.${var.username} = import ./hosts/deadPc/home.nix;
             nixpkgs.overlays = [self.overlays.unstable-packages];
           }
         ];

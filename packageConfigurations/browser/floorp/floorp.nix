@@ -1,10 +1,11 @@
 {
   inputs,
+  outputs,
   pkgs,
   ...
 }: {
   programs.floorp = {
-    enable = true;
+    enable = lib.mkIf (outputs.var.browser == "firefox") true;
 
     profiles.Default = {
       extensions = with inputs.firefox-addons.packages."x86_64-linux"; [
