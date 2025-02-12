@@ -30,8 +30,9 @@ in
       wofi # App Launcher
       dunst # Benachrichtigungen
       # hyprpaper # Wallpaper-Manager
-      #wpaperd # Wallpaper-Manager Daemon
+      wpaperd # Wallpaper-Manager Daemon
       hyprshot # Screenshot-Tool
+      hyprlock
     ];
 
     # Hyprland aktivieren und konfigurieren

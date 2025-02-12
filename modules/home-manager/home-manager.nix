@@ -15,7 +15,7 @@ in {
     ../../packageConfigurations/terminal/zsh/zsh.nix
     (import ../../packageConfigurations/browser/floorp/floorp.nix {inherit inputs pkgs;})
     ../../packageConfigurations/flatpak/flatpak.nix
-    ../../packageConfigurations/terminal/starship.nix
+    ../../packageConfigurations/terminal/starship/starship.nix
   ];
 
   # Home Manager Settings

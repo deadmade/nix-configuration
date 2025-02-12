@@ -1,4 +1,4 @@
-{
+{pkgs, ...}: {
   # Install & Configure Starship
   programs.starship = {
     enable = true;
