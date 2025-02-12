@@ -3,7 +3,7 @@
     settings = {
       exec-once = [
         "wpaperd &"
-        #"hypridle &"
+        "hypridle &"
       ];
 
       "$mainMod" = "SUPER";
