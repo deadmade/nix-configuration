@@ -8,13 +8,13 @@
   inherit (import ../../variables.nix) gitUsername gitEmail;
 in {
   imports = [
-    #../../packageConfigurations/windowManager/hyprland/hyprland.nix
-    #../../packageConfigurations/coding/VsCodium/VsCodium.nix
-    #../../packageConfigurations/terminal/kitty/kitty.nix
-    #../../packageConfigurations/terminal/tmux/tmux.nix
-    #../../packageConfigurations/terminal/zsh/zsh.nix
-    #(import ../../packageConfigurations/browser/floorp/floorp.nix {inherit inputs pkgs;})
-    #../../packageConfigurations/flatpak/flatpak.nix
+    ../../packageConfigurations/windowManager/hyprland/hyprland.nix
+    ../../packageConfigurations/coding/VsCodium/VsCodium.nix
+    ../../packageConfigurations/terminal/kitty/kitty.nix
+    ../../packageConfigurations/terminal/tmux/tmux.nix
+    ../../packageConfigurations/terminal/zsh/zsh.nix
+    (import ../../packageConfigurations/browser/floorp/floorp.nix {inherit inputs pkgs;})
+    ../../packageConfigurations/flatpak/flatpak.nix
   ];
 
   # Home Manager Settings
@@ -30,7 +30,7 @@ in {
   # };
 
   # Install & Configure GitHub CLI
-  #programs.gh.enable = true;
+  programs.gh.enable = true;
 
   # Install & Configure btop
   # programs.btop = {
@@ -41,7 +41,7 @@ in {
   # };
 
   # Optional, hint Electron apps to use Wayland:
-  #home.sessionVariables.NIXOS_OZONE_WL = "1";
+  home.sessionVariables.NIXOS_OZONE_WL = "1";
 
   # home.packages = with pkgs; [
   # ];
