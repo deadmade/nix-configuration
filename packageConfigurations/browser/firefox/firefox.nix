@@ -4,7 +4,7 @@
   ...
 }: {
   programs.firefox = {
-    enable = true;
+    enable = false;
 
     profiles.Default = {
       extensions = with inputs.firefox-addons.packages."x86_64-linux"; [
