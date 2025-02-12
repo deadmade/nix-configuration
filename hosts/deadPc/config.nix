@@ -82,7 +82,12 @@
   services.xserver.displayManager.autoLogin.user = "deadmade";
 
   # Allow unfree packages
-
+  nixpkgs = {
+    overlays = [
+      #outputs.overlays.unstable-packages
+    ];
+    config.allowUnfree = true;
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
