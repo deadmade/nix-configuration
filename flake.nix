@@ -46,10 +46,10 @@
     home-manager,
     ...
   } @ inputs: let
+    inherit (self) outputs;
     systems = ["x86_64-linux"];
     forAllSystems = nixpkgs.lib.genAttrs systems;
     var = import ./variables.nix;
-    homeManagerModules = import ./modules/home-manager;
   in {
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
@@ -64,10 +64,11 @@
 
     # Reusable home-manager modules you might want to export
     # These are usually stuff you would upstream into home-manager
+    homeManagerModules = import ./modules/home-manager;
 
     nixosConfigurations = {
       deadConvertible = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs homeManagerModules var;};
+        specialArgs = {inherit inputs outputs var;};
         modules = [
           ./hosts/deadConvertible/config.nix
           #inputs.stylix.nixosModules.stylix
@@ -80,8 +81,9 @@
           }
         ];
       };
+
       deadTest = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs self var;};
+        specialArgs = {inherit inputs outputs var;};
         modules = [
           ./hosts/deadTest/config.nix
           #inputs.stylix.nixosModules.stylix
@@ -94,8 +96,9 @@
           }
         ];
       };
+
       deadPc = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs self var;};
+        specialArgs = {inherit inputs outputs var;};
         modules = [
           ./hosts/deadPc/config.nix
           #inputs.stylix.nixosModules.stylix

@@ -1,7 +1,6 @@
-{inputs, ...}:
-{
-  inputs.nixvim ={
+{inputs, ...}: {
+  inputs.nixvim = {
     enable = true;
     defaultEditor = true;
-  }
+  };
 }

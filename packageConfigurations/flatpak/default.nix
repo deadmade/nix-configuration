@@ -9,7 +9,7 @@
       "com.github.tchx84.Flatseal"
       "com.spotify.Client"
       "com.jetbrains.PyCharm-Professional"
-      "com.jetbrains.Ride"
+      "com.jetbrains.Rider"
       "com.valvesoftware.Steam"
       "dev.vencord.Vesktop"
     ];

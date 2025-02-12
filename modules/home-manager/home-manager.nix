@@ -8,14 +8,14 @@
   inherit (import ../../variables.nix) gitUsername gitEmail;
 in {
   imports = [
-    ../../packageConfigurations/windowManager/hyprland/hyprland.nix
+    ../../packageConfigurations/windowManager/hyprland
     ../../packageConfigurations/coding/VsCodium/VsCodium.nix
-    ../../packageConfigurations/terminal/kitty/kitty.nix
-    ../../packageConfigurations/terminal/tmux/tmux.nix
-    ../../packageConfigurations/terminal/zsh/zsh.nix
+    ../../packageConfigurations/terminal/kitty
+    ../../packageConfigurations/terminal/tmux
+    ../../packageConfigurations/terminal/zsh
     (import ../../packageConfigurations/browser/floorp/floorp.nix {inherit inputs pkgs;})
-    ../../packageConfigurations/flatpak/flatpak.nix
-    ../../packageConfigurations/terminal/starship/starship.nix
+    ../../packageConfigurations/flatpak
+    ../../packageConfigurations/terminal/starship
   ];
 
   # Home Manager Settings

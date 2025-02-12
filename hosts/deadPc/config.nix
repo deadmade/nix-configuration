@@ -4,7 +4,8 @@
 {
   config,
   pkgs,
-  # var,
+  outputs,
+  var,
   inputs,
   ...
 }: {
@@ -86,7 +87,7 @@
   # Allow unfree packages
   nixpkgs = {
     overlays = [
-      #outputs.overlays.unstable-packages
+      outputs.overlays.unstable-packages
     ];
     config.allowUnfree = true;
   };
