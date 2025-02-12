@@ -9,16 +9,17 @@
   inputs,
   ...
 }: {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-    #../../modules/nixos/default.nix
+  imports =
+    [
+      # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+      #../../modules/nixos/default.nix
 
-    inputs.hardware.nixosModules.common-cpu-amd-pstate
-    inputs.hardware.nixosModules.common-gpu-nvidia-nonprime
-    inputs.hardware.nixosModules.common-pc-ssd
-
-  ] ++ (builtins.attrValues outputs.nixosModules);
+      inputs.hardware.nixosModules.common-cpu-amd-pstate
+      inputs.hardware.nixosModules.common-gpu-nvidia-nonprime
+      inputs.hardware.nixosModules.common-pc-ssd
+    ]
+    ++ (builtins.attrValues outputs.nixosModules);
 
   # Bootloader.
   boot.loader.efi.canTouchEfiVariables = true;

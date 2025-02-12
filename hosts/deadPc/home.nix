@@ -1,16 +1,16 @@
 {
   inputs,
-  homeManagerModules,
+  outputs,
   lib,
   config,
   pkgs,
   host,
   ...
 }: {
-  imports = [
-    ../../modules/home-manager/home-manager.nix
-  ];
-  #++ (builtins.attrValues homeManagerModules);
+  imports =
+    [
+    ]
+    ++ (builtins.attrValues outputs.homeManagerModules);
 
   home.packages = with pkgs; [
     remnote
