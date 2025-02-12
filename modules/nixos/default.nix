@@ -10,4 +10,5 @@
   themes = import ./themes.nix;
   user = import ./user.nix;
   localization = import ./localization.nix;
+  security = import ./security.nix;
 }
