@@ -8,10 +8,9 @@
   betterTransition = "all 0.3s cubic-bezier(.55,-0.68,.48,1.682)";
 in
   with lib; {
-
-  home.packages = with pkgs; [
-    pavucontrol
-   ];    
+    home.packages = with pkgs; [
+      pavucontrol
+    ];
 
     programs.waybar = {
       enable = true;
@@ -26,7 +25,7 @@ in
             "pulseaudio"
             "cpu"
             "memory"
-            "network"
+            "disk"
           ];
           modules-right = [
             "custom/exit"
@@ -46,16 +45,13 @@ in
             on-scroll-down = "hyprctl dispatch workspace e-1";
           };
           "clock" = {
-            format = '' {:L%H:%M}'';
+            format = ''{:L%H:%M}'';
             tooltip = true;
             tooltip-format = "<big>{:%A, %d.%B %Y }</big>\n<tt><small>{calendar}</small></tt>";
           };
           "hyprland/window" = {
-            max-length = 22;
+            max-length = 50;
             separate-outputs = false;
-            rewrite = {
-              "" = " 🙈 No Windows? ";
-            };
           };
           "memory" = {
             interval = 5;
@@ -120,38 +116,6 @@ in
             # exec = "rofi -show drun";
             on-click = "sleep 0.1 && rofi-launcher";
           };
-          "custom/hyprbindings" = {
-            tooltip = false;
-            format = "󱕴";
-            on-click = "sleep 0.1 && list-hypr-bindings";
-          };
-          "idle_inhibitor" = {
-            format = "{icon}";
-            format-icons = {
-              activated = "";
-              deactivated = "";
-            };
-            tooltip = "true";
-          };
-          "custom/notification" = {
-            tooltip = false;
-            format = "{icon} {}";
-            format-icons = {
-              notification = "<span foreground='red'><sup></sup></span>";
-              none = "";
-              dnd-notification = "<span foreground='red'><sup></sup></span>";
-              dnd-none = "";
-              inhibited-notification = "<span foreground='red'><sup></sup></span>";
-              inhibited-none = "";
-              dnd-inhibited-notification = "<span foreground='red'><sup></sup></span>";
-              dnd-inhibited-none = "";
-            };
-            return-type = "json";
-            exec-if = "which swaync-client";
-            exec = "swaync-client -swb";
-            on-click = "sleep 0.1 && task-waybar";
-            escape = true;
-          };
           "battery" = {
             states = {
               warning = 30;
@@ -187,7 +151,7 @@ in
             min-height: 0px;
           }
           window#waybar {
-            background: rgba(0,0,0,0);
+            background-color: transparent;
           }
           #workspaces {
             color: #${config.lib.stylix.colors.base00};
@@ -233,7 +197,7 @@ in
           tooltip label {
             color: #${config.lib.stylix.colors.base08};
           }
-          #window, #pulseaudio, #cpu, #memory, #idle_inhibitor {
+          #window, #pulseaudio, #cpu, #memory, #idle_inhibitor, #disk {
             font-weight: bold;
             margin: 4px 0px;
             margin-left: 7px;

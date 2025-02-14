@@ -22,6 +22,7 @@ in
       ./hyprlock
       ./config.nix
       ./hypridle
+      ./wlogout
     ];
 
     # Home Manager Pakete

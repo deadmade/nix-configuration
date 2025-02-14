@@ -5,7 +5,7 @@
 }: {
   stylix = {
     enable = true;
-    image = ../../wallpapers/desktop/AnimeDeath.jpg; 
+    image = ../../wallpapers/desktop/AnimeDeath.jpg;
     # base16Scheme = {
     #   base00 = "232136";
     #   base01 = "2a273f";
@@ -25,7 +25,10 @@
     #   base0F = "56526e";
     # };
     polarity = "dark";
-    opacity.terminal = 0.8;
+    opacity = {
+      terminal = 0.8;
+      desktop = 0.0;
+    };
     cursor.package = pkgs.bibata-cursors;
     cursor.name = "Bibata-Modern-Ice";
     cursor.size = 25;
