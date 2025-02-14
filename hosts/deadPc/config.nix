@@ -84,8 +84,8 @@
   };
 
   # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = false;
-  services.xserver.displayManager.autoLogin.user = "deadmade";
+  services.displayManager.autoLogin.enable = false;
+  services.displayManager.autoLogin.user = "deadmade";
 
   # Allow unfree packages
   nixpkgs = {

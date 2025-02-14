@@ -4,6 +4,7 @@
       exec-once = [
         "wpaperd &"
         "hypridle &"
+        "waybar &"
       ];
 
       "$mainMod" = "SUPER";

@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, lib, ...}: {
   programs.vscode = {
     enable = true;
     package = pkgs.unstable.vscodium;
@@ -20,10 +20,13 @@
       github.copilot-chat
     ];
 
-    userSettings = {
+    userSettings = lib.mkForce {
       #Disable AutoUpdate
       "extensions.autoCheckUpdates" = false;
       "extensions.autoUpdate" = false;
+
+      "workbench.colorTheme" = "Catppuccin Frappé";
+      "files.autoSave" = "onFocusChange";
     };
   };
 }
