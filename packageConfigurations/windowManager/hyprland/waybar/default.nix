@@ -145,7 +145,7 @@ in
         ''
           * {
             font-family: JetBrainsMono Nerd Font Mono;
-            font-size: 16px;
+            font-size: 4px;
             border-radius: 0px;
             border: none;
             min-height: 0px;
@@ -206,16 +206,8 @@ in
             color: #${config.lib.stylix.colors.base00};
             border-radius: 24px 10px 24px 10px;
           }
-          #custom-startmenu {
-            color: #${config.lib.stylix.colors.base0B};
-            background: #${config.lib.stylix.colors.base02};
-            font-size: 28px;
-            margin: 0px;
-            padding: 0px 30px 0px 15px;
-            border-radius: 0px 0px 40px 0px;
-          }
-          #custom-hyprbindings, #network, #battery,
-          #custom-notification, #tray, #custom-exit {
+          #network, #battery,
+          #tray, #custom-exit,#clock {
             font-weight: bold;
             background: #${config.lib.stylix.colors.base0F};
             color: #${config.lib.stylix.colors.base00};
@@ -223,14 +215,6 @@ in
             margin-right: 7px;
             border-radius: 10px 24px 10px 24px;
             padding: 0px 18px;
-          }
-          #clock {
-            font-weight: bold;
-            color: #0D0E15;
-            background: linear-gradient(90deg, #${config.lib.stylix.colors.base0E}, #${config.lib.stylix.colors.base0C});
-            margin: 0px;
-            padding: 0px 15px 0px 30px;
-            border-radius: 0px 0px 0px 40px;
           }
         ''
       ];
