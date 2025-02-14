@@ -7,7 +7,7 @@
   programs.wpaperd = {
     enable = true;
     settings = {
-      DP-1 = {
+      DP-3 = {
         path = "${config.xdg.configHome}/wallpapers";
         random = true;
         unique = true;

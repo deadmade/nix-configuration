@@ -11,4 +11,5 @@
   user = import ./user.nix;
   localization = import ./localization.nix;
   security = import ./security.nix;
+  stylix = import ./stylix.nix;
 }

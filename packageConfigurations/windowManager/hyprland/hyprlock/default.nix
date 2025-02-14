@@ -1,12 +1,13 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   programs.hyprlock = {
     enable = true;
     settings = {
-      background = [
+      lib.mkPrio.background = [
         {
           path = "${config.xdg.configHome}/wallpapers/deathRobot1.jpg";
           blur_passes = 2;
@@ -68,7 +69,7 @@
         }
       ];
 
-      input-field = [
+      lib.mkPrio.input-field = [
         {
           size = "250, 60";
           outline_thickness = 2;

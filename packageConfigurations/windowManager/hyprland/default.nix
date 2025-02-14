@@ -17,7 +17,7 @@ in
     imports = [
       #./hyprpaper #Testing wpaperd
       ./wpaperd
-      #./hyprpanel/hyprpanel.nix -> really strange stuff. I don't know what it is
+      #./hyprpanel/hyprpanel.nix -> really strange stuff. I don't know what this is
       ./waybar
       ./hyprlock
       ./config.nix
@@ -51,4 +51,4 @@ in
         };
       };
     };
-}
+  }

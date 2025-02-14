@@ -28,6 +28,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    stylix.url = "github:danth/stylix/release-24.11";
+
     #textfox.url = "github:adriankarlen/textfox";
 
     nixvim = {
@@ -101,7 +103,7 @@
         specialArgs = {inherit inputs outputs var;};
         modules = [
           ./hosts/deadPc/config.nix
-          #inputs.stylix.nixosModules.stylix
+          inputs.stylix.nixosModules.stylix
           home-manager.nixosModules.home-manager
           {
             home-manager.extraSpecialArgs = {inherit inputs outputs;};
