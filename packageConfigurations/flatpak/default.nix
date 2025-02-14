@@ -10,7 +10,6 @@
       "com.spotify.Client"
       "com.jetbrains.PyCharm-Professional"
       "com.jetbrains.Rider"
-      "com.valvesoftware.Steam"
       "dev.vencord.Vesktop"
     ];
     overrides = {

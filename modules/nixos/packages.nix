@@ -17,7 +17,7 @@
     pkgs.unstable.protonmail-desktop
     pkgs.unstable.protonvpn-gui
     vim
-    #inputs.nvix.packages.${pkgs.system}.default
+    #inputs.nvix.packages.${pkgs.system}.core
   ];
 
   programs.hyprland = {
