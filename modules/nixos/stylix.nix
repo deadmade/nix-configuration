@@ -6,7 +6,9 @@
   stylix = {
     enable = true;
     image = ../../wallpapers/stylix/bloodMoon.jpg;
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/caroline.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/dracula.yaml";
+
+    autoEnable = true;
 
     polarity = "dark";
     opacity = {

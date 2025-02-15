@@ -5,6 +5,9 @@
         "wpaperd &"
         "hypridle &"
         "waybar &"
+        "flatpak run dev.vencord.Vesktop --start-minimized &"
+        "wasistlos &"
+        "floorp &"
       ];
 
       "$mainMod" = "SUPER";
