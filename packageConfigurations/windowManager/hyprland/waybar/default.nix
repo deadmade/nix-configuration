@@ -190,7 +190,7 @@ in
             transition: ${betterTransition};
           }
           tooltip {
-            background: #${config.lib.stylix.colors.base00};
+            background: #ddc7a1;
             border: 1px solid #${config.lib.stylix.colors.base08};
             border-radius: 12px;
           }
