@@ -14,7 +14,7 @@
 
   home.packages = with pkgs; [
     remnote
-    texlive.combined.scheme-full
+    pkgs.unstable.texlive.combined.scheme-full
   ];
 
   wayland.windowManager.hyprland = {

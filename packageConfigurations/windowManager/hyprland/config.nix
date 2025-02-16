@@ -8,6 +8,7 @@
         "flatpak run dev.vencord.Vesktop --start-minimized &"
         "wasistlos &"
         "floorp &"
+        "flaktpak run com.spotify.Client --start-minimized &"
       ];
 
       "$mainMod" = "SUPER";
@@ -103,6 +104,7 @@
         "$mainMod, W, exec, floorp"
         "$mainMod SHIFT, Q, exit, " # Currently not really working
         "$mainMod, L, exec, hyprlock --immediate"
+        "$mainMod SHIFT, s, exec, hyprshot -m region"
 
         # Move focus with mainMod + arrow keys
         "$mainMod, left, movefocus, l"
