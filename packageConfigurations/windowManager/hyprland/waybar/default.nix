@@ -28,6 +28,7 @@ in
             "disk"
           ];
           modules-right = [
+            "temperature"
             "custom/exit"
             "battery"
             "tray"
@@ -139,6 +140,12 @@ in
             on-click = "";
             tooltip = false;
           };
+
+          "temperature" = {
+            #thermal-zone = 0;
+            hwmon-path = "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon1/temp1_input";
+            format = " {temperatureC}°C";
+          };
         }
       ];
       style = concatStrings [
@@ -207,7 +214,7 @@ in
             border-radius: 24px 10px 24px 10px;
           }
           #network, #battery,
-          #tray, #custom-exit,#clock {
+          #tray, #custom-exit,#clock, #temperature {
             font-weight: bold;
             background: #${config.lib.stylix.colors.base0F};
             color: #${config.lib.stylix.colors.base00};
