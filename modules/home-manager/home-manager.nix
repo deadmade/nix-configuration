@@ -38,9 +38,6 @@ in {
   home.sessionVariables.NIXOS_OZONE_WL = "1";
 
   home.packages = with pkgs; [
-    pkgs.unstable.whatsapp-for-linux
-    pkgs.unstable.p3x-onenote
-    teams-for-linux
   ];
 
   # Enable Home Manager

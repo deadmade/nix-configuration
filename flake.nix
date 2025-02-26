@@ -115,6 +115,24 @@
           }
         ];
       };
+
+      deadWsl = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs outputs var;};
+        modules = [
+          ./hosts/deadWsl/config.nix
+          nixos-wsl.nixosModules.default
+          inputs.stylix.nixosModules.stylix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.extraSpecialArgs = {inherit inputs outputs;};
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
+            home-manager.users.${var.username} = import ./hosts/deadWsl/home.nix;
+            nixpkgs.overlays = [self.overlays.unstable-packages];
+          }
+        ];
+      };
     };
   };
 }

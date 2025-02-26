@@ -15,6 +15,9 @@
   home.packages = with pkgs; [
     remnote
     pkgs.unstable.texlive.combined.scheme-full
+    pkgs.unstable.whatsapp-for-linux
+    pkgs.unstable.p3x-onenote
+    teams-for-linux
   ];
 
   wayland.windowManager.hyprland = {
