@@ -15,12 +15,14 @@
 in
   with lib; {
     imports = [
-      #./hyprpaper/hyprpaper.nix #Testing wpaperd
-      ./wpaperd/wpaperd.nix
-      #./hyprpanel/hyprpanel.nix -> really strange stuff. I don't know what it is
-      ./waybar/waybar.nix
-      ./hyprlock/hyprlock.nix
+      #./hyprpaper #Testing wpaperd
+      ./wpaperd
+      #./hyprpanel/hyprpanel.nix -> really strange stuff. I don't know what this is
+      ./waybar
+      ./hyprlock
       ./config.nix
+      ./hypridle
+      ./wlogout
     ];
 
     # Home Manager Pakete
@@ -28,12 +30,15 @@ in
       waybar # Statusleiste
       wofi # App Launcher
       dunst # Benachrichtigungen
-      hyprpaper # Wallpaper-Manager
-      #wpaperd # Wallpaper-Manager Daemon
+      # hyprpaper # Wallpaper-Manager
+      wpaperd # Wallpaper-Manager Daemon
+      hyprshot # Screenshot-Tool
+      hyprlock
     ];
 
     # Hyprland aktivieren und konfigurieren
     wayland.windowManager.hyprland = {
+      package = pkgs.hyprland;
       enable = true;
       xwayland.enable = true;
       systemd.enable = true;

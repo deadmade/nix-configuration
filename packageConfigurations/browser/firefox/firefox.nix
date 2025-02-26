@@ -3,8 +3,8 @@
   pkgs,
   ...
 }: {
-  programs.floorp = {
-    enable = true;
+  programs.firefox = {
+    enable = false;
 
     profiles.Default = {
       extensions = with inputs.firefox-addons.packages."x86_64-linux"; [
@@ -16,6 +16,7 @@
         vimium
         proton-pass
         sponsorblock
+        sidebery
       ];
 
       search.engines = {
@@ -116,6 +117,14 @@
 
       settings = {
       };
+    };
+  };
+
+  inputs.textfox = {
+    enable = true;
+    profile = "Default";
+    config = {
+      # Optional config
     };
   };
 }

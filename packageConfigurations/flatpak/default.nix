@@ -9,8 +9,7 @@
       "com.github.tchx84.Flatseal"
       "com.spotify.Client"
       "com.jetbrains.PyCharm-Professional"
-      "com.jetbrains.Ride"
-      "com.valvesoftware.Steam"
+      "com.jetbrains.Rider"
       "dev.vencord.Vesktop"
     ];
     overrides = {

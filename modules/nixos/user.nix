@@ -7,7 +7,7 @@ in {
   users.users.${username} = {
     isNormalUser = true;
     description = username;
-    shell = pkgs.zsh;
+    shell = pkgs.zsh; #TODO Make this configurable
     extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
       #  kdePackages.kate

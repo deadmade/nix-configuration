@@ -1,16 +1,20 @@
 {
   wayland.windowManager.hyprland = {
     settings = {
-      # Drei Bildschirme konfigurieren (Passen die Namen mit `hyprctl monitors` an)
-      monitor = [
-        "DP-1,1920x1080@60,auto-left,1" # Linker Monitor (DP-1)
-        "HDMI-A-1,1920x1080@60,auto,1" # Mittlerer Monitor (HDMI-A-1)
-        "DP-2,1920x1080@60,auto-right,1" # Rechter Monitor (DP-2)
-      ];
-
       exec-once = [
         "wpaperd &"
+        "hypridle &"
+        "waybar &"
+        "flatpak run dev.vencord.Vesktop --start-minimized &"
+        "wasistlos &"
+        "floorp &"
+        "flaktpak run com.spotify.Client --start-minimized &"
       ];
+
+      "$mainMod" = "SUPER";
+      "$terminal" = "kitty";
+      "$fileManager" = "thunar";
+      "$menu" = "wofi --show drun --allow-images --no-actions";
 
       # Eingabe (Tastatur & Maus)
       input = {
@@ -18,16 +22,16 @@
         follow_mouse = 1;
         touchpad = {
           natural_scroll = false;
-          tap-to-click = true;
+          tap-to-click = false;
         };
+      };
+
+      gestures = {
+        workspace_swipe = false;
       };
 
       # Allgemeine Einstellungen
       general = {
-        "$mainMod" = "SUPER";
-        "$terminal" = "kitty";
-        "$fileManager" = "thunar";
-        "$menu" = "wofi --show drun --allow-images --no-actions";
         layout = "dwindle";
         gaps_in = 5;
         gaps_out = 10;
@@ -98,7 +102,9 @@
         "$mainMod, P, pseudo," # dwindle
         "$mainMod, J, togglesplit," # dwindle
         "$mainMod, W, exec, floorp"
-        "$mainMod SHIFT, Q, exit" # Currently not really working
+        "$mainMod SHIFT, Q, exit, " # Currently not really working
+        "$mainMod, L, exec, hyprlock --immediate"
+        "$mainMod SHIFT, s, exec, hyprshot -m region"
 
         # Move focus with mainMod + arrow keys
         "$mainMod, left, movefocus, l"
@@ -123,16 +129,16 @@
         "$mainMod, 0, workspace, 10"
 
         # Move active window to a workspace with mainMod + SHIFT + [0-9]
-        "$mainMod SHIFT, 1, split:movetoworkspacesilent, 1"
-        "$mainMod SHIFT, 2, split:movetoworkspacesilent, 2"
-        "$mainMod SHIFT, 3, split:movetoworkspacesilent, 3"
-        "$mainMod SHIFT, 4, split:movetoworkspacesilent, 4"
-        "$mainMod SHIFT, 5, split:movetoworkspacesilent, 5"
-        "$mainMod SHIFT, 6, split:movetoworkspacesilent, 6"
-        "$mainMod SHIFT, 7, split:movetoworkspacesilent, 7"
-        "$mainMod SHIFT, 8, split:movetoworkspacesilent, 8"
-        "$mainMod SHIFT, 9, split:movetoworkspacesilent, 9"
-        "$mainMod SHIFT, 0, split:movetoworkspacesilent, 10"
+        "$mainMod SHIFT, 1, split:movetoworkspace, 1"
+        "$mainMod SHIFT, 2, split:movetoworkspace, 2"
+        "$mainMod SHIFT, 3, split:movetoworkspace, 3"
+        "$mainMod SHIFT, 4, split:movetoworkspace, 4"
+        "$mainMod SHIFT, 5, split:movetoworkspace, 5"
+        "$mainMod SHIFT, 6, split:movetoworkspace, 6"
+        "$mainMod SHIFT, 7, split:movetoworkspace, 7"
+        "$mainMod SHIFT, 8, split:movetoworkspace, 8"
+        "$mainMod SHIFT, 9, split:movetoworkspace, 9"
+        "$mainMod SHIFT, 0, split:movetoworkspace, 10"
 
         # window control
         "$mainMod SHIFT, left, movewindow, l"

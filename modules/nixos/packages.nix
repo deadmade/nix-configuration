@@ -15,9 +15,10 @@
     pkgs.unstable.freetube
     onlyoffice-desktopeditors
     pkgs.unstable.protonmail-desktop
-    pkgs.unstable.protonvpn-gui
+    #inputs.nvix.packages.${pkgs.system}.core
   ];
 
+  #TODO: Move this
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;

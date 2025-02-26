@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   programs.kitty = {
@@ -19,7 +20,7 @@
       background_blur = 10;
     };
 
-    extraConfig = ''include themes/diff-mocha.conf'';
+    extraConfig = lib.mkForce ''include themes/diff-mocha.conf'';
   };
 
   home.file.".config/kitty/themes" = {
