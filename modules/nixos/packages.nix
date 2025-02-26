@@ -15,7 +15,6 @@
     pkgs.unstable.freetube
     onlyoffice-desktopeditors
     pkgs.unstable.protonmail-desktop
-    #inputs.nvix.packages.${pkgs.system}.core
   ];
 
   #TODO: Move this

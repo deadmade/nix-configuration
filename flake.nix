@@ -37,7 +37,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    #nvix.url = "github:niksingh710/nvix";
+    nvix.url = "github:niksingh710/nvix";
   };
 
   outputs = {
