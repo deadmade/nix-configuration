@@ -16,7 +16,6 @@
     ./hardware-configuration.nix
     outputs.nixosModules.packages
     outputs.nixosModules.stylix
-    #<nixos-wsl/modules>
   ];
 
   wsl.enable = true;

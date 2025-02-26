@@ -8,22 +8,21 @@
     enable = true;
     package = pkgs.unstable.floorp;
 
-          policies = {
-        AppAutoUpdate = false;
-        Bookmarks = false;
-        DisableFirefoxAccounts = true;
-        DisableFirefoxStudies = true;
-        DisablePocket = true;
-        DisablePrivateBrowsing = true;
-        DisableProfileImport = true;
-        DisableSafeMode = true;
-        DisableTelemetry = true;
-        DisplayBookmarksToolbar = "never";
-        EnableTrackingProtection = true;
-        InstallAddonsPermission = "Allow";
-        OfferToSaveLogins = false;
-        
-      };
+    policies = {
+      AppAutoUpdate = false;
+      Bookmarks = false;
+      DisableFirefoxAccounts = true;
+      DisableFirefoxStudies = true;
+      DisablePocket = true;
+      DisablePrivateBrowsing = true;
+      DisableProfileImport = true;
+      DisableSafeMode = true;
+      DisableTelemetry = true;
+      DisplayBookmarksToolbar = "never";
+      EnableTrackingProtection = true;
+      InstallAddonsPermission = "Allow";
+      OfferToSaveLogins = false;
+    };
 
     profiles.Default = {
       extensions = with inputs.firefox-addons.packages."x86_64-linux"; [

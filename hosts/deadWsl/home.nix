@@ -15,7 +15,5 @@
   ];
 
   home.packages = with pkgs; [
-    remnote
-    pkgs.unstable.texlive.combined.scheme-full
   ];
 }
