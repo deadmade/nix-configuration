@@ -7,19 +7,22 @@
   config,
   lib,
   pkgs,
+  inputs,
   outputs,
-  var,
+  vars,
   ...
 }: {
   imports = [
     # include NixOS-WSL modules
     ./hardware-configuration.nix
+    inputs.nixos-wsl.nixosModules.default
     outputs.nixosModules.packages
     outputs.nixosModules.stylix
+    outputs.nixosModules.user
   ];
 
   wsl.enable = true;
-  wsl.defaultUser = var.username;
+  wsl.defaultUser = vars.username;
 
   # Allow unfree packages
   nixpkgs = {

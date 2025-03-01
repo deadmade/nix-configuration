@@ -6,6 +6,17 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-flatpak = {
+      url = "github:gmodena/nix-flatpak/?ref=latest";
+    };
+
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+
     # Home manager
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
@@ -14,14 +25,10 @@
 
     hardware.url = "github:nixos/nixos-hardware";
 
-    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
-
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
 
     hyprpanel = {
       url = "github:jas-singhfsu/hyprpanel";
@@ -45,13 +52,14 @@
     nixpkgs,
     nixpkgs-unstable,
     nixos-wsl,
+    nixos-generators,
     home-manager,
     ...
   } @ inputs: let
     inherit (self) outputs;
     systems = ["x86_64-linux"];
     forAllSystems = nixpkgs.lib.genAttrs systems;
-    var = import ./variables.nix;
+    vars = import ./variables.nix;
   in {
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
@@ -70,68 +78,75 @@
 
     nixosConfigurations = {
       deadConvertible = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs var;};
+        specialArgs = {inherit inputs outputs vars;};
         modules = [
           ./hosts/deadConvertible/config.nix
-          #inputs.stylix.nixosModules.stylix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.${var.username} = import ./hosts/deadConvertible/home.nix;
+            home-manager.users.${vars.username} = import ./hosts/deadConvertible/home.nix;
             nixpkgs.overlays = [self.overlays.unstable-packages];
           }
         ];
       };
 
       deadTest = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs var;};
+        specialArgs = {inherit inputs outputs vars;};
         modules = [
           ./hosts/deadTest/config.nix
-          #inputs.stylix.nixosModules.stylix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.${var.username} = import ./hosts/deadTest/home.nix;
+            home-manager.users.${vars.username} = import ./hosts/deadTest/home.nix;
             nixpkgs.overlays = [self.overlays.unstable-packages];
           }
         ];
       };
 
       deadPc = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs var;};
+        specialArgs = {inherit inputs outputs vars;};
         modules = [
           ./hosts/deadPc/config.nix
-          inputs.stylix.nixosModules.stylix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.extraSpecialArgs = {inherit inputs outputs;};
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
-            home-manager.users.${var.username} = import ./hosts/deadPc/home.nix;
-            nixpkgs.overlays = [self.overlays.unstable-packages];
-          }
         ];
       };
 
       deadWsl = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs var;};
+        specialArgs = {inherit inputs outputs vars;};
         modules = [
           ./hosts/deadWsl/config.nix
-          nixos-wsl.nixosModules.default
-          inputs.stylix.nixosModules.stylix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.extraSpecialArgs = {inherit inputs outputs;};
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
-            home-manager.users.${var.username} = import ./hosts/deadWsl/home.nix;
-            nixpkgs.overlays = [self.overlays.unstable-packages];
-          }
         ];
+      };
+    };
+
+    # home-manager switch --flake .#deadmade@<host>
+    homeConfigurations = {
+      "${vars.username}@deadWsl" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        extraSpecialArgs = {inherit inputs outputs vars;};
+        modules = [
+          ./hosts/deadWsl/home.nix
+        ];
+      };
+      "${vars.username}@deadPc" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        extraSpecialArgs = {inherit inputs outputs vars;};
+        modules = [
+          ./hosts/deadPc/home.nix
+        ];
+      };
+    };
+
+    # Generate Iso -> Currently not really working. Need to look into what the best way is to do this
+    packages.x86_64-linux = {
+      deadPcIso = nixos-generators.nixosGenerate {
+        specialArgs = {inherit inputs outputs vars;};
+        system = "x86_64-linux";
+        modules = [
+          ./hosts/deadPc/config.nix
+        ];
+        format =  "install-iso";
       };
     };
   };

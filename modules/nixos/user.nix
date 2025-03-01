@@ -12,6 +12,7 @@ in {
     packages = with pkgs; [
       #  kdePackages.kate
       #  thunderbird
+      home-manager
     ];
   };
 }

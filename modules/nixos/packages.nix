@@ -2,8 +2,13 @@
   config,
   pkgs,
   inputs,
+  outputs,
   ...
 }: {
+  imports = [
+    inputs.home-manager.nixosModules.home-manager
+  ];
+
   environment.systemPackages = with pkgs; [
     neofetch
     htop
@@ -16,6 +21,11 @@
     onlyoffice-desktopeditors
     pkgs.unstable.protonmail-desktop
   ];
+
+  home-manager.extraSpecialArgs = {inherit inputs outputs;};
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+  home-manager.backupFileExtension = "backup";
 
   #TODO: Move this
   programs.hyprland = {
