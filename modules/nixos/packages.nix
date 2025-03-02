@@ -14,7 +14,6 @@
     htop
     curl
     git
-    floorp
     kitty
     ranger
     pkgs.unstable.freetube

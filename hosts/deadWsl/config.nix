@@ -19,6 +19,7 @@
     outputs.nixosModules.packages
     outputs.nixosModules.stylix
     outputs.nixosModules.user
+    outputs.nixosModules.firejail
   ];
 
   wsl.enable = true;

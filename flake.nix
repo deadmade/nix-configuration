@@ -146,7 +146,7 @@
         modules = [
           ./hosts/deadPc/config.nix
         ];
-        format =  "install-iso";
+        format = "install-iso";
       };
     };
   };

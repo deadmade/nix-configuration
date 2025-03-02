@@ -13,4 +13,5 @@
   security = import ./security.nix;
   stylix = import ./stylix.nix;
   gaming = import ./gaming.nix;
+  firejail = import ./firejail.nix;
 }

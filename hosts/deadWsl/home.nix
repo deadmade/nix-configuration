@@ -11,6 +11,7 @@
     outputs.homeManagerModules.defaultConfig
     outputs.homeManagerModules.browser
     outputs.homeManagerModules.coding
+    outputs.homeManagerModules.terminal
   ];
 
   home.packages = with pkgs; [
