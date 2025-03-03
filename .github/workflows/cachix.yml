@@ -18,4 +18,3 @@ jobs:
     - run: nix-shell -p jq
     - run: nix build .#nixosConfigurations.deadPc.config.system.build.toplevel | cachix push deadcache
     - run: nix flake archive --json | jq -r '.path,(.inputs|to_entries[].value.path)' | cachix push deadcache
-    - run: nix-shell --run "echo OK"
