@@ -16,6 +16,7 @@
     git
     kitty
     ranger
+    cachix
     pkgs.unstable.freetube
     onlyoffice-desktopeditors
     pkgs.unstable.protonmail-desktop
