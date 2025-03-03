@@ -7,15 +7,20 @@ on:
 jobs:
   lockfile:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Erlaubt das Pushen von Änderungen
+      pull-requests: write  # Erlaubt das Erstellen von PRs
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}  # Stellt sicher, dass das Token verwendet wird
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@main
         with:
-          pr-title: "Update flake.lock" # Title of PR to be created
-          pr-labels: |                  # Labels to be set on the PR
+          pr-title: "Update flake.lock"
+          pr-labels: |
             dependencies
             automated
