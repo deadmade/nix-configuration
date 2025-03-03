@@ -7,6 +7,7 @@
     enable = true;
     enableCompletion = true;
     autosuggestion.enable = true;
+    package = pkgs.unstable.zsh;
 
     syntaxHighlighting.enable = true;
     syntaxHighlighting.highlighters = [

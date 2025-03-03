@@ -1,6 +1,18 @@
 {
   description = "Deadmades's NixOS great config";
 
+  # Set up caches for faster builds
+  nixConfig = {
+    extra-substituters = [
+      "https://deadcache.cachix.org"
+      "https://nix-community.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "deadcache.cachix.org-1:k8yt2hshOzIWYT5B5Buj2/hK6bu2haiTz9juF4ERvcw="
+    ];
+  };
+
   inputs = {
     # Nixkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
