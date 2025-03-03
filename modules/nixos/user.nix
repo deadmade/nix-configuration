@@ -15,4 +15,5 @@ in {
       home-manager
     ];
   };
+  nix.settings.trusted-users = [username];
 }

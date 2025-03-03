@@ -19,6 +19,8 @@
     pkgs.unstable.freetube
     onlyoffice-desktopeditors
     pkgs.unstable.protonmail-desktop
+    pkgs.unstable.cachix
+    pkgs.unstable.vulnix
   ];
 
   home-manager.extraSpecialArgs = {inherit inputs outputs;};
