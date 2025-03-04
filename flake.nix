@@ -49,7 +49,7 @@
 
     stylix.url = "github:danth/stylix/release-24.11";
 
-    #textfox.url = "github:adriankarlen/textfox";
+    textfox.url = "github:deadmade/textwolf";
 
     nixvim = {
       url = "github:nix-community/nixvim";

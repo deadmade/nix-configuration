@@ -4,6 +4,10 @@
   config,
   ...
 }: {
+  imports = [
+    inputs.textfox.homeManagerModules.default
+  ];
+
   programs.librewolf = {
     enable = true;
     package = pkgs.unstable.librewolf-wayland;
@@ -134,6 +138,36 @@
         "signon.prefillForms" = false;
         "browser.shell.checkDefaultBrowser" = false;
       };
+    };
+  };
+
+  textfox = {
+    enable = true;
+    profile = "Default";
+    config = {
+                background = {
+          color = "#123456";
+        };
+        border = {
+          color = "#654321";
+          width = "4px";
+          transition = "1.0s ease";
+          radius = "3px";
+        };
+        displayHorizontalTabs = false;
+        displayWindowControls = true;
+        displayNavButtons = false;
+        displayUrlbarIcons = true;
+        displaySidebarTools = false;
+        displayTitles = false;
+        font = { 
+          family = "Fira Code";
+          size = "15px";
+          accent = "#654321";
+        };
+        sidebery = {
+          margin = "1.0rem";
+        };
     };
   };
 }
