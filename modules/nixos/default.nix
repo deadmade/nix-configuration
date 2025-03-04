@@ -14,4 +14,5 @@
   stylix = import ./stylix.nix;
   gaming = import ./gaming.nix;
   firejail = import ./firejail.nix;
+  grub2-bootloader = import ./grub2-bootloader.nix;
 }

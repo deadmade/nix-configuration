@@ -57,6 +57,10 @@
     };
 
     nvix.url = "github:niksingh710/nvix";
+
+    grub2-themes = {
+      url = "github:vinceliuice/grub2-themes";
+    };
   };
 
   outputs = {
