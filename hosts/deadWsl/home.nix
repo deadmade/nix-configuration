@@ -15,5 +15,6 @@
   ];
 
   home.packages = with pkgs; [
+        pkgs.unstable.texlive.combined.scheme-full
   ];
 }
