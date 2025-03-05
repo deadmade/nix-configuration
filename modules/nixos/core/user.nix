@@ -1,12 +1,11 @@
-{pkgs, ...}: let
-  inherit (import ../../variables.nix) username;
-in {
+{pkgs, vars,...}:
+{
   programs.zsh.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${username} = {
+  users.users.${vars.username} = {
     isNormalUser = true;
-    description = username;
+    description = vars.username;
     shell = pkgs.zsh; #TODO Make this configurable
     extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
@@ -15,5 +14,5 @@ in {
       home-manager
     ];
   };
-  nix.settings.trusted-users = [username];
+  nix.settings.trusted-users = [vars.username];
 }

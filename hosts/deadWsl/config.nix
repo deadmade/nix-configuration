@@ -16,10 +16,12 @@
     # include NixOS-WSL modules
     ./hardware-configuration.nix
     inputs.nixos-wsl.nixosModules.default
-    outputs.nixosModules.packages
-    outputs.nixosModules.stylix
-    outputs.nixosModules.user
-    outputs.nixosModules.firejail
+    outputs.nixosModules.core.packages
+    outputs.nixosModules.core.stylix
+    outputs.nixosModules.core.user
+    outputs.nixosModules.core.firejail
+    outputs.nixosModules.core.localization
+    outputs.nixosModules.core.network
   ];
 
   wsl.enable = true;
@@ -34,6 +36,12 @@
   };
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
+
+  environment.systemPackages = with pkgs; [
+    #marp-cli
+    #chromium
+    #slides
+  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
