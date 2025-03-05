@@ -155,6 +155,7 @@
     };
 
     # Generate Iso -> Currently not really working. Need to look into what the best way is to do this
+    # nix build .#deadPcIso
     packages.x86_64-linux = {
       deadPcIso = nixos-generators.nixosGenerate {
         specialArgs = {inherit inputs outputs vars;};

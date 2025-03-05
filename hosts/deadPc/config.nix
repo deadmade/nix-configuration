@@ -19,7 +19,7 @@
       inputs.hardware.nixosModules.common-gpu-nvidia-nonprime
       inputs.hardware.nixosModules.common-pc-ssd
     ]
-    ++ (builtins.attrValues outputs.nixosModules);
+    ++ (builtins.attrValues outputs.nixosModules.core);
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
@@ -33,7 +33,7 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  #networking.networkmanager.enable = true;
 
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
