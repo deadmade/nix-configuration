@@ -17,7 +17,7 @@
 
     # Currently not working.
     grub2-theme = {
-      enable = true;
+      enable = false; # Currently not working.
       theme = "vimix";
       splashImage = null;
       footer = true;
