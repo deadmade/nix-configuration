@@ -46,5 +46,15 @@
       enable = true;
       texlivePackage = pkgs.unstable.texlive.combined.scheme-full;
     };
+
+    obsidian = {
+      enable = false;
+    };
+
+    cmp = {
+      enable = true;
+      autoEnableSources = true;
+      autoLoad = true;
+    };
   };
 }
