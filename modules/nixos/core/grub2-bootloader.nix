@@ -16,7 +16,7 @@
     efi.canTouchEfiVariables = true;
 
     # Currently not working.
-    grub2-theme = lib.mkForce {
+    grub2-theme = {
       enable = true;
       theme = "vimix";
       splashImage = null;
