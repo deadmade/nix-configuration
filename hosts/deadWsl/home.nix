@@ -7,13 +7,13 @@
   host,
   ...
 }: {
-  imports = [
-    outputs.homeManagerModules.defaultConfig
-    outputs.homeManagerModules.browser
-    outputs.homeManagerModules.coding
-    outputs.homeManagerModules.terminal
-    outputs.homeManagerModules.hyprland
-  ];
+  imports =
+    [
+      # outputs.homeManagerModules.browser
+      outputs.homeManagerModules.coding
+      outputs.homeManagerModules.terminal
+    ]
+    ++ (builtins.attrValues outputs.homeManagerModules.core);
 
   home.packages = with pkgs; [
     pkgs.unstable.texlive.combined.scheme-full

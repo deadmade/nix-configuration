@@ -1,8 +1,9 @@
 {
+  core = import ./core;
   defaultConfig = import ./home-manager.nix;
-  browser = import ../../packageConfigurations/browser;
-  hyprland = import ../../packageConfigurations/windowManager/hyprland;
-  coding = import ../../packageConfigurations/coding;
-  terminal = import ../../packageConfigurations/terminal;
-  gaming = import ../../packageConfigurations/gaming;
+  browser = import ./browser;
+  hyprland = import ./windowManager/hyprland;
+  coding = import ./coding;
+  terminal = import ./terminal;
+  gaming = import ./gaming;
 }
