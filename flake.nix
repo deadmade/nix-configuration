@@ -107,20 +107,6 @@
         ];
       };
 
-      deadTest = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs vars;};
-        modules = [
-          ./hosts/deadTest/config.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.${vars.username} = import ./hosts/deadTest/home.nix;
-            nixpkgs.overlays = [self.overlays.unstable-packages];
-          }
-        ];
-      };
-
       deadPc = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs vars;};
         modules = [
