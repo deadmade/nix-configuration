@@ -11,9 +11,9 @@
 
   environment.systemPackages = with pkgs; [
     neofetch
-    htop
     curl
     git
+    btop
     kitty
     ranger
     cachix
@@ -33,6 +33,10 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
+  };
+
+  programs.thunar = {
+    enable = true;
   };
 
   services.gvfs.enable = true; # Mount, trash, and other functionalities

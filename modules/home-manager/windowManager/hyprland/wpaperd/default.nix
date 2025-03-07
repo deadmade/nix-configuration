@@ -1,6 +1,6 @@
 {config, ...}: {
   home.file.".config/wallpapers" = {
-    source = ../../../../wallpapers;
+    source = ../../../../../wallpapers;
     recursive = true;
   };
 

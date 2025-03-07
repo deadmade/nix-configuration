@@ -71,7 +71,7 @@
     description = "deadmade";
     extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
-      kdePackages.kate
+      #kdePackages.kate
       #  thunderbird
     ];
   };
@@ -111,7 +111,6 @@
 
   hardware = {
     graphics.enable = true;
-    opentabletdriver.enable = true;
     nvidia = {
       open = false;
       powerManagement.enable = true;

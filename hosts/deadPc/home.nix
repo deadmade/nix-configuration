@@ -9,8 +9,14 @@
 }: {
   imports =
     [
+      outputs.homeManagerModules.hyprland
+      outputs.homeManagerModules.coding
+      outputs.homeManagerModules.browser.librewolf
+      outputs.homeManagerModules.terminal
+      outputs.homeManagerModules.gaming
     ]
-    ++ (builtins.attrValues outputs.homeManagerModules);
+    ++ (builtins.attrValues outputs.homeManagerModules.core);
+    
 
   home.packages = with pkgs; [
     remnote
