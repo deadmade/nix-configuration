@@ -14,6 +14,24 @@
     languagePacks = ["de" "en-US"];
 
     policies = {
+      AppAutoUpdate = false;
+      Bookmarks = false;
+      DisableFirefoxAccounts = true;
+      DisableFirefoxStudies = true;
+      DisablePocket = true;
+      DisablePrivateBrowsing = true;
+      DisableProfileImport = true;
+      DisableSafeMode = true;
+      DisableTelemetry = true;
+      DisplayBookmarksToolbar = "never";
+      EnableTrackingProtection = {
+        Value = true;
+        Locked = true;
+        Cryptomining = true;
+        Fingerprinting = true;
+      };
+      InstallAddonsPermission = "Allow";
+      OfferToSaveLogins = false;
     };
 
     profiles.Default = {
