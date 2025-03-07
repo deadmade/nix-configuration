@@ -19,4 +19,8 @@
   home.packages = with pkgs; [
     pkgs.unstable.texlive.combined.scheme-full
   ];
+
+  home.shellAliases = {
+    nixC = "cd Documents/GitHub/nix-configuration";
+  };
 }

@@ -14,6 +14,7 @@
     onlyoffice-desktopeditors
     pkgs.unstable.protonmail-desktop
     pkgs.unstable.cachix
+    pkgs.unstable.okular
   ];
 
   programs.thunar.enable = true;
