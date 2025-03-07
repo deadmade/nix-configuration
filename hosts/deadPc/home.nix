@@ -16,7 +16,6 @@
       outputs.homeManagerModules.gaming
     ]
     ++ (builtins.attrValues outputs.homeManagerModules.core);
-    
 
   home.packages = with pkgs; [
     remnote

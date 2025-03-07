@@ -12,7 +12,6 @@
       outputs.homeManagerModules.browser.floorp
       outputs.homeManagerModules.coding
       outputs.homeManagerModules.terminal
-      
     ]
     ++ (builtins.attrValues outputs.homeManagerModules.core);
 

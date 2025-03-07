@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   programs.firejail = {
-    enable = true;
+    enable = false;
     wrappedBinaries = {
       librewolf = {
         executable = "${pkgs.librewolf}/bin/librewolf";

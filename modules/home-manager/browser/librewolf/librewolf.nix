@@ -154,7 +154,6 @@
         transition = "1.0s ease";
         radius = "3px";
       };
-      displayHorizontalTabs = false;
       displayWindowControls = true;
       displayNavButtons = false;
       displayUrlbarIcons = true;
@@ -165,8 +164,11 @@
         size = "15px";
         accent = "#654321";
       };
-      sidebery = {
+      tabs.vertical = {
         margin = "1.0rem";
+      };
+      tabs.horizontal = {
+        enable = false;
       };
     };
   };

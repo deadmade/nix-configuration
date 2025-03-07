@@ -3,6 +3,7 @@
   lib,
   host,
   config,
+  inputs,
   ...
 }: let
   betterTransition = "all 0.3s cubic-bezier(.55,-0.68,.48,1.682)";
@@ -13,7 +14,7 @@ in
     ];
 
     programs.waybar = {
-      enable = false;
+      enable = true;
       package = pkgs.waybar;
       settings = [
         {
@@ -152,7 +153,7 @@ in
         ''
           * {
             font-family: JetBrainsMono Nerd Font Mono;
-            font-size: 4px;
+            font-size: 12px;
             border-radius: 0px;
             border: none;
             min-height: 0px;
