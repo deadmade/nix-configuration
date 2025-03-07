@@ -1,18 +1,37 @@
 {pkgs, ...}: {
   programs.firejail = {
-    enable = false;
+    enable = true;
     wrappedBinaries = {
-      librewolf = {
-        executable = "${pkgs.librewolf}/bin/librewolf";
-        profile = "${pkgs.firejail}/etc/firejail/librewolf.profile";
-        extraArgs = [
-          # Required for U2F USB stick
-          "--ignore=private-dev"
-          # Enforce dark mode
-          "--env=GTK_THEME=Adwaita:dark"
-          # Enable system notifications
-          "--dbus-user.talk=org.freedesktop.Notifications"
-        ];
+      freetube = {
+        executable = "${pkgs.unstable.freetube}/bin/freetube";
+        profile = "${pkgs.firejail}/etc/firejail/freetube.profile";
+      };
+      neofetch = {
+        executable = "${pkgs.neofetch}/bin/neofetch";
+      };
+
+      curl = {
+        executable = "${pkgs.curl}/bin/curl";
+      };
+
+      git = {
+        executable = "${pkgs.git}/bin/git";
+      };
+
+      btop = {
+        executable = "${pkgs.btop}/bin/btop";
+      };
+
+      kitty = {
+        executable = "${pkgs.kitty}/bin/kitty";
+      };
+
+      ranger = {
+        executable = "${pkgs.ranger}/bin/ranger";
+      };
+
+      cachix = {
+        executable = "${pkgs.cachix}/bin/cachix";
       };
     };
   };

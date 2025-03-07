@@ -7,7 +7,7 @@
     extraCompatPackages = [pkgs.proton-ge-bin];
   };
 
-  programs.    gamescope = {
+  programs.gamescope = {
     enable = true;
     capSysNice = true;
     args = [
