@@ -14,7 +14,7 @@
 
       protonmail-desktop = {
         executable = "${pkgs.unstable.protonmail-desktop}/bin/protonmail";
-       # profile = "${pkgs.firejail}/etc/firejail/protonmail-desktop.profile";
+        # profile = "${pkgs.firejail}/etc/firejail/protonmail-desktop.profile";
       };
 
       okular = {
