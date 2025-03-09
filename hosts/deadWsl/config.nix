@@ -19,7 +19,7 @@
     outputs.nixosModules.core.packages
     outputs.nixosModules.core.stylix
     outputs.nixosModules.core.user
-    #outputs.nixosModules.core.firejail
+    outputs.nixosModules.core.firejail
     outputs.nixosModules.core.localization
     outputs.nixosModules.core.network
     outputs.nixosModules.funshit

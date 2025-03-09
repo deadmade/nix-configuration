@@ -5,10 +5,11 @@
   vars,
   inputs,
   lib,
+  system,
   ...
 }: {
   imports = [
-    inputs.grub2-themes.nixosModules.default
+    inputs.distro-grub-themes.nixosModules.${system}.default
   ];
 
   # Bootloader.
@@ -35,12 +36,9 @@
     };
 
     # Currently not working.
-    grub2-theme = {
-      enable = false; # Currently not working.
-      theme = "stylish";
-      icon = "color";
-      footer = true;
-      customResolution = "1920x1080";
+    distro-grub-themes = {
+      enable = true;
+      theme = "NixOS";
     };
   };
 }
