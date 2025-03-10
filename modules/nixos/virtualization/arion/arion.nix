@@ -11,6 +11,4 @@
   environment.systemPackages = with pkgs; [arion];
 
   virtualisation.arion.backend = "docker";
-
-  
 }

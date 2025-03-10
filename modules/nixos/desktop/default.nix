@@ -3,5 +3,4 @@
   gaming = import ./gaming.nix;
   firejail = import ./firejail.nix;
   stylix = import ./stylix.nix;
-
 }

@@ -16,6 +16,12 @@
     pkgs.unstable.kdePackages.okular
   ];
 
+  #TODO: Move this
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
   programs.thunar.enable = true;
   programs.xfconf.enable = true;
 

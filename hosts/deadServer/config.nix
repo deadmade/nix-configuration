@@ -119,7 +119,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  services.openssh.settings.PasswordAuthentication = true;
+  services.openssh.settings.PasswordAuthentication = true; # TODO Change this. Not so secure.
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

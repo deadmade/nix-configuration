@@ -25,12 +25,6 @@
   home-manager.useUserPackages = true;
   home-manager.backupFileExtension = "backup";
 
-  #TODO: Move this
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
-
   programs.thunar = {
     enable = true;
   };
