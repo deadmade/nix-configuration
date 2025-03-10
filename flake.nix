@@ -61,6 +61,11 @@
     distro-grub-themes = {
       url = "github:AdisonCavani/distro-grub-themes";
     };
+
+    arion = {
+      url = "github:hercules-ci/arion";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
