@@ -9,7 +9,7 @@
   ...
 }: {
   imports = [
-    inputs.distro-grub-themes.nixosModules.${system}.default
+    #inputs.distro-grub-themes.nixosModules.${system}.default
   ];
 
   # Bootloader.
@@ -36,9 +36,9 @@
     };
 
     # Currently not working.
-    distro-grub-themes = {
-      enable = true;
-      theme = "NixOS";
-    };
+    #distro-grub-themes = {
+    #  enable = true;
+    #  theme = "NixOS";
+    #};
   };
 }
