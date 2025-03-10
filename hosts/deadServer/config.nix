@@ -22,6 +22,7 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.grub.device = lib.mkForce "/dev/sda";
+  boot.loader.grub.efiSupport = false;
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
