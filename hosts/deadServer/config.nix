@@ -10,13 +10,17 @@
   ...
 }: {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
 
       inputs.hardware.nixosModules.common-pc-ssd
     ]
     ++ (builtins.attrValues outputs.nixosModules.core);
-    #++ (builtins.attrValues outputs.nixosModules.desktop);
+  #++ (builtins.attrValues outputs.nixosModules.desktop);
+
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.grub.device = "/dev/sda";
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
@@ -72,10 +76,10 @@
   users.users.deadmade = {
     isNormalUser = true;
     description = "deadmade";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
-     kdePackages.kate
-    #  thunderbird
+      kdePackages.kate
+      #  thunderbird
     ];
   };
 
@@ -96,7 +100,7 @@
   environment.systemPackages = with pkgs; [
   ];
 
-    hardware = {
+  hardware = {
     graphics.enable = true;
   };
 
@@ -127,5 +131,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
-
 }

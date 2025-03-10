@@ -121,7 +121,7 @@
         ];
       };
 
-        deadServer = nixpkgs.lib.nixosSystem {
+      deadServer = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs vars systems;};
         modules = [
           ./hosts/deadServer/config.nix
