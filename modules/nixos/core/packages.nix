@@ -39,6 +39,4 @@
   services.tumbler.enable = true; # Thumbnail support for images
 
   services.flatpak.enable = true;
-
-  virtualisation.docker.enable = true;
 }

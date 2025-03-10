@@ -17,11 +17,12 @@
 
       inputs.hardware.nixosModules.common-pc-ssd
     ]
-    ++ (builtins.attrValues outputs.nixosModules.core);
-  #++ (builtins.attrValues outputs.nixosModules.desktop);
+    ++ (builtins.attrValues outputs.nixosModules.core)
+    ++ (builtins.attrValues outputs.nixosModules.virtualization);
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.grub.device = lib.mkForce "/dev/sda";
+  # System runs in legacy mode
   boot.loader.grub.efiSupport = lib.mkForce false;
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
