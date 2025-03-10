@@ -120,6 +120,13 @@
           ./hosts/deadWsl/config.nix
         ];
       };
+
+        deadServer = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs outputs vars systems;};
+        modules = [
+          ./hosts/deadServer/config.nix
+        ];
+      };
     };
 
     # home-manager switch --flake .#deadmade@<host>

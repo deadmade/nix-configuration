@@ -21,5 +21,6 @@
 
   home.shellAliases = {
     nixC = "cd Documents/GitHub/nix-configuration";
+    tinf = "cd Documents/GitHub/Tinf2023-LessonSummaries";
   };
 }

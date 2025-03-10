@@ -48,7 +48,24 @@
     };
 
     obsidian = {
-      enable = false;
+      enable = true;
+      autoLoad = true;
+
+      settings = {
+        completion = {
+          min_chars = 2;
+          nvim_cmp = true;
+        };
+        workspaces = [
+          {
+            name = "Tinf2023-LessonSummaries";
+            path = "/mnt/c/Users/manue/Documents/GitHub/Tinf2023-LessonSummaries";
+          }
+        ];
+        ui = {
+          enable = true;
+        };
+      };
     };
 
     cmp = {
