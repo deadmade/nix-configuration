@@ -7,6 +7,7 @@
   outputs,
   vars,
   inputs,
+  lib,
   ...
 }: {
   imports =
@@ -20,7 +21,7 @@
   #++ (builtins.attrValues outputs.nixosModules.desktop);
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.grub.device = "/dev/sda";
+  boot.loader.grub.device = lib.mkForce "/dev/sda";
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
