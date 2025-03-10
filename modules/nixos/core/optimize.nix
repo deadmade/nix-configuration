@@ -1,12 +1,14 @@
 {
-  # Optimize the Nix store
-  nix.optimise.automatic = true;
-  nix.settings.auto-optimise-store = true;
-
-  # Collect garbage automatically
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
+  nix = {
+    settings = {
+      auto-optimise-store = true;
+      experimental-features = ["nix-command" "flakes"];
+      warn-dirty = false;
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than +3";
+    };
   };
 }
