@@ -104,7 +104,7 @@
   ];
 
   hardware = {
-    graphics.enable = true;
+    graphics.enable = false;
   };
 
   # Some programs need SUID wrappers, can be configured further or are
