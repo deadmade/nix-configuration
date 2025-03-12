@@ -25,18 +25,10 @@
   home-manager.useUserPackages = true;
   home-manager.backupFileExtension = "backup";
 
-  #TODO: Move this
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
-
   programs.thunar = {
     enable = true;
   };
 
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images
-
-  services.flatpak.enable = true;
 }

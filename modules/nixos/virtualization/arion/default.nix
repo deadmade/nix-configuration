@@ -1,0 +1,3 @@
+{
+  arion = import ./arion.nix;
+}

@@ -16,6 +16,12 @@
     pkgs.unstable.kdePackages.okular
   ];
 
+  #TODO: Move this
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
   programs.thunar.enable = true;
   programs.xfconf.enable = true;
 
@@ -23,6 +29,8 @@
     thunar-archive-plugin
     thunar-volman
   ];
+
+  services.flatpak.enable = true;
 
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images

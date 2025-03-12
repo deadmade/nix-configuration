@@ -38,11 +38,11 @@
 
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
+  services.xserver.enable = false;
 
   # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
+  services.displayManager.sddm.enable = false;
+  services.desktopManager.plasma6.enable = false;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -87,7 +87,7 @@
   };
 
   # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = true;
+  services.xserver.displayManager.autoLogin.enable = false;
   services.xserver.displayManager.autoLogin.user = "deadmade";
 
   # Allow unfree packages
@@ -104,7 +104,7 @@
   ];
 
   hardware = {
-    graphics.enable = true;
+    graphics.enable = false;
   };
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -119,7 +119,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  services.openssh.settings.PasswordAuthentication = true;
+  services.openssh.settings.PasswordAuthentication = true; # TODO Change this. Not so secure.
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
