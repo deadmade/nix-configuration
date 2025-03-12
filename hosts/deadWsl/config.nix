@@ -42,6 +42,8 @@
     #marp-cli
     #chromium
     #slides
+    pkgs.unstable.presenterm
+
   ];
 
   # This value determines the NixOS release from which the default
