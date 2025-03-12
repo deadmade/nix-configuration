@@ -17,9 +17,7 @@
     ./hardware-configuration.nix
     inputs.nixos-wsl.nixosModules.default
     outputs.nixosModules.core.packages
-    outputs.nixosModules.core.stylix
     outputs.nixosModules.core.user
-    outputs.nixosModules.core.firejail
     outputs.nixosModules.core.localization
     outputs.nixosModules.core.network
     outputs.nixosModules.funshit
@@ -43,7 +41,7 @@
     #chromium
     #slides
     pkgs.unstable.presenterm
-
+    pkgs.unstable.processing
   ];
 
   # This value determines the NixOS release from which the default
