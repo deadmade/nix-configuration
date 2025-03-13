@@ -7,4 +7,7 @@
       defaultNetwork.settings.dns_enabled = true;
     };
   };
+  users.users.${vars.username} = {
+    extraGroups = ["podman"];
+  };
 }

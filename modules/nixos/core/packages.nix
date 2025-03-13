@@ -18,6 +18,7 @@
     ranger
     cachix
     #pkgs.unstable.vulnix
+    age
   ];
 
   home-manager.extraSpecialArgs = {inherit inputs outputs;};

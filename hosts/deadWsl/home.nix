@@ -9,7 +9,7 @@
 }: {
   imports =
     [
-      outputs.homeManagerModules.browser.floorp
+      outputs.homeManagerModules.browser.librewolf
       outputs.homeManagerModules.coding
       outputs.homeManagerModules.terminal
     ]
