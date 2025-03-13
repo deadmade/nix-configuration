@@ -39,7 +39,6 @@
   environment.systemPackages = with pkgs; [
     #marp-cli
     #chromium
-    #slides
     pkgs.unstable.presenterm
     pkgs.unstable.processing
   ];
