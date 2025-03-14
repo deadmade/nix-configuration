@@ -13,7 +13,7 @@
   ];
 
   # Bootloader.
-  boot.loader = {
+  boot.loader = lib.mkDefault {
     efi.canTouchEfiVariables = true;
 
     grub = {

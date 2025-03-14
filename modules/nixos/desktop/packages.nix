@@ -14,6 +14,7 @@
     onlyoffice-desktopeditors
     pkgs.unstable.protonmail-desktop
     pkgs.unstable.kdePackages.okular
+    pkgs.unstable.protonmail-desktop
   ];
 
   #TODO: Move this

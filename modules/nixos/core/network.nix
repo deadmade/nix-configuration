@@ -2,10 +2,11 @@
   pkgs,
   host,
   options,
+  lib,
   ...
 }: {
-  networking = {
-    networkmanager.enable = true;
+  networking = lib.mkDefault {
+    networkmanager.enable = false;
     firewall = {
       enable = true;
       allowedTCPPorts = [

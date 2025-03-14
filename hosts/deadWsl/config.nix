@@ -37,8 +37,6 @@
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   environment.systemPackages = with pkgs; [
-    #marp-cli
-    #chromium
     pkgs.unstable.presenterm
     pkgs.unstable.processing
   ];
