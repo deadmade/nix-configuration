@@ -137,6 +137,20 @@
           ./hosts/deadServer/config.nix
         ];
       };
+
+      # build with nix build .#nixosConfigurations.deadPi.config.system.build.sdImage
+      deadPi = nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
+        modules = [
+          "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64-installer.nix"
+          ./hosts/deadPi
+
+          # extra config for sdImage generator
+          {
+            sdImage.compressImage = false;
+          }
+        ];
+      };
     };
 
     # home-manager switch --flake .#deadmade@<host>
@@ -157,7 +171,6 @@
       };
     };
 
-    # Generate Iso -> Currently not really working. Need to look into what the best way is to do this
     # nix build .#deadPcIso
     packages.x86_64-linux = {
       deadPcIso = nixos-generators.nixosGenerate {
