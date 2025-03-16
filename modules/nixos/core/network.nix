@@ -6,7 +6,12 @@
   ...
 }: {
   networking = lib.mkDefault {
-    networkmanager.enable = false;
+    networkmanager.enable = true;
+    networkmanager.unmanaged = [
+      "*"
+      "except:type:wwan"
+      "except:type:gsm"
+    ];
     firewall = {
       enable = true;
       allowedTCPPorts = [
