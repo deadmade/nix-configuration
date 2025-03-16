@@ -4,12 +4,14 @@
   ...
 }: {
   imports = [
-    inputs.inputs.nixcord.homeManagerModules.nixcord
+    inputs.nixcord.homeManagerModules.nixcord
   ];
 
   programs.nixcord = {
+    discord.enable = false;
     enable = true;
-    package = pkgs.unstable.nixcord;
+    vesktop.package = pkgs.unstable.vesktop;
+    vesktop.enable = true;
 
     config.plugins = {
       betterGifPicker.enable = true;
