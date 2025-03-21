@@ -15,6 +15,7 @@
   imports = [
     # include NixOS-WSL modules
     ./hardware-configuration.nix
+    
     inputs.nixos-wsl.nixosModules.default
     outputs.nixosModules.core.packages
     outputs.nixosModules.core.user
