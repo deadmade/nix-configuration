@@ -1,0 +1,3 @@
+{
+  vencord = import ./vencord.nix;
+}

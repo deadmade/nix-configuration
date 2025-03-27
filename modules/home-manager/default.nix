@@ -5,4 +5,5 @@
   coding = import ./coding;
   terminal = import ./terminal;
   gaming = import ./gaming;
+  socialMedia = import ./socialMedia;
 }

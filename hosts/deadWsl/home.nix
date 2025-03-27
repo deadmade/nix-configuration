@@ -12,6 +12,7 @@
       outputs.homeManagerModules.browser.librewolf
       outputs.homeManagerModules.coding
       outputs.homeManagerModules.terminal
+      outputs.homeManagerModules.socialMedia.vencord
     ]
     ++ (builtins.attrValues outputs.homeManagerModules.core);
 

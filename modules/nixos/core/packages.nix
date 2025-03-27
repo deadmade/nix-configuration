@@ -19,6 +19,7 @@
     cachix
     #pkgs.unstable.vulnix
     age
+    nvim
   ];
 
   home-manager.extraSpecialArgs = {inherit inputs outputs;};
