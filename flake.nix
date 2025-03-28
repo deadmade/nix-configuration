@@ -56,8 +56,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nvix.url = "github:niksingh710/nvix";
-
     distro-grub-themes = {
       url = "github:AdisonCavani/distro-grub-themes";
     };

@@ -34,11 +34,9 @@
         }
       '';
     };
-
-
   };
-      distro-grub-themes = {
-      enable = true;
-      theme = "nixos";
-    };
+  distro-grub-themes = {
+    enable = true;
+    theme = "nixos";
+  };
 }

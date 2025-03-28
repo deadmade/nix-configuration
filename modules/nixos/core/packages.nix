@@ -19,6 +19,8 @@
     cachix
     #pkgs.unstable.vulnix
     age
+    inputs.nvix.packages.${pkgs.system}.full
+
   ];
 
   home-manager.extraSpecialArgs = {inherit inputs outputs;};
