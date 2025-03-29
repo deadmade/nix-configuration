@@ -56,8 +56,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nvix.url = "github:niksingh710/nvix";
-
     distro-grub-themes = {
       url = "github:AdisonCavani/distro-grub-themes";
     };
@@ -168,7 +166,7 @@
       };
       "${vars.username}@deadPc" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = {inherit inputs outputs vars;};
+        extraSpecialArgs = {inherit inputs outputs vars systems;};
         modules = [
           ./hosts/deadPc/home.nix
         ];

@@ -16,6 +16,17 @@
         toml
         latex
       ];
+      settings = {
+        highlight = {
+          enable = true;
+          disable = [
+            "latex"
+            "markdown"
+          ];
+          auto_install = true;
+          incremental_selection.enable = true;
+        };
+      };
     };
 
     neo-tree = {
@@ -68,10 +79,22 @@
       };
     };
 
+    lspkind.enable = true;
+    luasnip.enable = true;
+    cmp_luasnip.enable = true;
+
     cmp = {
       enable = true;
       autoEnableSources = true;
       autoLoad = true;
+
+      settings.sources = [
+        {name = "luasnip";}
+        {name = "nvim_lsp";}
+        {name = "nvim_lsp_signature_help";}
+        {name = "path";}
+        {name = "buffer";}
+      ];
     };
   };
 }
