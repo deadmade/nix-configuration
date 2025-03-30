@@ -51,8 +51,6 @@
 
     textfox.url = "github:deadmade/textwolf";
 
-    nixCats.url = "github:BirdeeHub/nixCats-nvim";
-
     distro-grub-themes = {
       url = "github:AdisonCavani/distro-grub-themes";
     };
