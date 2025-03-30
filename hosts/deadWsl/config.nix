@@ -22,6 +22,7 @@
     outputs.nixosModules.core.localization
     outputs.nixosModules.core.network
     outputs.nixosModules.funshit
+    outputs.nixosModules.neovim
   ];
 
   wsl.enable = true;
