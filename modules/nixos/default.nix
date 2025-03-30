@@ -3,5 +3,4 @@
   desktop = import ./desktop;
   funshit = import ./funshit;
   virtualization = import ./virtualization;
-  neovim = import ./neovim;
 }
