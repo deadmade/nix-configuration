@@ -51,6 +51,14 @@
 
     textfox.url = "github:deadmade/textwolf";
 
+    neovim-config = {
+      url = "github:deadmade/neovim-configuration";
+    };
+
+    #neovim-config = {
+    #  url = "git+file:/mnt/c/Users/manue/Documents/GitHub/neovim-configuration";
+    #};
+
     distro-grub-themes = {
       url = "github:AdisonCavani/distro-grub-themes";
     };
