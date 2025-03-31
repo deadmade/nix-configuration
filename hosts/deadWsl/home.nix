@@ -9,8 +9,8 @@
 }: {
   imports =
     [
-      outputs.homeManagerModules.browser.librewolf
-      outputs.homeManagerModules.coding
+      #outputs.homeManagerModules.browser.librewolf
+      #outputs.homeManagerModules.coding
       outputs.homeManagerModules.terminal
     ]
     ++ (builtins.attrValues outputs.homeManagerModules.core);

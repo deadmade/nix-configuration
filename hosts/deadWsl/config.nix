@@ -21,7 +21,7 @@
     outputs.nixosModules.core.user
     outputs.nixosModules.core.localization
     outputs.nixosModules.core.network
-    outputs.nixosModules.funshit
+    #outputs.nixosModules.funshit
   ];
 
   wsl.enable = true;
@@ -40,6 +40,7 @@
   environment.systemPackages = with pkgs; [
     pkgs.unstable.presenterm
     pkgs.unstable.processing
+    inputs.neovim-config.packages.${pkgs.system}.nvim
   ];
 
   # This value determines the NixOS release from which the default

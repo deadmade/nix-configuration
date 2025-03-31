@@ -51,10 +51,13 @@
 
     textfox.url = "github:deadmade/textwolf";
 
-    nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
+    neovim-config = {
+      url = "github:deadmade/neovim-configuration";
     };
+
+    #neovim-config = {
+    #  url = "git+file:/mnt/c/Users/manue/Documents/GitHub/neovim-configuration";
+    #};
 
     distro-grub-themes = {
       url = "github:AdisonCavani/distro-grub-themes";

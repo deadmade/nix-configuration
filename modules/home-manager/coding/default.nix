@@ -1,6 +1,6 @@
 {
   imports = [
     ./VsCodium/VsCodium.nix
-    ./nvim
+    ./neovim/config.nix
   ];
 }
