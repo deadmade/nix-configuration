@@ -92,6 +92,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     greetd.tuigreet
+    inputs.neovim-config.packages.${pkgs.system}.nvim
   ];
 
   services.greetd = {

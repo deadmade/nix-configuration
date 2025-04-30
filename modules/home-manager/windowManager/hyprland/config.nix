@@ -7,8 +7,7 @@
         "waybar &"
         "flatpak run dev.vencord.Vesktop --start-minimized &"
         "wasistlos &"
-        "floorp &"
-        "flaktpak run com.spotify.Client --start-minimized &"
+        "nm-applet --indicator &"
       ];
 
       "$mainMod" = "SUPER";
