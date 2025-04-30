@@ -641,17 +641,17 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1743788300,
-        "narHash": "sha256-PJnzS/Fgsmjo969GIbYQGTFzR7pCBfroFGIUMwizk0k=",
-        "ref": "refs/heads/main",
-        "rev": "257f877a6b20c3ee96a77b381b2c3a6633a545b2",
-        "revCount": 82,
-        "type": "git",
-        "url": "file:/mnt/c/Users/manue/Documents/GitHub/neovim-configuration"
+        "lastModified": 1743788704,
+        "narHash": "sha256-ZKfTO5udePFKKFSwIcZUSec7cNK92F7Uix/BAzCZ7zg=",
+        "owner": "deadmade",
+        "repo": "neovim-configuration",
+        "rev": "b1cdb57f0f51a8e1b8ee7d016af706a5578a6c83",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:/mnt/c/Users/manue/Documents/GitHub/neovim-configuration"
+        "owner": "deadmade",
+        "repo": "neovim-configuration",
+        "type": "github"
       }
     },
     "neovim-nightly-overlay": {
