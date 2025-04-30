@@ -7,5 +7,6 @@
   #wiegurad setup
   # https://nixos.wiki/wiki/WireGuard
   # nmcli connection import type wireguard file thefile.conf
+  # nmcli con up id NameOfTheConnection
 }
 

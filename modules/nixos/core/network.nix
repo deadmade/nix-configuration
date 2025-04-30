@@ -28,5 +28,8 @@
   #     ];
      };
    };
-  environment.systemPackages = with pkgs; [networkmanagerapplet];
+
+   programs.nm-applet = {
+     enable = true;
+   };
 }
