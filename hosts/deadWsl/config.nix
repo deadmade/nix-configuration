@@ -41,6 +41,9 @@
     pkgs.unstable.presenterm
     pkgs.unstable.processing
     inputs.neovim-config.packages.${pkgs.system}.nvim
+    (python3.withPackages (python-pkgs: with python-pkgs; [
+    pygments
+  ]))
   ];
 
   # This value determines the NixOS release from which the default
