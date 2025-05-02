@@ -1,0 +1,7 @@
+keys:
+  - &deadWsl age1xvzk7tmdnq7vpt3ph9gzc49d3psp3mj5evm627a6nggup5tjaulsqdeaw0
+creation_rules:
+  - path_regex: secrets/deadWsl.yaml$
+    key_groups:
+    - age:
+      - *deadWsl

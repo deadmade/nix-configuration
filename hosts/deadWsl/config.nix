@@ -16,6 +16,7 @@
     [
       # include NixOS-WSL modules
       ./hardware-configuration.nix
+      ./sops.nix
 
       inputs.nixos-wsl.nixosModules.default
       outputs.nixosModules.core.packages
@@ -49,6 +50,8 @@
         pygments
       ]))
   ];
+
+  environment.variables.EDITOR = "nvim";
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

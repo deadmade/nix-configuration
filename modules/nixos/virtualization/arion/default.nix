@@ -7,12 +7,13 @@
   imports = [
     inputs.arion.nixosModules.arion
 
+    ./infrastructure
     #./nextcloud
   ];
 
   environment.systemPackages = with pkgs; [arion];
 
-  virtualisation.arion.backend = "docker";
+  virtualisation.arion.backend = "podman-socket"; # alternative docker
 
   systemd.services.init-dmz-bridge-network = {
     description = "Create the network bridge dmz for the Docker stack.";
