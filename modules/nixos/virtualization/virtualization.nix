@@ -1,9 +1,18 @@
 {
   pkgs,
   vars,
+  lib,
   ...
 }: {
-  virtualisation = {
+  environment.systemPackages = with pkgs; [
+    lazydocker
+  ];
+
+  virtualisation = lib.mkForce {
+    docker = {
+      enable = false;
+    };
+
     podman = {
       enable = true;
       dockerCompat = true;

@@ -19,7 +19,6 @@
     cachix
     #pkgs.unstable.vulnix
     age
-    #neovim
   ];
 
   home-manager.extraSpecialArgs = {inherit inputs outputs;};

@@ -12,17 +12,19 @@
   vars,
   ...
 }: {
-  imports = [
-    # include NixOS-WSL modules
-    ./hardware-configuration.nix
+  imports =
+    [
+      # include NixOS-WSL modules
+      ./hardware-configuration.nix
 
-    inputs.nixos-wsl.nixosModules.default
-    outputs.nixosModules.core.packages
-    outputs.nixosModules.core.user
-    outputs.nixosModules.core.localization
-    outputs.nixosModules.core.network
-    #outputs.nixosModules.funshit
-  ];
+      inputs.nixos-wsl.nixosModules.default
+      outputs.nixosModules.core.packages
+      outputs.nixosModules.core.user
+      outputs.nixosModules.core.localization
+      outputs.nixosModules.core.network
+      #outputs.nixosModules.funshit
+    ]
+    ++ (builtins.attrValues outputs.nixosModules.virtualization);
 
   wsl.enable = true;
   wsl.defaultUser = vars.username;
@@ -40,10 +42,12 @@
   environment.systemPackages = with pkgs; [
     pkgs.unstable.presenterm
     pkgs.unstable.processing
+    pkgs.unstable.floorp
     inputs.neovim-config.packages.${pkgs.system}.nvim
-    (python3.withPackages (python-pkgs: with python-pkgs; [
-    pygments
-  ]))
+    (python3.withPackages (python-pkgs:
+      with python-pkgs; [
+        pygments
+      ]))
   ];
 
   # This value determines the NixOS release from which the default

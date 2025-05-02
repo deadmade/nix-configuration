@@ -55,9 +55,9 @@
       url = "github:deadmade/neovim-configuration";
     };
 
-    # neovim-config = {
-    #  url = "git+file:/mnt/c/Users/manue/Documents/GitHub/neovim-configuration";
-    # };
+    #neovim-config = {
+    # url = "git+file:/mnt/c/Users/manue/Documents/GitHub/neovim-configuration";
+    #};
 
     distro-grub-themes = {
       url = "github:AdisonCavani/distro-grub-themes";
@@ -112,13 +112,6 @@
         specialArgs = {inherit inputs outputs vars;};
         modules = [
           ./hosts/deadConvertible/config.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.${vars.username} = import ./hosts/deadConvertible/home.nix;
-            nixpkgs.overlays = [self.overlays.unstable-packages];
-          }
         ];
       };
 
@@ -160,6 +153,13 @@
 
     # home-manager switch --flake .#deadmade@<host>
     homeConfigurations = {
+      "${vars.username}@deadConvertible" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        extraSpecialArgs = {inherit inputs outputs vars;};
+        modules = [
+          ./hosts/deadConvertible/home.nix
+        ];
+      };
       "${vars.username}@deadWsl" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         extraSpecialArgs = {inherit inputs outputs vars;};
@@ -183,6 +183,14 @@
         system = "x86_64-linux";
         modules = [
           ./hosts/deadPc/config.nix
+        ];
+        format = "install-iso";
+      };
+      deadConvertibleIso = nixos-generators.nixosGenerate {
+        specialArgs = {inherit inputs outputs vars;};
+        system = "x86_64-linux";
+        modules = [
+          ./hosts/deadConvertible/config.nix
         ];
         format = "install-iso";
       };
