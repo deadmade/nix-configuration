@@ -24,8 +24,8 @@
       outputs.nixosModules.core.localization
       outputs.nixosModules.core.network
       #outputs.nixosModules.funshit
-    ]
-    ++ (builtins.attrValues outputs.nixosModules.virtualization);
+    ];
+    #++ (builtins.attrValues outputs.nixosModules.virtualization);
 
   wsl.enable = true;
   wsl.defaultUser = vars.username;
