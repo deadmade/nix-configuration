@@ -43,15 +43,19 @@
   environment.systemPackages = with pkgs; [
     pkgs.unstable.presenterm
     pkgs.unstable.processing
-    pkgs.unstable.floorp
-    inputs.neovim-config.packages.${pkgs.system}.nvim
+    # inputs.neovim-config.packages.${pkgs.system}.nvim
     (python3.withPackages (python-pkgs:
       with python-pkgs; [
         pygments
       ]))
+    pkgs.unstable.inkscape
   ];
 
   environment.variables.EDITOR = "nvim";
+
+  fonts.packages = with pkgs; [
+helvetica-neue-lt-std
+];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
