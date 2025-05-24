@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    inputs.stylix.homeManagerModules.stylix
+    inputs.stylix.homeModules.stylix
   ];
 
   # This is here because without it, stylix colours can't be accessed
@@ -14,7 +14,7 @@
     image = ../../../wallpapers/stylix/bloodMoon.jpg;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/dracula.yaml";
 
-    autoEnable = true;
+    autoEnable = false;
 
     polarity = "dark";
     opacity = {

@@ -4,6 +4,7 @@
   host,
   config,
   pkgs,
+  inputs,
   ...
 }: let
   inherit
@@ -38,11 +39,12 @@ in
 
     # Hyprland aktivieren und konfigurieren
     wayland.windowManager.hyprland = {
-      package = pkgs.hyprland;
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       enable = true;
       xwayland.enable = true;
       systemd.enable = true;
-      plugins = [pkgs.hyprlandPlugins.hyprsplit];
+      plugins = [inputs.hyprsplit.packages.${pkgs.stdenv.hostPlatform.system}.hyprsplit];
     };
 
     services.dunst = {

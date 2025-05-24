@@ -6,8 +6,9 @@
   programs.vscode = {
     enable = true;
     package = pkgs.unstable.vscodium;
-    enableUpdateCheck = false;
-    extensions = with pkgs.unstable.vscode-extensions; [
+    profiles.default = {
+      enableUpdateCheck = false;
+      extensions = with pkgs.unstable.vscode-extensions; [
       # Theme
       catppuccin.catppuccin-vsc
 
@@ -31,6 +32,7 @@
 
       "workbench.colorTheme" = "Catppuccin Frappé";
       "files.autoSave" = "onFocusChange";
+    };
     };
   };
 }

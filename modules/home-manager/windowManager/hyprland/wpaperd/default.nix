@@ -4,7 +4,7 @@
     recursive = true;
   };
 
-  programs.wpaperd = {
+  services.wpaperd = {
     enable = true;
     settings = {
       DP-3 = {

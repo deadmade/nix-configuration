@@ -5,7 +5,7 @@
   ...
 }: {
   imports = [
-    inputs.textfox.homeManagerModules.default
+
   ];
 
   programs.librewolf = {
@@ -35,7 +35,7 @@
     };
 
     profiles.Default = {
-      extensions = with inputs.firefox-addons.packages."x86_64-linux"; [
+      extensions.packages = with inputs.firefox-addons.packages."x86_64-linux"; [
         ublock-origin
         darkreader
         consent-o-matic
@@ -99,7 +99,7 @@
             }
           ];
 
-          iconUpdateURL = "https://paulgo.io/favicon.ico";
+          icon = "https://paulgo.io/favicon.ico";
           definedAliases = ["@sx"];
         };
 
@@ -116,11 +116,11 @@
             }
           ];
 
-          iconUpdateURL = "https://amazon.de/favicon.ico";
+          icon = "https://amazon.de/favicon.ico";
           definedAliases = ["@a"];
         };
 
-        "YouTube" = {
+        "youtube" = {
           urls = [
             {
               template = "https://efy.piped.pages.dev/results";
@@ -133,14 +133,14 @@
             }
           ];
 
-          iconUpdateURL = "https://piped.video/favicon.ico";
+          icon = "https://piped.video/favicon.ico";
           definedAliases = ["yt"];
         };
       };
       search = {
         force = true;
-        default = "DuckDuckGo";
-        privateDefault = "DuckDuckGo";
+        default = "ddg"; # DuckDuckGo
+        privateDefault = "ddg"; #DuckDuckGo
       };
 
       settings = {
@@ -155,38 +155,6 @@
         "browser.formfill.enable" = false;
         "signon.prefillForms" = false;
         "browser.shell.checkDefaultBrowser" = false;
-      };
-    };
-  };
-
-  textfox = {
-    enable = true;
-    profile = "Default";
-    config = {
-      background = {
-        color = "#123456";
-      };
-      border = {
-        color = "#654321";
-        width = "4px";
-        transition = "1.0s ease";
-        radius = "3px";
-      };
-      displayWindowControls = true;
-      displayNavButtons = false;
-      displayUrlbarIcons = true;
-      displaySidebarTools = false;
-      displayTitles = false;
-      font = {
-        family = "Fira Code";
-        size = "15px";
-        accent = "#654321";
-      };
-      tabs.vertical = {
-        margin = "1.0rem";
-      };
-      tabs.horizontal = {
-        enable = false;
       };
     };
   };

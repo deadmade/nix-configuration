@@ -42,14 +42,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    hyprland.url = "github:hyprwm/Hyprland";
+
     hyprpanel = {
       url = "github:jas-singhfsu/hyprpanel";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    stylix.url = "github:danth/stylix/release-24.11";
+    hyprsplit = {
+      url = "github:shezdy/hyprsplit";
+    };
 
-    textfox.url = "github:deadmade/textwolf";
+    stylix.url = "github:nix-community/stylix/release-25.05";
 
     neovim-config = {
       url = "github:deadmade/neovim-configuration";

@@ -119,12 +119,4 @@
       };
     };
   };
-
-  inputs.textfox = {
-    enable = true;
-    profile = "Default";
-    config = {
-      # Optional config
-    };
-  };
 }
