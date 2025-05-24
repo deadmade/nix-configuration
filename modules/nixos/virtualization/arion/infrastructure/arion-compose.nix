@@ -1,11 +1,7 @@
-{
-  vars,
-  ...
-}:
-{
+{vars, ...}: {
   project.name = "infrastructure";
 
-    docker-compose.volumes = {
+  docker-compose.volumes = {
     traefik-logs = null;
   };
 

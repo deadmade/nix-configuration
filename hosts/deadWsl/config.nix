@@ -12,20 +12,20 @@
   vars,
   ...
 }: {
-  imports =
-    [
-      # include NixOS-WSL modules
-      ./hardware-configuration.nix
-      ./sops.nix
+  imports = [
+    # include NixOS-WSL modules
+    ./hardware-configuration.nix
+    ./sops.nix
 
-      inputs.nixos-wsl.nixosModules.default
-      outputs.nixosModules.core.packages
-      outputs.nixosModules.core.user
-      outputs.nixosModules.core.localization
-      outputs.nixosModules.core.network
-      #outputs.nixosModules.funshit
-    ];
-    #++ (builtins.attrValues outputs.nixosModules.virtualization);
+    inputs.nixos-wsl.nixosModules.default
+    outputs.nixosModules.core.packages
+    outputs.nixosModules.core.user
+    outputs.nixosModules.core.localization
+    outputs.nixosModules.core.network
+    outputs.nixosModules.desktop.latex
+    #outputs.nixosModules.funshit
+  ];
+  #++ (builtins.attrValues outputs.nixosModules.virtualization);
 
   wsl.enable = true;
   wsl.defaultUser = vars.username;
@@ -43,19 +43,10 @@
   environment.systemPackages = with pkgs; [
     pkgs.unstable.presenterm
     pkgs.unstable.processing
-    # inputs.neovim-config.packages.${pkgs.system}.nvim
-    (python3.withPackages (python-pkgs:
-      with python-pkgs; [
-        pygments
-      ]))
-    pkgs.unstable.inkscape
+    inputs.neovim-config.packages.${pkgs.system}.nvim
   ];
 
   environment.variables.EDITOR = "nvim";
-
-  fonts.packages = with pkgs; [
-helvetica-neue-lt-std
-];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
