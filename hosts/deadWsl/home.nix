@@ -9,7 +9,6 @@
 }: {
   imports =
     [
-      #outputs.homeManagerModules.browser.librewolf
       #outputs.homeManagerModules.coding
       outputs.homeManagerModules.terminal
     ]
@@ -17,6 +16,8 @@
 
   home.packages = with pkgs; [
     pkgs.unstable.texlive.combined.scheme-full
+    pkgs.unstable.texlivePackages.texapi
+    pkgs.unstable.texlivePackages.yax
   ];
 
   home.shellAliases = {
