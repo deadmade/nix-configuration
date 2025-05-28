@@ -6,5 +6,11 @@
 
   services.wpaperd = {
     enable = true;
+    settings = {
+      default = {
+        duration = "15";
+        mode = "center";
+      };
+    };
   };
 }

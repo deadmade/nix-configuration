@@ -4,6 +4,7 @@
   pkgs,
   username,
   host,
+  config,
   ...
 }: let
   inherit (import ../../variables.nix) gitUsername gitEmail;
@@ -15,7 +16,7 @@ in
       outputs.homeManagerModules.coding
       outputs.homeManagerModules.browser.librewolf
       outputs.homeManagerModules.terminal
-      #outputs.homeManagerModules.socialMedia
+      outputs.homeManagerModules.socialMedia.vencord
       outputs.homeManagerModules.flatpak
     ]
     ++ (builtins.attrValues outputs.homeManagerModules.core);
@@ -44,8 +45,6 @@ in
     settings = {
       eDP-1 = {
         path = "${config.xdg.configHome}/wallpapers";
-        random = true;
-        unique = true;
         apply-shadow = true;
       };
     };

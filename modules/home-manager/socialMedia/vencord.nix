@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    inputs.nixcord.homeManagerModules.nixcord
+    inputs.nixcord.homeModules.nixcord
   ];
 
   programs.nixcord = {
@@ -13,7 +13,10 @@
     vesktop.package = pkgs.unstable.vesktop;
     vesktop.enable = true;
 
-    config.plugins = {
+    config = {
+      frameless = true;
+      transparent = true;
+      plugins = {
       betterGifPicker.enable = true;
       betterRoleDot.enable = true;
       betterSettings.enable = true;
@@ -44,7 +47,6 @@
       noProfileThemes.enable = true;
       noReplyMention.enable = true;
       noTypingAnimation.enable = true;
-      nsfwGateBypass.enable = true;
       permissionFreeWill.enable = true;
       petpet.enable = true;
       platformIndicators.enable = true;
@@ -81,6 +83,7 @@
         closeAllHomeButton = true;
         closeOthers = true;
         forceOpen = true;
+      };
       };
     };
   };
