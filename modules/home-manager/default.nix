@@ -6,4 +6,5 @@
   terminal = import ./terminal;
   gaming = import ./gaming;
   socialMedia = import ./socialMedia;
+  flatpak = import ./flatpak;
 }

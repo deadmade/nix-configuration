@@ -39,17 +39,10 @@
 
   xdg.portal.enable = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelModules = ["evdi" "wacom" "ideapad_laptop" "kvm-amd"];
-  boot.kernelParams = ["psmouse.synaptics_intertouch=0"];
+  boot.kernelModules = ["evdi" "wacom"];
 
   hardware.cpu.amd.updateMicrocode = true;
   hardware.bluetooth.enable = true;
-
-
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = false;
-  services.xserver.desktopManager.plasma5.enable = false;
-
   
   # Light controls
   services.udev.extraRules = ''
@@ -77,11 +70,10 @@
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
+  services.libinput.enable = true;
+  services.libinput.touchpad.tapping = true;
+  services.libinput.touchpad.clickMethod = "clickfinger";
 
-  # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = false;
-  services.xserver.displayManager.autoLogin.user = "deadmade";
 
   # Allow unfree packages
   nixpkgs = {
@@ -96,7 +88,7 @@
   environment.systemPackages = with pkgs; [
     greetd.tuigreet
     inputs.neovim-config.packages.${pkgs.system}.nvim
-    light
+    brightnessctl
   ];
 
   services.greetd = {
@@ -112,6 +104,11 @@
         --cmd Hyprland"; # start Hyprland with a TUI login manager
       };
     };
+  };
+
+  hardware = {
+    graphics.enable = true;
+    graphics.enable32Bit = true;
   };
 
   # Some programs need SUID wrappers, can be configured further or are

@@ -15,6 +15,8 @@ in
       outputs.homeManagerModules.coding
       outputs.homeManagerModules.browser.librewolf
       outputs.homeManagerModules.terminal
+      #outputs.homeManagerModules.socialMedia
+      outputs.homeManagerModules.flatpak
     ]
     ++ (builtins.attrValues outputs.homeManagerModules.core);
 
@@ -32,9 +34,9 @@ in
       ];
 
       bind =[
-        "$mainMod F5,exec,light -A 10"
-        "mainMod F6,exec,light -U 10"
-      ]
+        "$mainMod, F5,exec,brightnessctl set 10%-"
+        "$mainMod, F6,exec,brightnessctl set 10%+"
+      ];
     };
   };
   }
