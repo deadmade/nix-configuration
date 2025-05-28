@@ -16,7 +16,6 @@
 in
   with lib; {
     imports = [
-      #./hyprpaper #Testing wpaperd
       ./wpaperd
       #./hyprpanel/hyprpanel.nix -> really strange stuff. I don't know what this is
       ./waybar
@@ -31,7 +30,6 @@ in
       waybar # Statusleiste
       wofi # App Launcher
       dunst # Benachrichtigungen
-      # hyprpaper # Wallpaper-Manager
       wpaperd # Wallpaper-Manager Daemon
       hyprshot # Screenshot-Tool
       hyprlock

@@ -89,6 +89,7 @@
   environment.systemPackages = with pkgs; [
     greetd.tuigreet
     inputs.neovim-config.packages.${pkgs.system}.nvim
+    light
   ];
 
   services.greetd = {

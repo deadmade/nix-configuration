@@ -1,65 +1,76 @@
-{inputs, ...}: {
-  imports = [inputs.hyprpanel.homeManagerModules.hyprpanel];
+{ pkgs, inputs, ... }:
+{
+    home.packages = with pkgs;[
+        wireplumber
+        gvfs
+    ];
 
-  programs.hyprpanel = {
-    # Enable the module.
-    # Default: false
-    enable = true;
+    imports = [ inputs.hyprpanel.homeManagerModules.hyprpanel ];
 
-    overlay.enable = false;
+    programs.hyprpanel = {
+        enable = true;
+        overlay.enable = true;
+        overwrite.enable = true;
+        theme = "gruvbox";
 
-    # Add '/nix/store/.../hyprpanel' to your
-    # Hyprland config 'exec-once'.
-    # Default: false
-    hyprland.enable = true;
-
-    # Fix the overwrite issue with HyprPanel.
-    # See below for more information.
-    # Default: false
-    overwrite.enable = false;
-
-    # Import a theme from './themes/*.json'.
-    # Default: ""
-    theme = "gruvbox_split";
-
-    # Override the final config with an arbitrary set.
-    # Useful for overriding colors in your selected theme.
-    # Default: {}
-    override = {
-      theme.bar.menus.text = "#123ABC";
-    };
-
-    # Configure bar layouts for monitors.
-    # See 'https://hyprpanel.com/configuration/panel.html'.
-    # Default: null
-    layout = {
-      "bar.layouts" = {
-        "0" = {
-          left = ["dashboard" "workspaces"];
-          middle = ["media"];
-          right = ["volume" "systray" "notifications"];
+        layout = {
+            "bar.layouts" = {
+                "0" = {
+                    left = ["dashboard" "workspaces" "windowtitle"];
+                    middle = ["media"];
+                    right = [
+                        "network"
+                        "volume"
+                        "bluetooth"
+                        "hyprsunset"
+                        "battery"
+                        "clock"
+                        "notifications"
+                    ];
+                };
+            };
         };
-      };
+
+        settings = {
+
+            bar = {
+                launcher.autoDetectIcon = true;
+                workspaces.show_icons = false;
+                workspaces.show_numbered = true;
+                clock.format = "%a %b %d  %H:%M";
+                customModules.hyprsunset.temperature= "4000k";
+            };
+
+            menus.dashboard.powermenu.avatar.image = "~/dotfiles/wallpaper/nixos-wallpaper-catppuccin-mocha.png";
+            menus = {
+                clock = {
+                    time = {
+                        military = false;
+                        hideSeconds= true;
+                    };
+                    weather = {
+                        unit = "metric";
+                    };
+                };
+
+                dashboard = {
+                    directories.enabled = false;
+                    shortcuts.enabled = true;
+                };
+            };
+
+            wallpaper.enable = false;
+            theme.bar.transparent = true;
+            theme.font = {
+                name = "CaskaydiaCove NF";
+                size = "16px";
+            };
+        };
+        override = {
+            # "theme.bar.buttons.dashboard.icon" = "#89B4FB"; cattpuccing nix icon
+            "theme.bar.buttons.dashboard.icon" = "#FABD2F";
+            "theme.bar.background"= "#000203";
+        };
+
     };
-
-    # Configure and theme almost all options from the GUI.
-    # Options that require '{}' or '[]' are not yet implemented,
-    # except for the layout above.
-    # See 'https://hyprpanel.com/configuration/settings.html'.
-    # Default: <same as gui>
-    settings = {
-      bar.launcher.autoDetectIcon = true;
-      bar.workspaces.show_icons = true;
-
-      #battery
-      bar.battery.label = false;
-
-      bar.bluetooth.label = false;
-
-      theme.font = {
-        name = "CaskaydiaCove NF";
-        size = "16px";
-      };
-    };
-  };
 }

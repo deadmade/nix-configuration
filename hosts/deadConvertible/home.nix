@@ -30,6 +30,11 @@ in
       monitor = [
         "eDP-1, 1920x1200@60,0x0,1" 
       ];
+
+      bind =[
+        ",XF86MonBrightnessUp,exec,light -A 10"
+        ",XF86MonBrightnessDown,exec,light -U 10"
+      ]
     };
   };
   }
