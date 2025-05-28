@@ -1,5 +1,6 @@
 {
   inputs,
+  outputs,
   pkgs,
   username,
   host,
@@ -8,49 +9,28 @@
   inherit (import ../../variables.nix) gitUsername gitEmail;
 in
   {
-    imports = [
-      ../../modules/home-manager/default.nix
-    ];
+  imports =
+    [
+      outputs.homeManagerModules.hyprland
+      outputs.homeManagerModules.coding
+      outputs.homeManagerModules.browser.librewolf
+      outputs.homeManagerModules.terminal
+    ]
+    ++ (builtins.attrValues outputs.homeManagerModules.core);
 
     home.packages = with pkgs; [
-      remnote
-      texlive.combined.scheme-full
+    remnote
+    pkgs.unstable.texlive.combined.scheme-full
+    pkgs.unstable.whatsapp-for-linux
+    pkgs.unstable.p3x-onenote
     ];
 
     wayland.windowManager.hyprland = {
-      settings = {
-        # Drei Bildschirme konfigurieren (Passen die Namen mit `hyprctl monitors` an)
-        monitor = [
-          "DP-1,1920x1080@60,auto-left,1" # Linker Monitor (DP-1)
-          "HDMI-A-1,1920x1080@60,auto,1" # Mittlerer Monitor (HDMI-A-1)
-          "DP-2,1920x1080@60,auto-right,1" # Rechter Monitor (DP-2)
-        ];
-      };
+    settings = {
+      monitor = [
+        "eDP-1, 1920x1200@60,0x0,1" 
+      ];
     };
+  };
   }
-  {
-    inputs,
-    pkgs,
-    username,
-    host,
-    ...
-  }: let
-    inherit (import ../../variables.nix) gitUsername gitEmail;
-  in {
-    imports = [
-      ../../modules/home-manager/default.nix
-    ];
 
-    home.packages = with pkgs; [
-      remnote
-      texlive.combined.scheme-full
-    ];
-
-    wayland.windowManager.hyprland = {
-      settings = {
-        # Drei Bildschirme konfigurieren (Passen die Namen mit `hyprctl monitors` an)
-        monitor = [
-        ];
-      };
-    };
-  }

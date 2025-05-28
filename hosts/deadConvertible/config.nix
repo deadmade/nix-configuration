@@ -14,7 +14,9 @@
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
 
-      inputs.hardware.nixosModules.common-cpu-amd-pstate
+      inputs.hardware.nixosModules.common-cpu-amd
+      inputs.hardware.nixosModules.common-gpu-amd
+      inputs.hardware.nixosModules.common-pc-laptop
       inputs.hardware.nixosModules.common-pc-ssd
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
@@ -25,8 +27,8 @@
   environment.pathsToLink = ["/share/zsh"];
 
   networking.hostName = "deadConvertible"; # Define your hostname.
-  networking.networkmanager.enable = false;
-  networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
+  networking.networkmanager.enable = true;
+  #networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -34,6 +36,15 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = false;
+
+  xdg.portal.enable = true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelModules = ["evdi" "wacom" "ideapad_laptop" "kvm-amd"];
+  boot.kernelParams = ["psmouse.synaptics_intertouch=0"];
+
+  hardware.cpu.amd.updateMicrocode = true;
+  hardware.bluetooth.enable = true;
+
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = false;

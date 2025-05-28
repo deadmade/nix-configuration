@@ -39,12 +39,13 @@ in
 
     # Hyprland aktivieren und konfigurieren
     wayland.windowManager.hyprland = {
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+      package = pkgs.hyprland;
+     # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+     # portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       enable = true;
       xwayland.enable = true;
       systemd.enable = true;
-      plugins = [inputs.hyprsplit.packages.${pkgs.stdenv.hostPlatform.system}.hyprsplit];
+      plugins = [pkgs.hyprlandPlugins.hyprsplit];
     };
 
     services.dunst = {
