@@ -39,5 +39,16 @@ in
       ];
     };
   };
+
+  services.wpaperd = {
+    settings = {
+      eDP-1 = {
+        path = "${config.xdg.configHome}/wallpapers";
+        random = true;
+        unique = true;
+        apply-shadow = true;
+      };
+    };
+  };
   }
 
