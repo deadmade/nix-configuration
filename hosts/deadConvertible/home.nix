@@ -32,8 +32,8 @@ in
       ];
 
       bind =[
-        ",XF86MonBrightnessUp,exec,light -A 10"
-        ",XF86MonBrightnessDown,exec,light -U 10"
+        "$mainMod F5,exec,light -A 10"
+        "mainMod F6,exec,light -U 10"
       ]
     };
   };

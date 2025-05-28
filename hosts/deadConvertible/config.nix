@@ -50,6 +50,13 @@
   services.displayManager.sddm.enable = false;
   services.xserver.desktopManager.plasma5.enable = false;
 
+  
+  # Light controls
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="backlight", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness"
+    ACTION=="add", SUBSYSTEM=="backlight", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/backlight/%k/brightness"
+    '';
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
