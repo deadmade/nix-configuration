@@ -14,6 +14,8 @@
       outputs.homeManagerModules.browser.librewolf
       outputs.homeManagerModules.terminal
       outputs.homeManagerModules.gaming
+      outputs.homeManagerModules.socialMedia.vencord
+      outputs.homeManagerModules.flatpak
     ]
     ++ (builtins.attrValues outputs.homeManagerModules.core);
 
@@ -40,20 +42,14 @@
     settings = {
       DP-3 = {
         path = "${config.xdg.configHome}/wallpapers";
-        random = true;
-        unique = true;
         apply-shadow = true;
       };
       DP-2 = {
         path = "${config.xdg.configHome}/wallpapers";
-        random = true;
-        unique = true;
         apply-shadow = true;
       };
       HDMI-A-1 = {
         path = "${config.xdg.configHome}/wallpapers";
-        random = true;
-        unique = true;
         apply-shadow = true;
       };
     };

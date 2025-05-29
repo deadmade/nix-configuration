@@ -11,10 +11,9 @@
 
   environment.systemPackages = with pkgs; [
     pkgs.unstable.freetube
-    onlyoffice-desktopeditors
     pkgs.unstable.protonmail-desktop
     pkgs.unstable.kdePackages.okular
-    pkgs.unstable.protonmail-desktop
+    pkgs.unstable.spotify
   ];
 
   # #TODO: Move this

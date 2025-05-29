@@ -5,8 +5,7 @@
         "wpaperd &"
         "hypridle &"
         "waybar &"
-        "flatpak run dev.vencord.Vesktop --start-minimized &"
-        "wasistlos &"
+        "flatpak run vesktop --start-minimized &"
         "nm-applet --indicator &"
       ];
 
@@ -19,14 +18,15 @@
       input = {
         kb_layout = "de"; # Tastaturlayout auf Deutsch setzen
         follow_mouse = 1;
+        sensitivity = 0; 
         touchpad = {
-          natural_scroll = false;
-          tap-to-click = false;
+          natural_scroll = true;
+          tap-to-click = true;
         };
       };
 
       gestures = {
-        workspace_swipe = false;
+        workspace_swipe = true;
       };
 
       # Allgemeine Einstellungen
@@ -36,6 +36,12 @@
         gaps_out = 10;
         border_size = 2;
         no_border_on_floating = false;
+      };
+
+      plugins = {
+        hyprsplit = {
+          num_workspaces = 10;
+        };
       };
 
       misc = {
@@ -99,10 +105,12 @@
         "$mainMod, Space, exec, $menu"
         "$mainMod, P, pseudo," # dwindle
         "$mainMod, J, togglesplit," # dwindle
-        "$mainMod, W, exec, floorp"
+        "$mainMod, W, exec, librewolf" # Browser
         "$mainMod SHIFT, Q, exit, " # Currently not really working
-        "$mainMod, L, exec, hyprlock --immediate"
         "$mainMod SHIFT, s, exec, hyprshot -m region"
+
+        "$mainMod, L, exec, hyprlock --immediate" 
+        "$mainMod SHIFT, L, exec, hyprlock & disown && systemctl suspend" # hibernation with lockscreen
 
         # Move focus with mainMod + arrow keys
         "$mainMod, left, movefocus, l"
@@ -148,6 +156,11 @@
         "$mainMod SHIFT, k, movewindow, u"
         "$mainMod SHIFT, l, movewindow, r"
       ];
+
+      monitor = [
+        ",preferred,auto,auto"
+      ];
+
     };
   };
 }

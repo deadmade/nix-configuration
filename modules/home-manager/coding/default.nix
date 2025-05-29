@@ -1,5 +1,6 @@
 {
   imports = [
-    ./VsCodium/VsCodium.nix
+    ./VsCodium.nix
+    ./JetBrains.nix
   ];
 }

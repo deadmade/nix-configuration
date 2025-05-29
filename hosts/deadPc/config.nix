@@ -39,6 +39,9 @@
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
+  xdg.portal.enable = true;
+  #boot.kernelPackages = pkgs.linuxPackages_xanmod_latest;
+
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = false;
   services.desktopManager.plasma6.enable = false;

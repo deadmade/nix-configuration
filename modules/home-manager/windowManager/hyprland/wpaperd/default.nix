@@ -8,7 +8,7 @@
     enable = true;
     settings = {
       default = {
-        duration = "15";
+        duration = "15m";
         mode = "center";
       };
     };
