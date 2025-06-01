@@ -2,7 +2,7 @@ name: update-flake-lock
 on:
   workflow_dispatch: # allows manual triggering
   schedule:
-    - cron: '0 0 * * 0' # runs weekly on Sunday at 00:00
+    - cron: '0 8 * * *' # runs weekly on Sunday at 00:00
 
 jobs:
   lockfile:
@@ -16,11 +16,17 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}  # Stellt sicher, dass das Token verwendet wird
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
-      - name: Update flake.lock
-        uses: DeterminateSystems/update-flake-lock@main
-        with:
-          pr-title: "Update flake.lock"
-          pr-labels: |
-            dependencies
-            automated
+        uses: DeterminateSystems/nix-installer-action@v3
+      - name: Flake.lock aktualisieren
+        run: |
+          nix flake update --commit-lock-file
+
+      - name: Änderungen committen und pushen
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add flake.lock
+          # Nur committen, falls es Änderungen gibt
+          git diff --quiet --exit-code || git commit -m "Automatische Aktualisierung von flake.lock"
+          git push origin HEAD:main
+
