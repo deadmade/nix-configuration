@@ -6,14 +6,18 @@
     extra-substituters = [
       "https://deadcache.cachix.org"
       "https://nix-community.cachix.org"
+      "https://install.determinate.systems"
     ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "deadcache.cachix.org-1:k8yt2hshOzIWYT5B5Buj2/hK6bu2haiTz9juF4ERvcw="
+      "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
     ];
   };
 
   inputs = {
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
+
     # Nixkgs
     nixpkgs.url = "github:nixos/nixpkgs/release-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -89,6 +93,7 @@
     nixos-wsl,
     nixos-generators,
     home-manager,
+    determinate,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -130,6 +135,8 @@
         specialArgs = {inherit inputs outputs vars;};
         modules = [
           ./hosts/deadWsl/config.nix
+        # Load the Determinate module
+        determinate.nixosModules.default
         ];
       };
 
