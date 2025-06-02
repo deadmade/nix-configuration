@@ -8,8 +8,7 @@
   ...
 }: let
   inherit (import ../../variables.nix) gitUsername gitEmail;
-in
-  {
+in {
   imports =
     [
       outputs.homeManagerModules.hyprland
@@ -21,20 +20,20 @@ in
     ]
     ++ (builtins.attrValues outputs.homeManagerModules.core);
 
-    home.packages = with pkgs; [
+  home.packages = with pkgs; [
     remnote
     pkgs.unstable.texlive.combined.scheme-full
     pkgs.unstable.whatsapp-for-linux
     pkgs.unstable.p3x-onenote
-    ];
+  ];
 
-    wayland.windowManager.hyprland = {
+  wayland.windowManager.hyprland = {
     settings = {
       monitor = [
-        "eDP-1, 1920x1200@60,0x0,1" 
+        "eDP-1, 1920x1200@60,0x0,1"
       ];
 
-      bind =[
+      bind = [
         "$mainMod, F5,exec,brightnessctl set 10%-"
         "$mainMod, F6,exec,brightnessctl set 10%+"
       ];
@@ -49,5 +48,4 @@ in
       };
     };
   };
-  }
-
+}

@@ -18,7 +18,7 @@
       input = {
         kb_layout = "de"; # Tastaturlayout auf Deutsch setzen
         follow_mouse = 1;
-        sensitivity = 0; 
+        sensitivity = 0;
         touchpad = {
           natural_scroll = true;
           tap-to-click = true;
@@ -109,7 +109,7 @@
         "$mainMod SHIFT, Q, exit, " # Currently not really working
         "$mainMod SHIFT, s, exec, hyprshot -m region"
 
-        "$mainMod, L, exec, hyprlock --immediate" 
+        "$mainMod, L, exec, hyprlock --immediate"
         "$mainMod SHIFT, L, exec, hyprlock & disown && systemctl suspend" # hibernation with lockscreen
 
         # Move focus with mainMod + arrow keys
@@ -160,7 +160,6 @@
       monitor = [
         ",preferred,auto,auto"
       ];
-
     };
   };
 }

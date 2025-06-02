@@ -5,7 +5,6 @@
   ...
 }: {
   imports = [
-
   ];
 
   programs.librewolf = {

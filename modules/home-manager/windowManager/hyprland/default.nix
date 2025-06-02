@@ -38,8 +38,8 @@ in
     # Hyprland aktivieren und konfigurieren
     wayland.windowManager.hyprland = {
       package = pkgs.hyprland;
-     # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-     # portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+      # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      # portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       enable = true;
       xwayland.enable = true;
       systemd.enable = true;

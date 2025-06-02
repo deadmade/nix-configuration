@@ -68,7 +68,6 @@
   services.libinput.touchpad.tapping = true;
   services.libinput.touchpad.clickMethod = "clickfinger";
 
-
   # Allow unfree packages
   nixpkgs = {
     overlays = [

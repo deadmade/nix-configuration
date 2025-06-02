@@ -11,7 +11,6 @@
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "deadcache.cachix.org-1:k8yt2hshOzIWYT5B5Buj2/hK6bu2haiTz9juF4ERvcw="
-      "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
     ];
   };
 
@@ -84,6 +83,9 @@
     nixcord = {
       url = "github:kaylorben/nixcord";
     };
+
+    alejandra.url = "github:kamadorueda/alejandra/4.0.0";
+    alejandra.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
@@ -135,8 +137,8 @@
         specialArgs = {inherit inputs outputs vars;};
         modules = [
           ./hosts/deadWsl/config.nix
-        # Load the Determinate module
-        determinate.nixosModules.default
+          # Load the Determinate module
+          determinate.nixosModules.default
         ];
       };
 
