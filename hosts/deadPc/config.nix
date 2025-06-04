@@ -17,6 +17,11 @@
       inputs.hardware.nixosModules.common-cpu-amd-pstate
       inputs.hardware.nixosModules.common-gpu-nvidia-nonprime
       inputs.hardware.nixosModules.common-pc-ssd
+      outputs.nixosModules.firejail
+     outputs.nixosModules.latex
+     outputs.nixosModules.packages
+     outputs.nixosModules.stylix
+     outputs.nixosModules.vpn 
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
     ++ (builtins.attrValues outputs.nixosModules.desktop);

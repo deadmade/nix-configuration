@@ -10,7 +10,7 @@
 
   stylix = {
     enable = true;
-    image = ../../wallpapers/bloodMoon.jpg;
+    image = ../../../wallpapers/bloodMoon.jpg;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/dracula.yaml";
 
     autoEnable = false;
