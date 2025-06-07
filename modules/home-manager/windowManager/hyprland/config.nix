@@ -7,6 +7,7 @@
         "waybar &"
         "flatpak run vesktop --start-minimized &"
         "nm-applet --indicator &"
+        "swaymc &"
       ];
 
       "$mainMod" = "SUPER";

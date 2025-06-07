@@ -24,13 +24,14 @@ in
       ./hypridle
       ./wlogout
       ./wofi
+      ./swaync
     ];
 
     # Home Manager Pakete
     home.packages = with pkgs; [
       waybar # Statusleiste
       wofi # App Launcher
-      dunst # Benachrichtigungen
+      #dunst # Benachrichtigungen
       wpaperd # Wallpaper-Manager Daemon
       hyprshot # Screenshot-Tool
       hyprlock
@@ -47,12 +48,12 @@ in
       plugins = [pkgs.hyprlandPlugins.hyprsplit];
     };
 
-    services.dunst = {
-      enable = true;
-      settings = {
-        global = {
-          corner_radius = 5;
-        };
-      };
-    };
+    # services.dunst = {
+    #   enable = true;
+    #   settings = {
+    #     global = {
+    #       corner_radius = 5;
+    #     };
+    #   };
+    # };
   }
