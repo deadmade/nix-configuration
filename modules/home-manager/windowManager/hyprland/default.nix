@@ -23,6 +23,7 @@ in
       ./config.nix
       ./hypridle
       ./wlogout
+      ./wofi
     ];
 
     # Home Manager Pakete

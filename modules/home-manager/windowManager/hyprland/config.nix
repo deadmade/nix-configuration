@@ -12,7 +12,6 @@
       "$mainMod" = "SUPER";
       "$terminal" = "kitty";
       "$fileManager" = "thunar";
-      "$menu" = "wofi --show drun --allow-images --no-actions";
 
       # Eingabe (Tastatur & Maus)
       input = {
@@ -102,7 +101,6 @@
         "$mainMod, C, killactive,"
         "$mainMod, E, exec, $fileManager"
         "$mainMod, V, togglefloating,"
-        "$mainMod, Space, exec, $menu"
         "$mainMod, P, pseudo," # dwindle
         "$mainMod, J, togglesplit," # dwindle
         "$mainMod, W, exec, librewolf" # Browser

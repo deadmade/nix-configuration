@@ -4,5 +4,6 @@
     ./starship
     ./tmux
     ./zsh
+    ./fastfetch
   ];
 }
