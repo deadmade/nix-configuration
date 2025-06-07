@@ -11,7 +11,7 @@
   };
   services = {
     traefik.service = {
-      image = "traefik:3.3.4";
+      image = "traefik:latest";
       container_name = "traefik";
       useHostStore = true;
       ports = [
@@ -52,51 +52,54 @@
         "dmz"
       ];
     };
-    crowdsec.service = {
-      image = "crowdsecurity/crowdsec:v1.6.8";
-      container_name = "crowdsec";
-      environment = {
-        GID = "1000";
-        COLLECTIONS = "crowdsecurity/linux crowdsecurity/traefik firix/authentik LePresidente/gitea Dominic-Wagner/vaultwarden crowdsecurity/appsec-generic-rules crowdsecurity/appsec-virtual-patching";
-      };
-      volumes = [
-        "/home/deadmade/.docker/infrastructure/crowdsec_config/acquis.yaml:/etc/crowdsec/acquis.yaml"
-        "/home/deadmade/.docker/infrastructure/crowdsec_config/profiles.yaml:/etc/crowdsec/profiles.yaml"
-        "/home/deadmade/.docker/infrastructure/crowdsec_config/ntfy.yaml:/etc/crowdsec/notifications/ntfy.yaml"
-        "/home/deadmade/.docker/infrastructure/crowdsec_db:/var/lib/crowdsec/data/"
-        "/home/deadmade/.docker/infrastructure/crowdsec_data:/etc/crowdsec/"
-        "traefik-logs:/var/log/traefik/:ro"
-        "/var/run/docker.sock:/var/run/docker.sock:ro"
-      ];
-      labels = {
-        #"diun.enable" = "true";
-        #"diun.include_tags" = "^v\\d+\\.\\d+\\.\\d+$$";
-      };
-      depends_on = [
-        "traefik"
-      ];
-      networks = [
-        "dmz"
-      ];
-      restart = "never";
-    };
-    bouncer-traefik.service = {
-      image = "fbonalair/traefik-crowdsec-bouncer:0.5.0";
-      environment = {
-        CROWDSEC_AGENT_HOST = "crowdsec:8080";
-        GIN_MODE = "release";
-      };
-      env_file = [
-        "/home/deadmade/.docker/infrastructure/traefik-bouncer.env"
-      ];
-      depends_on = [
-        "crowdsec"
-      ];
-      networks = [
-        "dmz"
-      ];
-      restart = "always";
-    };
+    # crowdsec.service = {
+    #   image = "crowdsecurity/crowdsec:latest";
+    #   container_name = "crowdsec";
+    #   ports = [
+    #     "127.0.0.1:9876:8080" # port mapping for local firewall bouncers
+    #   ];
+    #   environment = {
+    #     GID = "1000";
+    #     COLLECTIONS = "crowdsecurity/linux crowdsecurity/traefik firix/authentik LePresidente/gitea Dominic-Wagner/vaultwarden crowdsecurity/appsec-generic-rules crowdsecurity/appsec-virtual-patching";
+    #   };
+    #   volumes = [
+    #     #"/home/deadmade/.docker/infrastructure/crowdsec_config/acquis.yaml:/etc/crowdsec/acquis.yaml:ro"
+    #     #"/home/deadmade/.docker/infrastructure/crowdsec_config/profiles.yaml:/etc/crowdsec/profiles.yaml:ro"
+    #     #"/home/deadmade/.docker/infrastructure/crowdsec_config/ntfy.yaml:/etc/crowdsec/notifications/ntfy.yaml:ro"
+    #     "/home/deadmade/.docker/infrastructure/crowdsec_db:/var/lib/crowdsec/data/"
+    #     "/home/deadmade/.docker/infrastructure/crowdsec_data:/etc/crowdsec/"
+    #     "traefik-logs:/var/log/traefik/:ro"
+    #     "/var/run/docker.sock:/var/run/docker.sock:ro"
+    #   ];
+    #   labels = {
+    #     #"diun.enable" = "true";
+    #     #"diun.include_tags" = "^v\\d+\\.\\d+\\.\\d+$$";
+    #   };
+    #   depends_on = [
+    #     "traefik"
+    #   ];
+    #   networks = [
+    #     "dmz"
+    #   ];
+    #   restart = "always";
+    # };
+    # bouncer-traefik.service = {
+    #   image = "fbonalair/traefik-crowdsec-bouncer:latest";
+    #   environment = {
+    #     CROWDSEC_AGENT_HOST = "crowdsec:8080";
+    #     GIN_MODE = "release";
+    #   };
+    #   env_file = [
+    #     "/home/deadmade/.docker/infrastructure/traefik-bouncer.env"
+    #   ];
+    #   depends_on = [
+    #     "crowdsec"
+    #   ];
+    #   networks = [
+    #     "dmz"
+    #   ];
+    #   restart = "always";
+    # };
     cloudflared.service = {
       image = "cloudflare/cloudflared:latest";
       container_name = "cloudflared";
@@ -110,7 +113,7 @@
       networks = [
         "dmz"
       ];
-      restart = "never"; # TODO Change
+      restart = "always"; # TODO Change
     };
   };
 }

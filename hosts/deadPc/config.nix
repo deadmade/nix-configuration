@@ -13,6 +13,7 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./sops.nix
 
       inputs.hardware.nixosModules.common-cpu-amd-pstate
       inputs.hardware.nixosModules.common-gpu-nvidia-nonprime
@@ -24,6 +25,7 @@
      outputs.nixosModules.vpn 
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
+    ++ (builtins.attrValues outputs.nixosModules.virtualization)
     ++ (builtins.attrValues outputs.nixosModules.desktop);
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
