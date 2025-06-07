@@ -13,8 +13,8 @@ with lib; {
     package = pkgs.fastfetch;
     settings = {
       logo = {
-        source = "../../../../../wallpapers/deadImg.jpg";
-        height = 12;
+        source = "${config.xdg.configHome}/wallpapers/deadImg.jpg";
+        height = 15;
         padding = {
           left = 2;
           top = 1;
