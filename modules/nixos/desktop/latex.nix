@@ -5,6 +5,9 @@
         pygments
       ]))
     pkgs.unstable.inkscape
+    pkgs.unstable.texlive.combined.scheme-full
+    pkgs.unstable.texlivePackages.texapi
+    pkgs.unstable.texlivePackages.yax
   ];
 
   fonts.packages = with pkgs; [

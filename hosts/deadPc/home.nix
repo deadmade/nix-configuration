@@ -21,7 +21,6 @@
 
   home.packages = with pkgs; [
     remnote
-    pkgs.unstable.texlive.combined.scheme-full
     pkgs.unstable.whatsapp-for-linux
     pkgs.unstable.p3x-onenote
     teams-for-linux
@@ -53,5 +52,9 @@
         apply-shadow = true;
       };
     };
+  };
+
+  home.shellAliases = {
+    updateNix = "nix flake update && sudo nixos-rebuild switch --flake .#deadWsl && home-manager switch --flake .#deadmade@deadPc";
   };
 }
