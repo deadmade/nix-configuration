@@ -8,12 +8,18 @@
     inputs.stylix.nixosModules.stylix
   ];
 
-  stylix = {
+  stylix = lib.mkDefault {
     enable = true;
     image = ../../../wallpapers/bloodMoon.jpg;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/dracula.yaml";
 
-    autoEnable = false;
+    homeManagerIntegration.followSystem = true;
+    homeManagerIntegration.autoImport = true;
+
+    autoEnable = true;
+    targets.console.enable = false;
+    targets.grub.enable = false;
+
 
     polarity = "dark";
     opacity = {
