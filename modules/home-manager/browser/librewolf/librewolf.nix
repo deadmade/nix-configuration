@@ -15,7 +15,7 @@
     policies = {
       AppAutoUpdate = false;
       Bookmarks = false;
-      DisableFirefoxAccounts = true;
+      DisableFirefoxAccounts = false;
       DisableFirefoxStudies = true;
       DisablePocket = true;
       DisablePrivateBrowsing = true;
