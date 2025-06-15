@@ -6,7 +6,6 @@
     extra-substituters = [
       "https://deadcache.cachix.org"
       "https://nix-community.cachix.org"
-      "https://install.determinate.systems"
     ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
@@ -15,9 +14,6 @@
   };
 
   inputs = {
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
-
-    # Nixkgs
     nixpkgs.url = "github:nixos/nixpkgs/release-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
@@ -32,7 +28,6 @@
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
 
-    # Home manager
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -43,17 +38,6 @@
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    hyprland.url = "github:hyprwm/Hyprland";
-
-    hyprpanel = {
-      url = "github:jas-singhfsu/hyprpanel";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    hyprsplit = {
-      url = "github:shezdy/hyprsplit";
     };
 
     stylix.url = "github:nix-community/stylix/release-25.05";
@@ -95,7 +79,6 @@
     nixos-wsl,
     nixos-generators,
     home-manager,
-    determinate,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -137,8 +120,6 @@
         specialArgs = {inherit inputs outputs vars;};
         modules = [
           ./hosts/deadWsl/config.nix
-          # Load the Determinate module
-          determinate.nixosModules.default
         ];
       };
 

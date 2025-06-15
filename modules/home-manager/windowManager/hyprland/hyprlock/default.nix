@@ -6,6 +6,7 @@
 }: {
   programs.hyprlock = {
     enable = true;
+    package = pkgs.unstable.hyprlock;
     settings = {
       # Background configuration
       background = [

@@ -5,7 +5,6 @@
 
   # Third party overlays
   # nh = inputs.nh.overlays.default;
-  hyprpanel = inputs.hyprpanel.overlay; # Adding the hyprpanel overlay
 
   # For every flake input, aliases 'pkgs.inputs.${flake}' to
   # 'inputs.${flake}.packages.${pkgs.system}' or

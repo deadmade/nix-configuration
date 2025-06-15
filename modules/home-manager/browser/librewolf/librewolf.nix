@@ -154,6 +154,8 @@
         "browser.formfill.enable" = false;
         "signon.prefillForms" = false;
         "browser.shell.checkDefaultBrowser" = false;
+        "identity.fxaccounts.enabled" = true;
+        "privacy.resistFingerprinting.letterboxing" = true;
       };
     };
   };

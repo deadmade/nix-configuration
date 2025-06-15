@@ -10,7 +10,7 @@
 with lib; {
   programs.wofi = {
     enable = true;
-    package = pkgs.wofi;
+    package = pkgs.unstable.wofi;
     settings = {
       ## General
       show = "drun";

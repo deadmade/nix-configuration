@@ -55,6 +55,6 @@
   };
 
   home.shellAliases = {
-    updateNix = "nix flake update && sudo nixos-rebuild switch --flake .#deadWsl && home-manager switch --flake .#deadmade@deadPc";
+    updateNix = "nix flake update && sudo nixos-rebuild switch --flake .#deadPc && home-manager switch --flake .#deadmade@deadPc";
   };
 }

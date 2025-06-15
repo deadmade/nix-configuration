@@ -15,7 +15,7 @@ in
 
     programs.waybar = {
       enable = true;
-      package = pkgs.waybar;
+      package = pkgs.unstable.waybar;
       settings = [
         {
           layer = "top";

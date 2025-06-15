@@ -28,24 +28,18 @@ in
     ];
 
     # Home Manager Pakete
-    home.packages = with pkgs; [
-      waybar # Statusleiste
-      wofi # App Launcher
+    home.packages = with pkgs.unstable; [
       #dunst # Benachrichtigungen
-      wpaperd # Wallpaper-Manager Daemon
       hyprshot # Screenshot-Tool
-      hyprlock
     ];
 
     # Hyprland aktivieren und konfigurieren
     wayland.windowManager.hyprland = {
-      package = pkgs.hyprland;
-      # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-      # portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+      package = pkgs.unstable.hyprland;
       enable = true;
       xwayland.enable = true;
       systemd.enable = true;
-      plugins = [pkgs.hyprlandPlugins.hyprsplit];
+      plugins = [pkgs.unstable.hyprlandPlugins.hyprsplit];
     };
 
     # services.dunst = {
