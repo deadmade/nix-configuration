@@ -41,13 +41,4 @@ in
       systemd.enable = true;
       plugins = [pkgs.unstable.hyprlandPlugins.hyprsplit];
     };
-
-    # services.dunst = {
-    #   enable = true;
-    #   settings = {
-    #     global = {
-    #       corner_radius = 5;
-    #     };
-    #   };
-    # };
   }

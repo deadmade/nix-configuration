@@ -14,6 +14,7 @@
     pkgs.unstable.protonmail-desktop
     pkgs.unstable.kdePackages.okular
     pkgs.unstable.spotify
+    pkgs.unstable.spotify-player
   ];
 
   # #TODO: Move this
