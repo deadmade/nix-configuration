@@ -245,257 +245,258 @@ in
 
       style = concatStrings [
         ''
-        *{
-          font-family: "FiraCode Nerd Font";
-          font-weight: bold;
-          min-height: 0;
-          color: #${config.lib.stylix.colors.base15};;
-          /* set font-size to 100% if font scaling is set to 1.00 using nwg-look */
-          font-size: 10px;
-          font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
-          padding: 0px;
-          margin-top: 0px;
-          margin-bottom: 0px;
-          }
+          *{
+            font-family: "FiraCode Nerd Font";
+            font-weight: bold;
+            min-height: 0;
+            color: #${config.lib.stylix.colors.base15};
+            background: #${config.lib.stylix.colors.base00};
+            /* set font-size to 100% if font scaling is set to 1.00 using nwg-look */
+            font-size: 10px;
+            font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
+            padding: 0px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            }
 
 
 
-          window#waybar {
-              background: transparent;
-          }
+            window#waybar {
+                background: transparent;
+            }
 
-          window#waybar.hidden {
-              opacity: 0.2;
-          }
+            window#waybar.hidden {
+                opacity: 0.2;
+            }
 
-          tooltip {
-              background: alpha(#${config.lib.stylix.colors.base05}, .4);
+            tooltip {
+                background: alpha(#${config.lib.stylix.colors.base05}, .4);
+                border-radius: 12px;
+                border: 2px solid #${config.lib.stylix.colors.base05};
+            }
+
+            tooltip label {
+                color: #${config.lib.stylix.colors.base15};
+                margin-right: 10px;
+                margin-left: 10px;
+            }
+
+
+
+            /*-----module groups----*/
+            .modules-right {
+                border: 0px solid ;
+                border-radius: 10px;
+            }
+
+            .modules-center {
+                background-color: #${config.lib.stylix.colors.base00};
+                border: 0px solid ;
+                border-radius: 10px;
+            }
+
+            .modules-left {
+                border: 0px solid ;
+                border-radius: 10px;
+                margin-top: 0px;
+                margin-bottom: 0px;
+                padding: 0px;
+            }
+
+            #custom-logo {
+                background: #${config.lib.stylix.colors.base00};
+                border-radius: 10px 4px 4px 10px;
+                padding-right: 4px;
+                margin-right: 3px;
+            }
+
+            #workspaces {
+                background: #${config.lib.stylix.colors.base00};
+                padding: 0px 10px 0px 4px;
+                border-radius: 4px 10px 10px 4px;
+            }
+
+            #workspaces button {
+            }
+
+            #workspaces button label {
+                font-size:10px;
+                min-width: 0;
+                padding: 4px 16px 4px 12px;
+            }
+
+            #workspaces button.active {
+                background: alpha(#${config.lib.stylix.colors.base13}, .5);
+                border-radius: 8px;
+                border: 3px solid @color5;
+            }
+
+            #workspaces button.focused {
+                color: #a6adc8;
+                background: #010409;
+            }
+
+            #workspaces button.urgent {
+                background: alpha(#${config.lib.stylix.colors.base09}, .5);
+                animation-name: blink;
+                animation-duration: 1s;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+                animation-direction: alternate;
+            }
+
+            #workspaces button:hover {
+                border: 3px solid #${config.lib.stylix.colors.base06};
+                border-radius: 8px;
+            }
+
+            #window,
+            #custom-menu,
+            #custom-lock {
+                padding: 0px 10px;
+            }
+
+            #custom-menu:hover {
+                border: 3px solid #${config.lib.stylix.colors.base05};
+                border-radius: 10px 4px 4px 10px;
+                background: alpha(#${config.lib.stylix.colors.base13}, .5);
+            }
+
+            #custom-spotify {
+                color: rgb(0,0,0);
+                padding: 0 20px;
+                background-color:#33C668 ;
+                border-radius: 15px;
+            }
+
+            #custom-spotify:hover {
               border-radius: 12px;
-              border: 2px solid #${config.lib.stylix.colors.base05};
-          }
+              border: 4px solid #1c5932;
+            }
 
-          tooltip label {
-              color: #${config.lib.stylix.colors.base11};
-              margin-right: 10px;
-              margin-left: 10px;
-          }
+            #custom-lock:hover {
+                border: 3px solid #${config.lib.stylix.colors.base05};
+                border-radius: 4px 10px 10px 4px;
+                background: alpha(#${config.lib.stylix.colors.base13}, .5);
+            }
 
+            @keyframes blink {
+              to {
+                color: #000000;
+              }
+            }
 
+            #cpu {
+                background: #${config.lib.stylix.colors.base10};
+                font-size: 13px;
+                border-radius: 10px 4px 4px 10px;
+                padding: 0px 12px 0px 12px;
+                margin-right: 3px;
+            }
 
-          /*-----module groups----*/
-          .modules-right {
-              border: 0px solid ;
-              border-radius: 10px;
-          }
+            #disk,
+            #memory,
+            #temperature,
+            #custom-exit {
+                background: #${config.lib.stylix.colors.base00};
+                border-radius: 4px 4px 4px 4px;
+                margin-right: 2.1px;
+                padding: 0px 10px;
+                font-size: 13px;
+            }
 
-          .modules-center {
-              background-color: #${config.lib.stylix.colors.base00};
-              border: 0px solid ;
-              border-radius: 10px;
-          }
+            #temperature.critical {
+              color: #${config.lib.stylix.colors.base06};
+            }
 
-          .modules-left {
-              border: 0px solid ;
-              border-radius: 10px;
-              margin-top: 0px;
-              margin-bottom: 0px;
-              padding: 0px;
-          }
+            #tray {
+                background-color: #${config.lib.stylix.colors.base00};
+                padding: 0px 6px;
+                border-radius: 4px 0px 0px 4px;
+            }
 
-          #custom-logo {
-              background: #${config.lib.stylix.colors.base00};
-              border-radius: 10px 4px 4px 10px;
-              padding-right: 4px;
-              margin-right: 3px;
-          }
+            #network {
+                background: #${config.lib.stylix.colors.base00};
+                padding-left: 2px;
+                padding-right: 7px;
+            }
 
-          #workspaces {
-              background: #${config.lib.stylix.colors.base00};
-              padding: 0px 10px 0px 4px;
-              border-radius: 4px 10px 10px 4px;
-          }
+            /*.not-network {
+              padding-right: 0px;
+            }*/
 
-          #workspaces button {
-          }
+            #custom-updates {
+                background-color: #${config.lib.stylix.colors.base00};
+                padding: 0px 2px;
+            }
 
-          #workspaces button label {
-              font-size:10px;
-              min-width: 0;
-              padding: 4px 16px 4px 12px;
-          }
+            #battery {
+                background: #${config.lib.stylix.colors.base00};
+                padding: 0px 4px;
+                margin-bottom: 0px;
+                border-radius: 0px 4px 4px 0px;
+            }
 
-          #workspaces button.active {
-              background: alpha(#${config.lib.stylix.colors.base13}, .5);
-              border-radius: 8px;
-              border: 3px solid @color5;
-          }
-
-          #workspaces button.focused {
-              color: #a6adc8;
-              background: #010409;
-          }
-
-          #workspaces button.urgent {
-              background: alpha(#${config.lib.stylix.colors.base09}, .5);
+            #battery.critical:not(.charging) {
+              color: #${config.lib.stylix.colors.base06};
+              margin: 5px 10px;
               animation-name: blink;
               animation-duration: 1s;
               animation-timing-function: linear;
               animation-iteration-count: infinite;
               animation-direction: alternate;
-          }
-
-          #workspaces button:hover {
-              border: 3px solid #${config.lib.stylix.colors.base06};
-              border-radius: 8px;
-          }
-
-          #window,
-          #custom-menu,
-          #custom-lock {
-              padding: 0px 10px;
-          }
-
-          #custom-menu:hover {
-              border: 3px solid #${config.lib.stylix.colors.base05};
-              border-radius: 10px 4px 4px 10px;
-              background: alpha(#${config.lib.stylix.colors.base13}, .5);
-          }
-
-          #custom-spotify {
-              color: rgb(0,0,0);
-              padding: 0 20px;
-              background-color:#33C668 ;
-              border-radius: 15px;
-          }
-
-          #custom-spotify:hover {
-            border-radius: 12px;
-            border: 4px solid #1c5932;
-          }
-
-          #custom-lock:hover {
-              border: 3px solid #${config.lib.stylix.colors.base05};
-              border-radius: 4px 10px 10px 4px;
-              background: alpha(#${config.lib.stylix.colors.base13}, .5);
-          }
-
-          @keyframes blink {
-            to {
-              color: #000000;
             }
-          }
 
-          #cpu {
-              background: #${config.lib.stylix.colors.base10};
-              font-size: 13px;
-              border-radius: 10px 4px 4px 10px;
-              padding: 0px 12px 0px 12px;
-              margin-right: 3px;
-          }
+            #battery.details,
+            #network.details {
+               all: unset;
+               padding-left: 4px;
+               padding-right: 4px;
+               margin-bottom: -3px;
+            }
 
-          #disk,
-          #memory,
-          #temperature,
-          #custom-exit {
-              background: #${config.lib.stylix.colors.base00};
-              border-radius: 4px 4px 4px 4px;
-              margin-right: 2.1px;
-              padding: 0px 10px;
-              font-size: 13px;
-          }
+            #clock {
+                background-color: #${config.lib.stylix.colors.base00};
+                font-size: 13px;
+                padding: 0px 6px;
+                border-radius: 4px 4px 4px 4px;
+                margin-left: 3px;
+                margin-right: 3px;
+            }
 
-          #temperature.critical {
-            color: #${config.lib.stylix.colors.base06};
-          }
+            #custom-notification {
+                background: #${config.lib.stylix.colors.base00};
+                font-family: "NotoSansMono Nerd Font";
+                border-radius: 4px 10px 10px 4px;
+                padding: 0px 12px 0px 12px;
+                margin-left: 0px;
+            }
 
-          #tray {
-              background-color: #${config.lib.stylix.colors.base00};
-              padding: 0px 6px;
-              border-radius: 4px 0px 0px 4px;
-          }
+            #pulseaudio,
+            #pulseaudio.microphone {
+                background: #${config.lib.stylix.colors.base00};
+                border-radius: 4px 4px 4px 4px;
+                padding: 0px 14px;
+                margin-right: 2.1px;
+            }
 
-          #network {
-              background: #${config.lib.stylix.colors.base00};
-              padding-left: 2px;
-              padding-right: 7px;
-          }
+            #bluetooth,
+            #custom-power {
+                background: #${config.lib.stylix.colors.base00};
+                border-radius: 4px 4px 4px 4px;
+                margin-right: 2.1px;
+                padding-left: 4px;
+                padding-right: 8px;
+            }
 
-          /*.not-network {
-            padding-right: 0px;
-          }*/
+            #bluetooth {
+                padding: 0px 14px;
+            }
 
-          #custom-updates {
-              background-color: #${config.lib.stylix.colors.base00};
-              padding: 0px 2px;
-          }
-
-          #battery {
-              background: #${config.lib.stylix.colors.base00};
-              padding: 0px 4px;
-              margin-bottom: 0px;
-              border-radius: 0px 4px 4px 0px;
-          }
-
-          #battery.critical:not(.charging) {
-            color: #${config.lib.stylix.colors.base06};
-            margin: 5px 10px;
-            animation-name: blink;
-            animation-duration: 1s;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-            animation-direction: alternate;
-          }
-
-          #battery.details,
-          #network.details {
-             all: unset;
-             padding-left: 4px;
-             padding-right: 4px;
-             margin-bottom: -3px;
-          }
-
-          #clock {
-              background-color: #${config.lib.stylix.colors.base00};
-              font-size: 13px;
-              padding: 0px 6px;
-              border-radius: 4px 4px 4px 4px;
-              margin-left: 3px;
-              margin-right: 3px;
-          }
-
-          #custom-notification {
-              background: #${config.lib.stylix.colors.base00};
-              font-family: "NotoSansMono Nerd Font";
-              border-radius: 4px 10px 10px 4px;
-              padding: 0px 12px 0px 12px;
-              margin-left: 0px;
-          }
-
-          #pulseaudio,
-          #pulseaudio.microphone {
-              background: #${config.lib.stylix.colors.base00};
-              border-radius: 4px 4px 4px 4px;
-              padding: 0px 14px;
-              margin-right: 2.1px;
-          }
-
-          #bluetooth,
-          #custom-power {
-              background: #${config.lib.stylix.colors.base00};
-              border-radius: 4px 4px 4px 4px;
-              margin-right: 2.1px;
-              padding-left: 4px;
-              padding-right: 8px;
-          }
-
-          #bluetooth {
-              padding: 0px 14px;
-          }
-
-          #trayer .not-trayer > *:hover {
-            border: 3px solid #${config.lib.stylix.colors.base05};
-            background: alpha(#${config.lib.stylix.colors.base13}, .5);
-          }
+            #trayer .not-trayer > *:hover {
+              border: 3px solid #${config.lib.stylix.colors.base05};
+              background: alpha(#${config.lib.stylix.colors.base13}, .5);
+            }
         ''
       ];
     };
