@@ -5,7 +5,7 @@
         "wpaperd &"
         "hypridle &"
         "waybar &"
-        "flatpak run vesktop --start-minimized &"
+        "vesktop --start-minimized &"
         "nm-applet --indicator &"
         "swaymc &"
       ];
@@ -34,7 +34,7 @@
         layout = "dwindle";
         gaps_in = 5;
         gaps_out = 10;
-        border_size = 2;
+        border_size = 0;
         no_border_on_floating = false;
       };
 
