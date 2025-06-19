@@ -6,6 +6,7 @@
         "hypridle &"
         "waybar &"
         "vesktop --start-minimized &"
+        "protonvpn-app --start-minimized &"
         "nm-applet --indicator &"
         "kitty -e spotify_player &"
         "librewolf &"
