@@ -18,9 +18,11 @@
       inputs.hardware.nixosModules.common-cpu-amd-pstate
       inputs.hardware.nixosModules.common-gpu-nvidia-nonprime
       inputs.hardware.nixosModules.common-pc-ssd
+
+      outputs.nixosModules.virtualization.vm
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
-    ++ (builtins.attrValues outputs.nixosModules.virtualization)
+    #++ (builtins.attrValues outputs.nixosModules.virtualization)
     ++ (builtins.attrValues outputs.nixosModules.desktop);
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -41,8 +43,18 @@
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
-  xdg.portal.enable = true;
-  boot.kernelPackages = pkgs.linuxPackages_xanmod_latest;
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-hyprland
+    ];
+    config = {
+      common.default = "hyprland";
+    };
+  };
+
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = false;

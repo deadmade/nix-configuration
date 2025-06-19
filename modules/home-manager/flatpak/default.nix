@@ -3,10 +3,12 @@
   services.flatpak = {
     enable = true;
     uninstallUnmanaged = true;
+    update.onActivation = true;
     packages = [
       "md.obsidian.Obsidian"
       #"com.github.iwalton3.jellyfin-media-player"
       "com.github.tchx84.Flatseal"
+      #"io.kapsa.drive"
     ];
     overrides = {
       global = {

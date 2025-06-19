@@ -7,7 +7,8 @@
         "waybar &"
         "vesktop --start-minimized &"
         "nm-applet --indicator &"
-        "swaymc &"
+        "kitty -e spotify_player &"
+        "librewolf &"
       ];
 
       "$mainMod" = "SUPER";
@@ -107,6 +108,7 @@
         "$mainMod, W, exec, librewolf" # Browser
         "$mainMod SHIFT, Q, exit, " # Currently not really working
         "$mainMod SHIFT, s, exec, hyprshot -m region"
+        "$mainMod, N, exec, swaync-client -t"
 
         "$mainMod, L, exec, hyprlock --immediate"
         "$mainMod SHIFT, L, exec, hyprlock & disown && systemctl suspend" # hibernation with lockscreen

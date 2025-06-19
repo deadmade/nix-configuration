@@ -13,15 +13,10 @@
     pkgs.unstable.freetube
     pkgs.unstable.protonmail-desktop
     pkgs.unstable.kdePackages.okular
-    pkgs.unstable.spotify
+    #pkgs.unstable.spotify
     pkgs.unstable.spotify-player
+    pkgs.unstable.onlyoffice-desktopeditors
   ];
-
-  # #TODO: Move this
-  # programs.hyprland = {
-  #   enable = true;
-  #   xwayland.enable = true;
-  # };
 
   programs.thunar.enable = true;
   programs.xfconf.enable = true;

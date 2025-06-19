@@ -54,6 +54,10 @@
     };
   };
 
+  gtk = {
+    enable = true;
+  };
+
   home.shellAliases = {
     updateNix = "nix flake update && sudo nixos-rebuild switch --flake .#deadPc && home-manager switch --flake .#deadmade@deadPc";
   };

@@ -19,6 +19,7 @@
     cachix
     #pkgs.unstable.vulnix
     age
+    wl-clipboard
   ];
 
   home-manager.extraSpecialArgs = {inherit inputs outputs;};
