@@ -48,4 +48,8 @@ in {
       };
     };
   };
+
+   home.shellAliases = {
+    updateNix = "nix flake update && sudo nixos-rebuild switch --flake .#deadConvertible home-manager switch --flake .#deadmade@deadConvertible";
+  }; 
 }
