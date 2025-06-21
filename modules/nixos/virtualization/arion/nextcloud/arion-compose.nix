@@ -10,25 +10,30 @@
 
   services = {
     nextcloud.service = {
-      image = "nextcloud:30.0.4";
+      image = "nextcloud:31.0.6";
       container_name = "nextcloud";
       useHostStore = true;
       labels = {
         "traefik.enable" = "true";
-        "traefik.http.routers.nextcloud.entrypoints" = "websecure";
-        "traefik.http.routers.nextcloud.rule" = "Host(`nextcloud.deadmade.com`)";
-        "traefik.docker.network" = "dmz";
-        "traefik.http.routers.nextcloud.tls" = "true";
-        "traefik.http.routers.nextcloud.tls.certresolver" = "letsencrypt";
 
-        "pihole.custom-record" = "[[\"nextcloud.deadmade.com\", \"deadmade.com\"]]";
+        "traefik.http.routers.nextcloud-https.tls" = "true";
+        "traefik.http.routers.nextcloud-https.tls.certresolver" = "cloudflare";
+        "traefik.http.routers.nextcloud-https.entrypoints" = "websecure";
+        "traefik.http.routers.nextcloud-https.rule" = "Host(`nextcloud.home.deadmade.de`)";
+
+
+        "traefik.http.routers.nextcloud-https.tls.domains[0].main" = "home.deadmade.de";
+        "traefik.http.routers.nextcloud-https.tls.domains[0].sans" = "*.home.deadmade.de";
+
+        "traefik.http.middlewares.portainer-https-redirect.redirectscheme.scheme" = "https";
+        "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto" = "https";
       };
       volumes = [
         "/storage/dataset/docker/nextcloud/nextcloud_data/data:/var/www/html/data"
         "/home/deadmade/.docker/nextcloud/nextcloud_data:/var/www/html"
       ];
       entrypoint = "/bin/bash -c 'apt update && apt install ffmpeg -y && /entrypoint.sh apache2-foreground'";
-      hostname = "nextcloud.deadmade.com";
+      hostname = "nextcloud.home.deadmade.de";
       environment = {
         REDIS_HOST = "nextcloud-redis";
         REDIS_PORT = 6379;
@@ -42,10 +47,14 @@
     };
 
     nextcloud-db.service = {
-      image = "mariadb:11.4.1-rc-jammy";
+      image = "mariadb:lts-ubi";
+      container_name = "nextcloud-db";
       env_file = [
         "/home/deadmade/.docker/nextcloud/nextcloud.env"
       ];
+      labels = {
+        "traefik.enable" = "false";
+      };
       volumes = [
         "/home/deadmade/.docker/nextcloud/nextcloud_db:/var/lib/mysql"
       ];
@@ -55,10 +64,14 @@
         "transport"
       ];
     };
-    
+
     nextcloud-redis.service = {
-      image = "redis:alpine3.19";
+      image = "redis:8.2-m01-alpine";
+      container_name = "nextcloud-redis";
       restart = "unless-stopped";
+      labels = {
+        "traefik.enable" = "false";
+      };
       networks = [
         "transport"
       ];

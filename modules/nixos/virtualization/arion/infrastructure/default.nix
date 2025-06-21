@@ -45,8 +45,7 @@
     owner = vars.username;
     mode = "0775";
     content = ''
-      CLOUDFLARE_EMAIL="${config.sops.placeholder."traefik/cloudflare_email"}"
-      CLOUDFLARE_API_KEY="${config.sops.placeholder."traefik/cloudflare_api_key"}"
+      CF_DNS_API_TOKEN="${config.sops.placeholder."traefik/cloudflare_api_key"}"
     '';
   };
 
@@ -64,64 +63,44 @@
     owner = vars.username;
     mode = "0775";
     content = ''
+      global:
+        checkNewVersion: false
+        sendAnonymousUsage: false
       api:
-        dashboard: true
-        debug: true
-        insecure: true
+          dashboard: true
+          insecure: true
       entryPoints:
-        web:
-          address: ":80"
-          http:
-            redirections:
-              entrypoint:
-                to: websecure
-                scheme: https
-        websecure:
-          address: ":443"
-        web-external:
-          address: ":81"
-          http:
-            redirections:
-              entrypoint:
-                to: websecure-external
-                scheme: https
-            middlewares:
-              - crowdsec-bouncer@file
-        websecure-external:
-          address: ":444"
-          http:
-            middlewares:
-              - crowdsec-bouncer@file
+          web:
+            address: ":80"
+            http:
+              redirections:
+                entrypoint:
+                  to: websecure
+                  scheme: https
+          websecure:
+            address: ":443"
       providers:
-        docker:
-          watch: true
-          exposedByDefault: false
-          network: dmz
-        file:
-          watch: true
-          directory: /conf/
+          docker:
+            watch: true
+            exposedByDefault: false
+            network: dmz
+          file:
+            watch: true
+            directory: /conf/
       certificatesResolvers:
-        letsencrypt:
-          acme:
-            email: ${config.sops.placeholder."traefik/acme_email"}
-            storage: acme.json
-            dnsChallenge:
-              provider: cloudflare
-              resolvers:
-                - "1.1.1.1:53"
-                - "1.0.0.1:53"
+          cloudflare:
+            acme:
+              email: ${config.sops.placeholder."traefik/acme_email"}
+              storage: /var/traefik/certs/cloudflare-acme.json
+              caServer: "https://acme-v02.api.letsencrypt.org/directory"
+              keyType: "EC256"
+              dnsChallenge:
+                provider: cloudflare
+                resolvers:
+                  - "1.1.1.1:53"
+                  - "1.0.0.1:53"
       log:
-        level: "INFO"
-        filePath: "/var/log/traefik/traefik.log"
-      accessLog:
-        filePath: "/var/log/traefik/access.log"
+          level: "DEBUG"
     '';
-  };
-
-  services.cron = {
-    enable = true;
-    systemCronJobs = [
-      "0 * * * *      root    . /etc/profile; docker exec crowdsec cscli hub update && docker exec crowdsec cscli hub upgrade >> /var/log/crowdsec-update.log"
-    ];
   };
 }

@@ -13,7 +13,7 @@
 
   environment.systemPackages = with pkgs; [arion];
 
-  virtualisation.arion.backend = "podman-socket"; # alternative docker
+  virtualisation.arion.backend = "docker"; # alternative docker
 
   systemd.services.init-dmz-bridge-network = {
     description = "Create the network bridge dmz for the Docker stack.";

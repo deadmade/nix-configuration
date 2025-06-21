@@ -155,8 +155,7 @@
         "identity.fxaccounts.enabled" = true;
         "privacy.resistFingerprinting.letterboxing" = true;
         "network.http.referer.XOriginPolicy" = 2;
-        "webgl.disabled" =  true;
-
+        "webgl.disabled" = true;
       };
     };
   };

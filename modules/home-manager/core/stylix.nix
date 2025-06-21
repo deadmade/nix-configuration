@@ -37,12 +37,12 @@
         package = pkgs.unstable.montserrat;
         name = "Montserrat";
       };
-    };  
+    };
 
     targets = {
-    hyprlock.enable = false;
-    starship.enable = false;
-    librewolf.profileNames = [ "Default"];
+      hyprlock.enable = false;
+      starship.enable = false;
+      librewolf.profileNames = ["Default"];
     };
   };
 }

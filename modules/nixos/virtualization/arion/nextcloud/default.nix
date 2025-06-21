@@ -1,6 +1,8 @@
-{config, vars, ...}: let
-  vars = import ../../../../vars.nix;
-in {
+{
+  config,
+  vars,
+  ...
+}: {
   virtualisation.arion = {
     projects.nextcloud.settings = {
       imports = [./arion-compose.nix];
