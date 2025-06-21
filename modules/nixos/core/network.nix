@@ -27,6 +27,15 @@
       #       59011
       #     ];
     };
+
+    useDHCP = false;
+    dhcpcd.enable = false;
+  
+    nameservers = [
+      "192.168.188.159"
+      "1.1.1.1"
+      "2606:4700:4700::1111"
+    ];
   };
 
   programs.nm-applet = {

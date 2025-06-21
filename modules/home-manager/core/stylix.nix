@@ -15,8 +15,6 @@
     base16Scheme = "${pkgs.base16-schemes}/share/themes/dracula.yaml";
 
     autoEnable = true;
-    targets.hyprlock.enable = false;
-    targets.starship.enable = false;
 
     polarity = "dark";
     opacity = {
@@ -39,6 +37,12 @@
         package = pkgs.unstable.montserrat;
         name = "Montserrat";
       };
+    };  
+
+    targets = {
+    hyprlock.enable = false;
+    starship.enable = false;
+    librewolf.profileNames = [ "Default"];
     };
   };
 }

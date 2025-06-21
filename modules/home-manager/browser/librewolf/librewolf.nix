@@ -9,7 +9,7 @@
 
   programs.librewolf = {
     enable = true;
-    package = pkgs.unstable.librewolf-wayland;
+    package = pkgs.unstable.librewolf;
     languagePacks = ["de" "en-US"];
 
     policies = {
@@ -39,11 +39,9 @@
         darkreader
         consent-o-matic
         #gesturefy
-        vimium
         proton-pass
         sponsorblock
-        clearurls
-        sponsorblock
+        skip-redirect
       ];
 
       search.engines = {
@@ -156,6 +154,9 @@
         "browser.shell.checkDefaultBrowser" = false;
         "identity.fxaccounts.enabled" = true;
         "privacy.resistFingerprinting.letterboxing" = true;
+        "network.http.referer.XOriginPolicy" = 2;
+        "webgl.disabled" =  true;
+
       };
     };
   };

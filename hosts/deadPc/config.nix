@@ -22,7 +22,7 @@
       outputs.nixosModules.virtualization.vm
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
-    #++ (builtins.attrValues outputs.nixosModules.virtualization)
+    ++ (builtins.attrValues outputs.nixosModules.virtualization)
     ++ (builtins.attrValues outputs.nixosModules.desktop);
 
   nix.settings.experimental-features = ["nix-command" "flakes"];

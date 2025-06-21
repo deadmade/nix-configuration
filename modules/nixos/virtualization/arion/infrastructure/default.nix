@@ -118,14 +118,6 @@
     '';
   };
 
-  sops.templates."diun.env" = {
-    path = "/home/${vars.username}/.docker/infrastructure/diun.env";
-    owner = vars.username;
-    mode = "0775";
-    content = ''
-      DIUN_NOTIF_NTFY_TOKEN="${config.sops.placeholder."diun/ntfy_access_token"}"
-    '';
-  };
   services.cron = {
     enable = true;
     systemCronJobs = [

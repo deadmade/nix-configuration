@@ -23,7 +23,6 @@ in {
   home.packages = with pkgs; [
     remnote
     pkgs.unstable.texlive.combined.scheme-full
-    pkgs.unstable.whatsapp-for-linux
     pkgs.unstable.p3x-onenote
   ];
 
@@ -49,7 +48,7 @@ in {
     };
   };
 
-   home.shellAliases = {
+  home.shellAliases = {
     updateNix = "nix flake update && sudo nixos-rebuild switch --flake .#deadConvertible home-manager switch --flake .#deadmade@deadConvertible";
-  }; 
+  };
 }

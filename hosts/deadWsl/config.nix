@@ -44,7 +44,6 @@
     pkgs.unstable.presenterm
     pkgs.unstable.processing
     inputs.neovim-config.packages.${pkgs.system}.nvim
-    inputs.alejandra.defaultPackage.${pkgs.system}
   ];
 
   environment.variables.EDITOR = "nvim";

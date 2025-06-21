@@ -21,7 +21,6 @@
 
   home.packages = with pkgs; [
     remnote
-    pkgs.unstable.whatsapp-for-linux
     pkgs.unstable.p3x-onenote
     teams-for-linux
   ];

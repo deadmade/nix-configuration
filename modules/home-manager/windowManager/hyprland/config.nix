@@ -7,6 +7,7 @@
         "waybar &"
         "vesktop --start-minimized &"
         "protonvpn-app --start-minimized &"
+        "flatpak run com.rtosta.zapzap"
         "nm-applet --indicator &"
         "kitty -e spotify_player &"
         "librewolf &"

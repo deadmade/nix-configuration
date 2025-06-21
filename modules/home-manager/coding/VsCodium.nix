@@ -18,6 +18,12 @@
         eamodio.gitlens
         esbenp.prettier-vscode
 
+        ms-azuretools.vscode-docker
+        #chrmarti.regex
+        #wayou.vscode-todo-highlight
+        oderwat.indent-rainbow
+        kamikillerto.vscode-colorize
+
         # Nix Support
         jnoortheen.nix-ide
 

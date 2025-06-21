@@ -7,7 +7,4 @@
   environment.systemPackages = with pkgs; [
     quickemu
   ];
-
-
 }
-

@@ -8,7 +8,7 @@
     inputs.arion.nixosModules.arion
 
     ./infrastructure
-    #./nextcloud
+    ./nextcloud
   ];
 
   environment.systemPackages = with pkgs; [arion];

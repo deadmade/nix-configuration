@@ -29,7 +29,6 @@ in
 
     # Home Manager Pakete
     home.packages = with pkgs.unstable; [
-      #dunst # Benachrichtigungen
       hyprshot # Screenshot-Tool
     ];
 
