@@ -6,10 +6,6 @@
         executable = "${pkgs.unstable.freetube}/bin/freetube";
         profile = "${pkgs.firejail}/etc/firejail/freetube.profile";
       };
-      neofetch = {
-        executable = "${pkgs.neofetch}/bin/neofetch";
-      };
-
       curl = {
         executable = "${pkgs.curl}/bin/curl";
       };

@@ -67,6 +67,10 @@
     nixcord = {
       url = "github:kaylorben/nixcord";
     };
+
+    nix-jetbrains-plugins = {
+      url = "github:theCapypara/nix-jetbrains-plugins";
+    };
   };
 
   outputs = {
