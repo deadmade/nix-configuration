@@ -16,7 +16,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}  # Stellt sicher, dass das Token verwendet wird
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v3
+        uses: DeterminateSystems/nix-installer-action@v17
       - name: Flake.lock aktualisieren
         run: |
           nix flake update --commit-lock-file
