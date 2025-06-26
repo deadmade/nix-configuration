@@ -42,6 +42,7 @@
         proton-pass
         sponsorblock
         skip-redirect
+        return-youtube-dislikes
       ];
 
       search.engines = {
