@@ -13,8 +13,5 @@ jobs:
     - uses: cachix/cachix-action@v16
       with:
         name: deadcache
-        # If you chose API tokens for write access OR if you have a private cache
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-    - run: nix-shell -p jq
     - run: nix build .#nixosConfigurations.deadPc.config.system.build.toplevel | cachix push deadcache
-    - run: nix flake archive --json | jq -r '.path,(.inputs|to_entries[].value.path)' | cachix push deadcache
