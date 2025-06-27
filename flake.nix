@@ -69,7 +69,7 @@
     };
 
     nix-jetbrains-plugins = {
-      url = "github:theCapypara/nix-jetbrains-plugins";
+      url = "github:PhilippHeuer/nix-jetbrains-plugins";
     };
   };
 

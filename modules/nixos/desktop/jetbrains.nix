@@ -6,14 +6,33 @@
   system,
   ...
 }: let 
-  # pluginList = [
-  #  inputs.nix-jetbrains-plugins.plugins."${system}".idea-ultimate."2024.3"."com.intellij.plugins.watcher"
-  # ];
+  pluginList = [
+    # hotkeys
+    "164" # ideavim
+
+    # themes
+    "18682" # catppuccin-theme
+    "23029" # catppuccin-icons
+
+    # fun
+    "8575" # nyan-progress-bar
+    "24027" # discord-rich-presence
+
+    # ai
+    "17718" # copilot
+  ];
+
+  addPlugins = (inputs.nix-jetbrains-plugins.import pkgs.unstable).addPlugins;
+
+  idea-community = addPlugins pkgs.unstable.jetbrains.idea-community-bin pluginList;
+  rider = addPlugins pkgs.unstable.jetbrains.rider pluginList;
+  pycharm-community = addPlugins pkgs.unstable.jetbrains.pycharm-community-bin pluginList;
+  webstorm = addPlugins pkgs.unstable.jetbrains.webstorm pluginList;
 in {
-  environment.systemPackages = with pkgs.unstable; [
-   jetbrains.rider
-   # jetbrains.webstorm
-   # jetbrains.pycharm-professional
-   (pkgs.jetbrains.plugins.addPlugins pkgs.jetbrains.rider ["ideavim" "catppuccin-theme" "catppuccin-icons"])
+  environment.systemPackages = [
+    idea-community
+    rider
+   # pycharm-community
+    webstorm
   ];
 }
