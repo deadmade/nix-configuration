@@ -37,9 +37,19 @@
   # Enable the X11 windowing system.
   services.xserver.enable = false;
 
-  xdg.portal.enable = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = ["evdi" "wacom"];
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-hyprland
+    ];
+    config = {
+      common.default = "hyprland";
+    };
+  };
 
   hardware.cpu.amd.updateMicrocode = true;
   hardware.bluetooth.enable = true;
