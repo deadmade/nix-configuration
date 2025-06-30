@@ -15,7 +15,7 @@
     pkgs.unstable.kdePackages.okular
     #pkgs.unstable.spotify
     pkgs.unstable.spotify-player
-    pkgs.unstable.onlyoffice-desktopeditors
+    pkgs.unstable.libreoffice-fresh
   ];
 
   programs.thunar.enable = true;
