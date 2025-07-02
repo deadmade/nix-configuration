@@ -18,9 +18,14 @@
       inputs.hardware.nixosModules.common-gpu-amd
       inputs.hardware.nixosModules.common-pc-laptop
       inputs.hardware.nixosModules.common-pc-ssd
+
+      outputs.nixosModules.desktop.firejail
+      outputs.nixosModules.desktop.packages
+      outputs.nixosModules.desktop.stylix
+      outputs.nixosModules.desktop.vpn
     ]
-    ++ (builtins.attrValues outputs.nixosModules.core)
-    ++ (builtins.attrValues outputs.nixosModules.desktop);
+    ++ (builtins.attrValues outputs.nixosModules.core);
+    #++ (builtins.attrValues outputs.nixosModules.desktop);
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 

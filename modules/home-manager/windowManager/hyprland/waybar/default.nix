@@ -211,8 +211,8 @@ in
               critical = 15;
             };
             format = "{icon} {capacity}%";
-            format-charging = "󰂄 {capacity}%";
-            format-plugged = "󱘖 {capacity}%";
+            format-charging = "󰂄  {capacity}%";
+            format-plugged = "󱘖  {capacity}%";
             format-icons = [
               "󰁺"
               "󰁻"
@@ -226,7 +226,8 @@ in
               "󰁹"
             ];
             on-click = "";
-            tooltip = false;
+            tooltip = true;
+            icon-size = 55;
           };
 
           "temperature" = {
@@ -239,6 +240,7 @@ in
             "format-critical" = "{icon}{temperatureC}°C";
             format = "{icon} {temperatureC}°C";
             "format-icons" = [""];
+
           };
         }
       ];
@@ -435,6 +437,7 @@ in
                 padding: 0px 4px;
                 margin-bottom: 0px;
                 border-radius: 0px 4px 4px 0px;
+                font-size: 12px:
             }
 
             #battery.critical:not(.charging) {
