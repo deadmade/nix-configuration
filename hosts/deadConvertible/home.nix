@@ -23,6 +23,7 @@ in {
   home.packages = with pkgs; [
     remnote
     pkgs.unstable.p3x-onenote
+    teams-for-linux
   ];
 
   wayland.windowManager.hyprland = {
@@ -49,5 +50,6 @@ in {
 
   home.shellAliases = {
     updateNix = "nix flake update && sudo nixos-rebuild switch --flake .#deadConvertible && home-manager switch --flake .#deadmade@deadConvertible";
+    tinf = "cd Tinf2023-LessonSummaries/DHBW Heidenheim/2025 SoSe"
   };
 }
