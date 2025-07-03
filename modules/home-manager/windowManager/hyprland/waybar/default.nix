@@ -437,7 +437,7 @@ in
                 padding: 0px 4px;
                 margin-bottom: 0px;
                 border-radius: 0px 4px 4px 0px;
-                font-size: 12px:
+                font-size: 12px;
             }
 
             #battery.critical:not(.charging) {
