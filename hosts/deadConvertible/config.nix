@@ -99,7 +99,6 @@
     greetd.tuigreet
     inputs.neovim-config.packages.${pkgs.system}.nvim
     brightnessctl
-    pkgs.unstalbe.arduino-ide
   ];
 
   services.greetd = {
