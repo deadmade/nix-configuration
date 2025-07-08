@@ -23,6 +23,7 @@
       outputs.nixosModules.desktop.packages
       outputs.nixosModules.desktop.stylix
       outputs.nixosModules.desktop.vpn
+      outputs.nixosModules.desktop.jetbrains
       outputs.nixosModules.virtualization.vm
     ]
     ++ (builtins.attrValues outputs.nixosModules.core);
@@ -98,6 +99,7 @@
     greetd.tuigreet
     inputs.neovim-config.packages.${pkgs.system}.nvim
     brightnessctl
+    pkgs.unstalbe.arduino-ide
   ];
 
   services.greetd = {
