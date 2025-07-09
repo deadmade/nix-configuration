@@ -29,7 +29,7 @@
         "dotnet"
         "git-auto-fetch"
         "gh"
-        "web-search"
+        "git"
         "sudo"
       ];
       #theme = "catppuccin";
