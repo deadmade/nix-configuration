@@ -6,7 +6,7 @@
       warn-dirty = false;
     };
     gc = {
-      automatic = true;
+      automatic = false;
       dates = "weekly";
       options = "--delete-older-than +3";
     };

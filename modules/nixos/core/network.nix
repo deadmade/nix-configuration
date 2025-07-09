@@ -37,8 +37,4 @@
       "2606:4700:4700::1111"
     ];
   };
-
-  programs.nm-applet = {
-    enable = true;
-  };
 }
