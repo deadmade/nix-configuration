@@ -30,9 +30,9 @@
   webstorm = addPlugins pkgs.unstable.jetbrains.webstorm pluginList;
 in {
   environment.systemPackages = [
-    idea-community
+    #    idea-community
     rider
    # pycharm-community
-    webstorm
+    # webstorm
   ];
 }

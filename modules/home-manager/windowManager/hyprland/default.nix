@@ -32,6 +32,8 @@ in
       hyprshot # Screenshot-Tool
     ];
 
+    services.network-manager-applet.enable = true;
+
     # Hyprland aktivieren und konfigurieren
     wayland.windowManager.hyprland = {
       package = pkgs.unstable.hyprland;
