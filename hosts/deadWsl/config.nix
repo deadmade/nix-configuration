@@ -22,7 +22,7 @@
     outputs.nixosModules.core.user
     outputs.nixosModules.core.localization
     outputs.nixosModules.core.network
-    outputs.nixosModules.desktop.jetbrains
+
     #outputs.nixosModules.funshit
   ];
   #++ (builtins.attrValues outputs.nixosModules.virtualization);

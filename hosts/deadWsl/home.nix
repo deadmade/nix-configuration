@@ -15,9 +15,6 @@
     ++ (builtins.attrValues outputs.homeManagerModules.core);
 
   home.packages = with pkgs; [
-    pkgs.unstable.texlive.combined.scheme-full
-    pkgs.unstable.texlivePackages.texapi
-    pkgs.unstable.texlivePackages.yax
   ];
 
   home.shellAliases = {
