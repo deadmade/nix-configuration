@@ -20,7 +20,6 @@
       inputs.hardware.nixosModules.common-pc-ssd
 
       outputs.nixosModules.virtualization.vm
-      outputs.nixosModules.virtualization.default
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
     #++ (builtins.attrValues outputs.nixosModules.virtualization)
