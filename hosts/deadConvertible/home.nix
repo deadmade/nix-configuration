@@ -50,6 +50,6 @@ in {
 
   home.shellAliases = {
     updateNix = "nix flake update && sudo nixos-rebuild switch --flake .#deadConvertible && home-manager switch --flake .#deadmade@deadConvertible";
-    tinf = "cd Tinf2023-LessonSummaries/DHBW Heidenheim/2025 SoSe";
+   # tinf = "cd Tinf2023-LessonSummaries/DHBW Heidenheim/2025 SoSe";
   };
 }
