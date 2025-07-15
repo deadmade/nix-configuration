@@ -24,15 +24,15 @@
 
   addPlugins = (inputs.nix-jetbrains-plugins.import pkgs.unstable).addPlugins;
 
-  idea-community = addPlugins pkgs.unstable.jetbrains.idea-community-bin pluginList;
-  rider = addPlugins pkgs.unstable.jetbrains.rider pluginList;
-  pycharm-community = addPlugins pkgs.unstable.jetbrains.pycharm-community-bin pluginList;
-  webstorm = addPlugins pkgs.unstable.jetbrains.webstorm pluginList;
+  idea-community = addPlugins pkgs.jetbrains.idea-community-bin pluginList;
+  rider = addPlugins pkgs.jetbrains.rider pluginList;
+  pycharm-community = addPlugins pkgs.jetbrains.pycharm-community-bin pluginList;
+  webstorm = addPlugins pkgs.jetbrains.webstorm pluginList;
 in {
   environment.systemPackages = [
     #    idea-community
     rider
-   # pycharm-community
-    # webstorm
+ #  pycharm-community
+    webstorm
   ];
 }
