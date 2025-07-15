@@ -99,6 +99,7 @@
     greetd.tuigreet
     inputs.neovim-config.packages.${pkgs.system}.nvim
     brightnessctl
+    zoom
   ];
 
   services.greetd = {
