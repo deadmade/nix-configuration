@@ -20,7 +20,7 @@
 
     # ai
     "17718" # copilt
-  o];
+  ];
 
   pluginListPy = [
   ];

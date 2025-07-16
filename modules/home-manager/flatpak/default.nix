@@ -9,7 +9,6 @@
       #"com.github.iwalton3.jellyfin-media-player"
       "com.github.tchx84.Flatseal"
       #"io.kapsa.drive"
-      "us.zoom.Zoom"
       "com.rtosta.zapzap"
     ];
     overrides = {
