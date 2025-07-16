@@ -20,10 +20,6 @@
     blueman
   ];
 
-  services.pulseaudio.extraConfig = "
-  load-module module-switch-on-connect
-  ";
-
   #wiegurad setup
   # https://nixos.wiki/wiki/WireGuard
   # nmcli connection import type wireguard file thefile.conf

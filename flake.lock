@@ -116,11 +116,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1752552209,
-        "narHash": "sha256-qOU0Ntz0rczB8mtAXgrYywkeMGNOUZ7K1llhkXZ5IRE=",
+        "lastModified": 1752638600,
+        "narHash": "sha256-Y833l/KT+yKjW8fv1wMMW1ZR187hwuBo7k+CAvwYpTI=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "a8e97c23cc97670e4ec9ab9fa43faf2585678de2",
+        "rev": "24b604cfc91b1450035c438b5df4a1fe786900d2",
         "type": "gitlab"
       },
       "original": {
@@ -568,11 +568,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1752551500,
-        "narHash": "sha256-zEVTm4ri/cElcPbHmyXOPXwMrIhLXx+xTxYmoWcyHmE=",
+        "lastModified": 1752637752,
+        "narHash": "sha256-X5rl8CLNbqT7WiZ548Iw0Vo5GaRrW70gbjVEkFmkZJA=",
         "owner": "PhilippHeuer",
         "repo": "nix-jetbrains-plugins",
-        "rev": "3b01bf0d2e11b9655eaa17fc410b8058880056da",
+        "rev": "3ff64a81e48ad8f1a72ce02f2605074c2ac4c5b3",
         "type": "github"
       },
       "original": {
@@ -603,11 +603,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1752543846,
-        "narHash": "sha256-n1yS0R5RfbNA44dD2cHNqMNhwscT/Rg6SJqLmCZtNPY=",
+        "lastModified": 1752630055,
+        "narHash": "sha256-8Zy45wx4VcizLOmqwo/IcQjwmAxC5+qWUJosymP6FwQ=",
         "owner": "kaylorben",
         "repo": "nixcord",
-        "rev": "08a45916c5fe47976c131673bccb06e4e09a3252",
+        "rev": "dd72b4445bac0fcfe50e7107dfbff6b03895848f",
         "type": "github"
       },
       "original": {
@@ -654,11 +654,11 @@
     },
     "nixos-master": {
       "locked": {
-        "lastModified": 1752549776,
-        "narHash": "sha256-FtS6rx+/zBTIXfu6bI2BeN//NWeSWbJVVQWItqS3rRg=",
+        "lastModified": 1752635288,
+        "narHash": "sha256-6w13JKE9rmoGf8VWE0bJ7t/NHzKaA4WonPChil48IeI=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "dd76278ca2d15eca1289ab1c4ca899ff16d36233",
+        "rev": "dfc5f26ccfa18b67ff3db7885510f512f7c748b6",
         "type": "github"
       },
       "original": {
@@ -670,11 +670,11 @@
     },
     "nixos-unstable": {
       "locked": {
-        "lastModified": 1751984180,
-        "narHash": "sha256-LwWRsENAZJKUdD3SpLluwDmdXY9F45ZEgCb0X+xgOL0=",
+        "lastModified": 1752480373,
+        "narHash": "sha256-JHQbm+OcGp32wAsXTE/FLYGNpb+4GLi5oTvCxwSoBOA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9807714d6944a957c2e036f84b0ff8caf9930bc0",
+        "rev": "62e0f05ede1da0d54515d4ea8ce9c733f12d9f08",
         "type": "github"
       },
       "original": {
@@ -785,11 +785,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1752308619,
-        "narHash": "sha256-pzrVLKRQNPrii06Rm09Q0i0dq3wt2t2pciT/GNq5EZQ=",
+        "lastModified": 1752436162,
+        "narHash": "sha256-Kt1UIPi7kZqkSc5HVj6UY5YLHHEzPBkgpNUByuyxtlw=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "650e572363c091045cdbc5b36b0f4c1f614d3058",
+        "rev": "dfcd5b901dbab46c9c6e80b265648481aafb01f8",
         "type": "github"
       },
       "original": {
@@ -833,11 +833,11 @@
     },
     "nixpkgs_7": {
       "locked": {
-        "lastModified": 1752599098,
-        "narHash": "sha256-CmNY2YFoaxNsC/9p74CdLpLb3mNy2gO5I72O15RlsMA=",
+        "lastModified": 1752620740,
+        "narHash": "sha256-f3pO+9lg66mV7IMmmIqG4PL3223TYMlnlw+pnpelbss=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "8ba1983f1475d1b16800a990762f3d6586ec148c",
+        "rev": "32a4e87942101f1c9f9865e04dc3ddb175f5f32e",
         "type": "github"
       },
       "original": {
@@ -947,11 +947,11 @@
         "tinted-zed": "tinted-zed"
       },
       "locked": {
-        "lastModified": 1752599125,
-        "narHash": "sha256-ELOMN0zQjGyuq6Gg0xQnizvA0a5bjDx6/LU/+ITX6u4=",
+        "lastModified": 1752629832,
+        "narHash": "sha256-Nxr6czAZIZSu8IR5b+d1fZxj5/d6hWNmPpX3eLvlfMs=",
         "owner": "nix-community",
         "repo": "stylix",
-        "rev": "7e23b0c844fc87f13bbfbd4db1af46e471cc6c7b",
+        "rev": "2e93f697edec6a127d872bfb63bcc765ee6e5d49",
         "type": "github"
       },
       "original": {

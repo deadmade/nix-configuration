@@ -23,19 +23,7 @@
   ];
 
   pluginListPy = [
-    # hotkeys
-    "164" # ideavim
-
-    # themes
-    "18682" # catppuccin-theme
-    "23029" # catppuccin-icons
-
-    # fun
-    "8575" # nyan-progress-bar
-    "24027" # discord-rich-presence
-
-    # ai
-    "17718" # copilot
+    
   ];
 
 
@@ -43,7 +31,7 @@
 
   idea-community = addPlugins pkgs.jetbrains.idea-community-bin pluginList;
   rider = addPlugins pkgs.jetbrains.rider pluginList;
-  pycharm-community = addPlugins pkgs.jetbrains.pycharm-community-bin pluginList;
+  pycharm-community = addPlugins pkgs.jetbrains.pycharm-community-bin pluginListPy;
   webstorm = addPlugins pkgs.jetbrains.webstorm pluginList;
 in {
   environment.systemPackages = [
