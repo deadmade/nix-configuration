@@ -5,7 +5,7 @@
   outputs,
   system,
   ...
-}: let 
+}: let
   pluginList = [
     # hotkeys
     "164" # ideavim
@@ -19,25 +19,25 @@
     "24027" # discord-rich-presence
 
     # ai
-    "17718" # copilot
-  ];
+    "17718" # copilt
+  o];
 
   pluginListPy = [
-    
   ];
-
 
   addPlugins = (inputs.nix-jetbrains-plugins.import pkgs.unstable).addPlugins;
 
   idea-community = addPlugins pkgs.jetbrains.idea-community-bin pluginList;
   rider = addPlugins pkgs.jetbrains.rider pluginList;
-  pycharm-community = addPlugins pkgs.jetbrains.pycharm-community-bin pluginListPy;
+  pycharm-community = addPlugins pkgs.jetbrains.pycharm-professional pluginList;
   webstorm = addPlugins pkgs.jetbrains.webstorm pluginList;
+  rust-rover= addPlugins pkgs.jetbrains.rust-rover pluginList;
 in {
   environment.systemPackages = [
     #    idea-community
     rider
     pycharm-community
     webstorm
+    rust-rover
   ];
 }

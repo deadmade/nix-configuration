@@ -240,7 +240,6 @@ in
             "format-critical" = "{icon}{temperatureC}°C";
             format = "{icon} {temperatureC}°C";
             "format-icons" = [""];
-
           };
         }
       ];

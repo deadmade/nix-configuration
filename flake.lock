@@ -500,9 +500,8 @@
         "type": "github"
       },
       "original": {
-        "owner": "deadmade",
-        "repo": "neovim-configuration",
-        "type": "github"
+        "type": "git",
+        "url": "file:/home/deadmade/neovim-configuration"
       }
     },
     "neovim-nightly-overlay": {

@@ -21,7 +21,6 @@
         "traefik.http.routers.nextcloud-https.entrypoints" = "websecure";
         "traefik.http.routers.nextcloud-https.rule" = "Host(`nextcloud.home.deadmade.de`)";
 
-
         "traefik.http.routers.nextcloud-https.tls.domains[0].main" = "home.deadmade.de";
         "traefik.http.routers.nextcloud-https.tls.domains[0].sans" = "*.home.deadmade.de";
 

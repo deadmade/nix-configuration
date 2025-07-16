@@ -8,12 +8,12 @@
   hardware.bluetooth.enable = true;
   hardware.bluetooth = {
     settings = {
-    General = {
-      Experimental = true;
-      Enable = "Source,Sink,Media,Socket";
+      General = {
+        Experimental = true;
+        Enable = "Source,Sink,Media,Socket";
+      };
     };
-  };
-  powerOnBoot = true;  # powers up the default Bluetooth controller on boot
+    powerOnBoot = true; # powers up the default Bluetooth controller on boot
   };
 
   environment.systemPackages = with pkgs; [

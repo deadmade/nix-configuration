@@ -42,13 +42,13 @@
 
     stylix.url = "github:nix-community/stylix/release-25.05";
 
-    neovim-config = {
-      url = "github:deadmade/neovim-configuration";
-    };
-
     #neovim-config = {
-    # url = "git+file:/mnt/c/Users/manue/Documents/GitHub/neovim-configuration";
+    #  url = "github:deadmade/neovim-configuration";
     #};
+
+    neovim-config = {
+     url = "git+file:/home/deadmade/neovim-configuration";
+    };
 
     distro-grub-themes = {
       url = "github:AdisonCavani/distro-grub-themes";
