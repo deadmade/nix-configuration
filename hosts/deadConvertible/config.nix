@@ -23,6 +23,7 @@
       outputs.nixosModules.desktop.packages
       outputs.nixosModules.desktop.stylix
       outputs.nixosModules.desktop.vpn
+      outputs.nixosModules.desktop.bluetooth
       outputs.nixosModules.desktop.jetbrains
       outputs.nixosModules.virtualization.vm
     ]
@@ -59,13 +60,14 @@
   };
 
   hardware.cpu.amd.updateMicrocode = true;
-  hardware.bluetooth.enable = true;
+
+
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
+  services.pulseaudio.enable = true;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -99,7 +101,6 @@
     greetd.tuigreet
     inputs.neovim-config.packages.${pkgs.system}.nvim
     brightnessctl
-    zoom
   ];
 
   services.greetd = {
