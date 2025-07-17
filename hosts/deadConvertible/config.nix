@@ -23,11 +23,12 @@
       outputs.nixosModules.desktop.packages
       outputs.nixosModules.desktop.stylix
       outputs.nixosModules.desktop.vpn
+      outputs.nixosModules.desktop.bluetooth
       outputs.nixosModules.desktop.jetbrains
       outputs.nixosModules.virtualization.vm
     ]
     ++ (builtins.attrValues outputs.nixosModules.core);
-    #++ (builtins.attrValues outputs.nixosModules.desktop);
+  #++ (builtins.attrValues outputs.nixosModules.desktop);
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
@@ -59,7 +60,6 @@
   };
 
   hardware.cpu.amd.updateMicrocode = true;
-  hardware.bluetooth.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -99,6 +99,8 @@
     greetd.tuigreet
     inputs.neovim-config.packages.${pkgs.system}.nvim
     brightnessctl
+    pkgs.unstable.openconnect
+    pkgs.unstable.networkmanager-openconnect
   ];
 
   services.greetd = {

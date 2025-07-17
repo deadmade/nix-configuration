@@ -30,6 +30,7 @@ in
     # Home Manager Pakete
     home.packages = with pkgs.unstable; [
       hyprshot # Screenshot-Tool
+      networkmanagerapplet
     ];
 
     services.network-manager-applet.enable = true;

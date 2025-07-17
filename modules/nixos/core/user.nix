@@ -17,5 +17,6 @@
       home-manager
     ];
   };
+
   nix.settings.trusted-users = [vars.username];
 }
