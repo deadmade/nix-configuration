@@ -28,9 +28,15 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
-    # example = prev.example.overrideAttrs (oldAttrs: rec {
-    # ...
-    # });
+    # opencode = prev.opencode.overrideAttrs {
+    #   version = "0.2.34";
+    #   src = prev.fetchFromGitHub {
+    #     owner = "sst";
+    #     repo = "opencode";   
+    #     tag = "v${prev.opencode.version}";
+    #     hash = "sha256-l/V9YHwuIPN73ieMT++enL1O5vecA9L0qBDGr8eRVxY=";
+    #   };
+    # };
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
