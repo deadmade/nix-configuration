@@ -26,6 +26,7 @@
       outputs.nixosModules.desktop.bluetooth
       outputs.nixosModules.desktop.jetbrains
       outputs.nixosModules.virtualization.vm
+      outputs.nixosModules.virtualization.virtualisation
     ]
     ++ (builtins.attrValues outputs.nixosModules.core);
   #++ (builtins.attrValues outputs.nixosModules.desktop);
