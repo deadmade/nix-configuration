@@ -41,6 +41,6 @@ in
       enable = true;
       xwayland.enable = true;
       systemd.enable = true;
-      plugins = [pkgs.unstable.hyprlandPlugins.hyprsplit];
+      plugins = [pkgs.hyprlandPlugins.hyprsplit];
     };
   }
