@@ -26,7 +26,7 @@
       outputs.nixosModules.desktop.bluetooth
       outputs.nixosModules.desktop.jetbrains
       outputs.nixosModules.virtualization.vm
-      outputs.nixosModules.virtualization.virtualisation
+      outputs.nixosModules.virtualization.default
     ]
     ++ (builtins.attrValues outputs.nixosModules.core);
   #++ (builtins.attrValues outputs.nixosModules.desktop);
@@ -100,8 +100,9 @@
     greetd.tuigreet
     inputs.neovim-config.packages.${pkgs.system}.nvim
     brightnessctl
-    pkgs.unstable.openconnect
-    pkgs.unstable.networkmanager-openconnect
+    #pkgs.unstable.openconnect
+    #pkgs.unstable.networkmanager-openconnect
+    #pkgs.unstable.opencode
   ];
 
   services.greetd = {

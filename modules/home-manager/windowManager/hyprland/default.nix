@@ -31,6 +31,7 @@ in
     home.packages = with pkgs.unstable; [
       hyprshot # Screenshot-Tool
       networkmanagerapplet
+      wofi-emoji
     ];
 
     services.network-manager-applet.enable = true;
