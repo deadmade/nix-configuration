@@ -26,6 +26,14 @@ in {
     teams-for-linux
   ];
 
+  nixpkgs = {
+    overlays = [
+      outputs.overlays.unstable-packages
+      outputs.overlays.modifications
+    ];
+    config.allowUnfree = true;
+  };
+
   wayland.windowManager.hyprland = {
     settings = {
       monitor = [

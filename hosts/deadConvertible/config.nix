@@ -19,6 +19,10 @@
       inputs.hardware.nixosModules.common-pc-laptop
       inputs.hardware.nixosModules.common-pc-ssd
 
+      inputs.chaotic.nixosModules.nyx-cache
+      inputs.chaotic.nixosModules.nyx-overlay
+      inputs.chaotic.nixosModules.nyx-registry
+
       outputs.nixosModules.desktop.firejail
       outputs.nixosModules.desktop.packages
       outputs.nixosModules.desktop.stylix
@@ -26,7 +30,6 @@
       outputs.nixosModules.desktop.bluetooth
       outputs.nixosModules.desktop.jetbrains
       outputs.nixosModules.virtualization.vm
-      outputs.nixosModules.virtualization.default
     ]
     ++ (builtins.attrValues outputs.nixosModules.core);
   #++ (builtins.attrValues outputs.nixosModules.desktop);
@@ -46,7 +49,7 @@
   # Enable the X11 windowing system.
   services.xserver.enable = false;
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_cachyos;
   boot.kernelModules = ["evdi" "wacom"];
 
   xdg.portal = {
@@ -90,6 +93,7 @@
   nixpkgs = {
     overlays = [
       outputs.overlays.unstable-packages
+      outputs.overlays.modifications
     ];
     config.allowUnfree = true;
   };
@@ -124,6 +128,8 @@
     graphics.enable = true;
     graphics.enable32Bit = true;
   };
+
+  virtualisation.docker.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

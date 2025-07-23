@@ -9,7 +9,7 @@
 
   programs.nixcord = {
     discord.enable = false;
-    enable = false;
+    enable = true;
     vesktop.package = pkgs.unstable.vesktop;
     vesktop.enable = true;
 

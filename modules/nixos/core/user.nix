@@ -10,7 +10,7 @@
     isNormalUser = true;
     description = vars.username;
     shell = pkgs.zsh; #TODO Make this configurable
-    extraGroups = ["networkmanager" "wheel" "dialout"];
+    extraGroups = ["networkmanager" "wheel" "dialout" "docker"];
     packages = with pkgs; [
       #  kdePackages.kate
       #  thunderbird
