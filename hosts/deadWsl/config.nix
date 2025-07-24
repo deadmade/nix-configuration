@@ -15,17 +15,15 @@
   imports = [
     # include NixOS-WSL modules
     ./hardware-configuration.nix
-    ./sops.nix
 
     inputs.nixos-wsl.nixosModules.default
     outputs.nixosModules.core.packages
     outputs.nixosModules.core.user
     outputs.nixosModules.core.localization
-    outputs.nixosModules.core.network
+    #outputs.nixosModules.core.network
 
     #outputs.nixosModules.funshit
   ];
-  #++ (builtins.attrValues outputs.nixosModules.virtualization);
 
   wsl.enable = true;
   wsl.defaultUser = vars.username;
@@ -41,9 +39,8 @@
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   environment.systemPackages = with pkgs; [
-    pkgs.unstable.presenterm
-    pkgs.unstable.processing
     inputs.neovim-config.packages.${pkgs.system}.nvim
+    nh
   ];
 
   environment.variables.EDITOR = "nvim";
