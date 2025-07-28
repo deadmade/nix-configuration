@@ -706,16 +706,15 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1753257580,
-        "narHash": "sha256-ZqTkX/GlX65wcDzSSRUW/sgrDzidrVXnTd8J90lEjHE=",
+        "lastModified": 1753581565,
+        "narHash": "sha256-ci4ue5LefosqA2Cv+yqufb2E7/KIfIRXOS0mXA/3C9E=",
         "owner": "kaylorben",
         "repo": "nixcord",
-        "rev": "d7501c16ba4ad4d30c5cd69c5dba28963edb4b0a",
+        "rev": "cd1d051aeb24912007cef00329b3f5c394e52042",
         "type": "github"
       },
       "original": {
         "owner": "kaylorben",
-        "ref": "hash",
         "repo": "nixcord",
         "type": "github"
       }
@@ -794,11 +793,19 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
+<<<<<<< HEAD
         "lastModified": 1753642709,
         "narHash": "sha256-J/xPmOfKRX/4UtBIVa5qkKuwN6FrHQBmo5bIPmcPeck=",
         "owner": "nix-community",
         "repo": "NixOS-WSL",
         "rev": "e1e0999d45ba66d2d66ac061c27ce680814d14b1",
+=======
+        "lastModified": 1753700210,
+        "narHash": "sha256-kbGNZYbEnooi4z7LHoHTNrVS5vzWyvl1fLXKETYcIT4=",
+        "owner": "nix-community",
+        "repo": "NixOS-WSL",
+        "rev": "597361274859ea3462c2b0600f417f4b81569944",
+>>>>>>> cf84245 (removed nixcord hash)
         "type": "github"
       },
       "original": {
@@ -937,11 +944,11 @@
     },
     "nixpkgs_7": {
       "locked": {
-        "lastModified": 1751792365,
-        "narHash": "sha256-J1kI6oAj25IG4EdVlg2hQz8NZTBNYvIS0l4wpr9KcUo=",
+        "lastModified": 1753429684,
+        "narHash": "sha256-9h7+4/53cSfQ/uA3pSvCaBepmZaz/dLlLVJnbQ+SJjk=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "1fd8bada0b6117e6c7eb54aad5813023eed37ccb",
+        "rev": "7fd36ee82c0275fb545775cc5e4d30542899511d",
         "type": "github"
       },
       "original": {
@@ -953,11 +960,19 @@
     },
     "nixpkgs_8": {
       "locked": {
+<<<<<<< HEAD
         "lastModified": 1753687905,
         "narHash": "sha256-HkYcglocVUAHYcVd6sOa3n4zFxvFvGvzoZtlC9bZHCM=",
         "owner": "nixos",
         "repo": "nixpkgs",
         "rev": "bf24477582d543e5deb2b2459baf2dbff88c964d",
+=======
+        "lastModified": 1753697232,
+        "narHash": "sha256-WML8wXhqy2PYF1iLCGHjwjZNn+rtMnMo0Vz/tlM1WlU=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "f4a973b4a237153db1ed07f35cfa72b5b145276b",
+>>>>>>> cf84245 (removed nixcord hash)
         "type": "github"
       },
       "original": {

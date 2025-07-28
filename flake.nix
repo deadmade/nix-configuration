@@ -68,7 +68,7 @@
     };
 
     nixcord = {
-      url = "github:kaylorben/nixcord/hash";
+      url = "github:kaylorben/nixcord";
     };
 
     nix-jetbrains-plugins = {
