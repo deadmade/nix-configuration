@@ -19,6 +19,10 @@
       inputs.hardware.nixosModules.common-gpu-nvidia-nonprime
       inputs.hardware.nixosModules.common-pc-ssd
 
+      inputs.chaotic.nixosModules.nyx-cache
+      inputs.chaotic.nixosModules.nyx-overlay
+      inputs.chaotic.nixosModules.nyx-registry
+
       outputs.nixosModules.virtualization.vm
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
@@ -54,7 +58,7 @@
     };
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_cachyos;
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = false;
