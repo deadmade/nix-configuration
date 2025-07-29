@@ -19,7 +19,7 @@
     pkgs.unstable.thunderbird
     pkgs.unstable.birdtray
     pkgs.unstable.teamspeak6-client
-   # pkgs.unstable.opencode
+    pkgs.unstable.opencode
   ];
 
   programs.thunar.enable = true;
