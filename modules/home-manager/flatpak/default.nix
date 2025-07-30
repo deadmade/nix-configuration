@@ -7,7 +7,7 @@
     packages = [
       "md.obsidian.Obsidian"
       #"com.github.iwalton3.jellyfin-media-player"
-      "com.github.tchx84.Flatseal"
+      #"com.github.tchx84.Flatseal"
       #"io.kapsa.drive"
       "com.rtosta.zapzap"
     ];

@@ -15,7 +15,6 @@
         # Productivity
         vscodevim.vim
         yzhang.markdown-all-in-one
-        eamodio.gitlens
         esbenp.prettier-vscode
 
         ms-azuretools.vscode-docker
@@ -26,9 +25,6 @@
 
         # Nix Support
         jnoortheen.nix-ide
-
-        github.copilot
-        github.copilot-chat
       ];
 
       userSettings = lib.mkForce {

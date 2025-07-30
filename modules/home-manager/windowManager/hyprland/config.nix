@@ -109,7 +109,7 @@
         "$mainMod, J, togglesplit," # dwindle
         "$mainMod, W, exec, librewolf" # Browser
         "$mainMod SHIFT, Q, exit, " # Currently not really working
-        "$mainMod SHIFT, s, exec, hyprshot -m region"
+        "$mainMod SHIFT, s, exec, hyprshot -m region output --clipboard-only"
         "$mainMod, N, exec, swaync-client -t"
         "$mainMod, x, exec, wofi-emoji"
 

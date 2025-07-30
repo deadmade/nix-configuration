@@ -19,9 +19,4 @@
     pkgs.unstable.libsecret # Secret Service API
     pkgs.unstable.openvpn # the openvpn binary, if you want that backend
   ];
-
-  #wiegurad setup
-  # https://nixos.wiki/wiki/WireGuard
-  # nmcli connection import type wireguard file thefile.conf
-  # nmcli con up id NameOfTheConnection
 }

@@ -13,7 +13,6 @@
       outputs.homeManagerModules.coding
       outputs.homeManagerModules.browser.librewolf
       outputs.homeManagerModules.terminal
-      outputs.homeManagerModules.gaming
       outputs.homeManagerModules.socialMedia.vencord
       outputs.homeManagerModules.flatpak
     ]

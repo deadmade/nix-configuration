@@ -7,15 +7,14 @@
   host,
   ...
 }: {
-  imports =
-    [
-      #outputs.homeManagerModules.coding
-      outputs.homeManagerModules.terminal
+  imports = [
+    #outputs.homeManagerModules.coding
+    outputs.homeManagerModules.terminal
 
-      outputs.homeManagerModules.core.aliases
-      outputs.homeManagerModules.core.home
-      outputs.homeManagerModules.core.nixConfig
-    ];
+    outputs.homeManagerModules.core.aliases
+    outputs.homeManagerModules.core.home
+    outputs.homeManagerModules.core.nixConfig
+  ];
 
   home.packages = with pkgs; [
   ];

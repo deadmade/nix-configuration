@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   programs.firejail = {
-    enable = true;
+    enable = false;
     wrappedBinaries = {
       freetube = {
         executable = "${pkgs.unstable.freetube}/bin/freetube";

@@ -5,7 +5,7 @@
   outputs,
   ...
 }: {
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth.enable = false;
   hardware.bluetooth = {
     settings = {
       General = {
@@ -17,7 +17,7 @@
   };
 
   environment.systemPackages = with pkgs; [
-    blueman
+    #blueman
   ];
 
   #wiegurad setup

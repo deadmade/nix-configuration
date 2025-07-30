@@ -14,10 +14,9 @@
     git
     btop
     kitty
-    ranger
-    cachix
+    #cachix
     #pkgs.unstable.vulnix
-    age
+    #age
     wl-clipboard
   ];
 
