@@ -4,7 +4,7 @@
   ...
 }: {
   programs.tmux = {
-    enable = true; # Enable TMUX through Home Manager
+    enable = false; # Enable TMUX through Home Manager
     plugins = with pkgs; [
       {
         plugin = tmuxPlugins.catppuccin;
