@@ -40,6 +40,7 @@
     flake = "/home/deadmade/nix-configuration";
   };
 
+  programs.nano.enable = false;
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images
 }
