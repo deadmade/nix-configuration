@@ -10,16 +10,14 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    #pkgs.unstable.freetube
     pkgs.unstable.protonmail-desktop
     pkgs.unstable.kdePackages.okular
     #pkgs.unstable.spotify
     pkgs.unstable.spotify-player
     pkgs.unstable.libreoffice-fresh
     pkgs.unstable.thunderbird
-    #pkgs.unstable.birdtray
-    #pkgs.unstable.teamspeak6-client
     pkgs.unstable.opencode
+    pkgs.unstable.remnote
   ];
 
   programs.thunar.enable = true;

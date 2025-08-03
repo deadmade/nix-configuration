@@ -29,17 +29,17 @@
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
     # opencode = prev.opencode.overrideAttrs {
-    #  #§" opencode-node-modules-hash."x86_64-linux" = "sha256-VB7bikVFy8w82M6AkYXjsHx34CNHAGMgY69KISOokE4=";
+    #  "opencode-node-modules-hash.x86_64-linux" = "sha256-VB7bikVFy8w82M6AkYXjsHx34CNHAGMgY69KISOokE4=";
 
-    #   version = "0.3.22";
+    #   version = "0.3.122";
     #   src = prev.fetchFromGitHub {
     #     owner = "sst";
     #     repo = "opencode";
     #     tag = "v${prev.opencode.version}";
-    #     hash = "sha256-yT6uaTEKYb/+A1WhP6AQW0hWMnmS9vlfLn1E57cnzn0=";
+    #     hash = "sha256-2fvUSbQWBxjXLRfVFwJ6VNO2tx+qGa+IDRCSwFPqw+o=";
     #   };
 
-    #   vendorHash = "sha256-G1vM8wxTTPpB1Oaxz2YI8AkirwG54A9i6Uq5e92ucyY=";
+    #   vendorHash = "sha256-nBwYVaBau1iTnPY3d5F/5/ENyjMCikpQYNI5whEJwBk=";
     #   outputHash = "sha256-VB7bikVFy8w82M6AkYXjsHx34CNHAGMgY69KISOokE4=";
     # };
 

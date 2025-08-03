@@ -21,7 +21,6 @@ in {
     ++ (builtins.attrValues outputs.homeManagerModules.core);
 
   home.packages = with pkgs; [
-    remnote
     pkgs.unstable.p3x-onenote
     teams-for-linux
   ];
