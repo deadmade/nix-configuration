@@ -119,10 +119,6 @@
   environment.systemPackages = with pkgs; [
     greetd.tuigreet
     inputs.neovim-config.packages.${pkgs.system}.nvim
-    pkgs.unstable.lynis
-    pkgs.unstable.chkrootkit
-    pkgs.unstable.clamav
-    pkgs.unstable.aide
   ];
 
   services.greetd = {

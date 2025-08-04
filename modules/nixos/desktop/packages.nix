@@ -29,7 +29,7 @@
   ];
 
   services.flatpak.enable = true;
-  services.fwupd.enable = true;
+  services.fwupd.enable = false;
 
   programs.nh = {
     enable = true;

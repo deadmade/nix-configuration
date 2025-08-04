@@ -12,7 +12,7 @@
     shell = pkgs.zsh; #TODO Make this configurable
     extraGroups = ["networkmanager" "wheel" "dialout" "docker"];
     packages = with pkgs; [
-      home-manager
+     # home-manager
     ];
   };
 
