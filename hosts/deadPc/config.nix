@@ -23,6 +23,8 @@
       inputs.chaotic.nixosModules.nyx-overlay
       inputs.chaotic.nixosModules.nyx-registry
 
+      "${inputs.nix-mineral}/nix-mineral.nix"
+
       outputs.nixosModules.virtualization.vm
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
@@ -117,6 +119,10 @@
   environment.systemPackages = with pkgs; [
     greetd.tuigreet
     inputs.neovim-config.packages.${pkgs.system}.nvim
+    pkgs.unstable.lynis
+    pkgs.unstable.chkrootkit
+    pkgs.unstable.clamav
+    pkgs.unstable.aide
   ];
 
   services.greetd = {
