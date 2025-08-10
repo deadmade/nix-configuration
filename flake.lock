@@ -98,11 +98,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1754712381,
-        "narHash": "sha256-LbTalQDguSZ5xpfFihCEHMjm7xYF+QLQlHFfFTHpkj8=",
+        "lastModified": 1754828778,
+        "narHash": "sha256-HA1MODRqLVV/WTfXvFjTV8g+HlOIpBp3DBO1lz6Xcoc=",
         "owner": "chaotic-cx",
         "repo": "nyx",
-        "rev": "9c8c4ed6fab07590095105cb5bea98587955b3c4",
+        "rev": "c86818cd3488f983172055a77b23cea4fd98a230",
         "type": "github"
       },
       "original": {
@@ -572,19 +572,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-<<<<<<< HEAD
         "lastModified": 1754810409,
         "narHash": "sha256-MzwuudnXOZf3BBO+XA2El/mQcDgL9oLqyHjKwWUsAy0=",
         "owner": "deadmade",
         "repo": "neovim-configuration",
         "rev": "68f21bb5d3e533840b84aee7970af85d8c8e30fb",
-=======
-        "lastModified": 1754724016,
-        "narHash": "sha256-lsN23wvhwpcjgjSKvvVn7RkPfD5HZp70cWBn8zkjyG0=",
-        "owner": "deadmade",
-        "repo": "neovim-configuration",
-        "rev": "25aa706e597659c4efb59e6c79e4b8ffd22eab45",
->>>>>>> 4be78cb (added some podman stuff)
         "type": "github"
       },
       "original": {
@@ -833,11 +825,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1754498491,
-        "narHash": "sha256-erbiH2agUTD0Z30xcVSFcDHzkRvkRXOQ3lb887bcVrs=",
+        "lastModified": 1754725699,
+        "narHash": "sha256-iAcj9T/Y+3DBy2J0N+yF9XQQQ8IEb5swLFzs23CdP88=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c2ae88e026f9525daf89587f3cbee584b92b6134",
+        "rev": "85dbfc7aaf52ecb755f87e577ddbe6dbbdbc1054",
         "type": "github"
       },
       "original": {
@@ -976,11 +968,11 @@
     },
     "nixpkgs_8": {
       "locked": {
-        "lastModified": 1754813363,
-        "narHash": "sha256-zIJ9dPfAMupL0q2oeeH5SQJKu3NzpKdjiRpf1yjsxfM=",
+        "lastModified": 1754843911,
+        "narHash": "sha256-Q15GrSe+uxlK+Zdu3Wb2lE2r5DSz2yqJFVS6597pLNc=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "8452b40e025b8a40696f63e8a7832581767732f4",
+        "rev": "3fee4f508f31b8969049412d75d209eac1dab951",
         "type": "github"
       },
       "original": {
