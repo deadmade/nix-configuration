@@ -572,11 +572,19 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
+<<<<<<< HEAD
         "lastModified": 1754810409,
         "narHash": "sha256-MzwuudnXOZf3BBO+XA2El/mQcDgL9oLqyHjKwWUsAy0=",
         "owner": "deadmade",
         "repo": "neovim-configuration",
         "rev": "68f21bb5d3e533840b84aee7970af85d8c8e30fb",
+=======
+        "lastModified": 1754724016,
+        "narHash": "sha256-lsN23wvhwpcjgjSKvvVn7RkPfD5HZp70cWBn8zkjyG0=",
+        "owner": "deadmade",
+        "repo": "neovim-configuration",
+        "rev": "25aa706e597659c4efb59e6c79e4b8ffd22eab45",
+>>>>>>> 4be78cb (added some podman stuff)
         "type": "github"
       },
       "original": {

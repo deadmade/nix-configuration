@@ -104,9 +104,12 @@
     greetd.tuigreet
     inputs.neovim-config.packages.${pkgs.system}.nvim
     brightnessctl
-    #pkgs.unstable.openconnect
-    #pkgs.unstable.networkmanager-openconnect
-    #pkgs.unstable.opencode
+
+    dive # look into docker image layers
+    podman-tui # status of containers in the terminal
+    #docker-compose # start group of containers for dev
+    podman-compose # start group of containers for dev
+    podman-desktop
   ];
 
   services.greetd = {
@@ -129,7 +132,18 @@
     graphics.enable32Bit = true;
   };
 
-  virtualisation.docker.enable = true;
+  virtualisation.containers.enable = true;
+  virtualisation = {
+    podman = {
+      enable = true;
+
+      # Create a `docker` alias for podman, to use it as a drop-in replacement
+      dockerCompat = true;
+
+      # Required for containers under podman-compose to be able to talk to each other.
+      defaultNetwork.settings.dns_enabled = true;
+    };
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

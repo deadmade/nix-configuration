@@ -36,8 +36,8 @@ in {
   environment.systemPackages = [
     #    idea-community
     rider
-   # pycharm-community
-   # webstorm
+    # pycharm-community
+    # webstorm
     rust-rover
   ];
 }
