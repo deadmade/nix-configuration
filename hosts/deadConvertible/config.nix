@@ -23,16 +23,16 @@
       inputs.chaotic.nixosModules.nyx-overlay
       inputs.chaotic.nixosModules.nyx-registry
 
+      "${inputs.nix-mineral}/nix-mineral.nix"
+
       outputs.nixosModules.desktop.firejail
       outputs.nixosModules.desktop.packages
       outputs.nixosModules.desktop.stylix
       outputs.nixosModules.desktop.vpn
-      outputs.nixosModules.desktop.bluetooth
       outputs.nixosModules.desktop.jetbrains
       outputs.nixosModules.virtualization.vm
     ]
     ++ (builtins.attrValues outputs.nixosModules.core);
-  #++ (builtins.attrValues outputs.nixosModules.desktop);
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
@@ -66,7 +66,7 @@
   hardware.cpu.amd.updateMicrocode = true;
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
+  services.printing.enable = false;
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
