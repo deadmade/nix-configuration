@@ -122,6 +122,7 @@
         specialArgs = {inherit inputs outputs vars;};
         modules = [
           ./hosts/deadPc/config.nix
+          "${inputs.nix-mineral}/nix-mineral.nix"
         ];
       };
 

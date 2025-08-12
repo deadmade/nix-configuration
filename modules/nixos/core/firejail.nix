@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   programs.firejail = {
-    enable = false;
+    enable = true;
     wrappedBinaries = {
       freetube = {
         executable = "${pkgs.unstable.freetube}/bin/freetube";
@@ -22,12 +22,8 @@
         executable = "${pkgs.kitty}/bin/kitty";
       };
 
-      ranger = {
-        executable = "${pkgs.ranger}/bin/ranger";
-      };
-
-      cachix = {
-        executable = "${pkgs.cachix}/bin/cachix";
+      wl-clipboard = {
+        executable = "${pkgs.cachix}/bin/wl-clipboard";
       };
     };
   };
