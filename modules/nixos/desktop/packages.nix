@@ -18,9 +18,12 @@
     pkgs.unstable.thunderbird
     pkgs.unstable.opencode
     pkgs.unstable.remnote
+    pkgs.unstable.nwg-displays
+    pkgs.unstable.presenterm
+    superfile
   ];
 
-  programs.thunar.enable = true;
+  #programs.thunar.enable = true;
   programs.xfconf.enable = true;
 
   programs.thunar.plugins = with pkgs.xfce; [
@@ -36,6 +39,14 @@
     clean.enable = true;
     clean.extraArgs = "--keep-since 4d --keep 3";
     flake = "/home/deadmade/nix-configuration";
+  };
+
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+    options = [
+      "--cmd z"
+    ];
   };
 
   programs.nano.enable = false;

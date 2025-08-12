@@ -40,8 +40,6 @@
 
   environment.systemPackages = with pkgs; [
     inputs.neovim-config.packages.${pkgs.system}.nvim
-    nh
-    pkgs.unstable.opencode
   ];
 
   environment.variables.EDITOR = "nvim";
