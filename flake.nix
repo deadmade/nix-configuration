@@ -71,14 +71,12 @@
       url = "github:kaylorben/nixcord";
     };
 
-    nix-jetbrains-plugins = {
-      url = "github:PhilippHeuer/nix-jetbrains-plugins";
-    };
-
     nix-mineral = {
       url = "github:cynicsketch/nix-mineral";
       flake = false;
     };
+
+    nix-jetbrains-plugins.url = "github:theCapypara/nix-jetbrains-plugins";
   };
 
   outputs = {

@@ -34,15 +34,25 @@
         extraArgs = ["--ignore=noroot"];
       };
 
-      thunar = {
-        executable = "${pkgs.xfce.thunar}/bin/thunar";
-        profile = "${pkgs.firejail}/etc/firejail/thunar.profile";
-        extraArgs = ["--ignore=noroot"];
-      };
+      # thunar = {
+      #   executable = "${pkgs.xfce.thunar}/bin/thunar";
+      #   profile = "${pkgs.firejail}/etc/firejail/thunar.profile";
+      #   extraArgs = ["--ignore=noroot"];
+      # };
 
       spotify-player = {
         executable = "${pkgs.unstable.spotify-player}/bin/spotify_player";
         profile = "${pkgs.firejail}/etc/firejail/spotify.profile";
+      };
+
+      nwg-displays = {
+        executable = "${pkgs.unstable.nwg-displays}/bin/nwg-displays";
+        profile = "${pkgs.firejail}/etc/firejail/default.profile";
+      };
+
+      presenterm = {
+        executable = "${pkgs.unstable.presenterm}/bin/presenterm";
+        profile = "${pkgs.firejail}/etc/firejail/default.profile";
       };
     };
   };

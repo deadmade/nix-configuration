@@ -56,4 +56,12 @@
   home.packages = with pkgs; [
     jetbrains-mono # Ensure the font is installed
   ];
+
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+    options = [
+      "--cmd z"
+    ];
+  };
 }

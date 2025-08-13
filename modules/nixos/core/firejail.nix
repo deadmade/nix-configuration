@@ -2,10 +2,6 @@
   programs.firejail = {
     enable = true;
     wrappedBinaries = {
-      freetube = {
-        executable = "${pkgs.unstable.freetube}/bin/freetube";
-        profile = "${pkgs.firejail}/etc/firejail/freetube.profile";
-      };
       curl = {
         executable = "${pkgs.curl}/bin/curl";
       };
@@ -23,7 +19,7 @@
       };
 
       wl-clipboard = {
-        executable = "${pkgs.cachix}/bin/wl-clipboard";
+        executable = "${pkgs.wl-clipboard}/bin/wl-clipboard";
       };
     };
   };
