@@ -17,7 +17,7 @@
     #cachix
     #pkgs.unstable.vulnix
     #age
-    # wl-clipboard
+    wl-clipboard
   ];
 
   home-manager.extraSpecialArgs = {inherit inputs outputs;};

@@ -17,10 +17,6 @@
       kitty = {
         executable = "${pkgs.kitty}/bin/kitty";
       };
-
-      wl-clipboard = {
-        executable = "${pkgs.wl-clipboard}/bin/wl-clipboard";
-      };
     };
   };
 }

@@ -26,13 +26,7 @@
   environment.gnome.excludePackages = with pkgs; [nixos-render-docs pantheon.epiphany];
   services.xserver.excludePackages = with pkgs; [xterm];
 
-  #programs.thunar.enable = true;
   programs.xfconf.enable = true;
-
-  # programs.thunar.plugins = with pkgs.xfce; [
-  #   thunar-archive-plugin
-  #   thunar-volman
-  # ];
 
   services.flatpak.enable = true;
   services.fwupd.enable = false;
