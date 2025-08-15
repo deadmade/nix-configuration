@@ -10,10 +10,10 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    # curl
-    # git
-    # btop
-    # kitty
+    curl
+    git
+    btop
+    kitty
     #cachix
     #pkgs.unstable.vulnix
     #age
