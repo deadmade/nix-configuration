@@ -20,7 +20,6 @@
     pkgs.unstable.remnote
     pkgs.unstable.nwg-displays
     pkgs.unstable.presenterm
-    superfile
   ];
 
   environment.gnome.excludePackages = with pkgs; [nixos-render-docs pantheon.epiphany];

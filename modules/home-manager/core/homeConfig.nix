@@ -17,6 +17,22 @@
   # Enable Home Manager
   programs.home-manager.enable = true;
 
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+    options = [
+      "--cmd z"
+    ];
+  };
+
+  programs.superfile = {
+    enable = true;
+    settings = {
+      metadata = true;
+      zoxide = true;
+    };
+  };
+
   home.sessionPath = [
     "$HOME/.local/bin"
   ];
