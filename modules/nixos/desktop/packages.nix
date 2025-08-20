@@ -20,9 +20,10 @@
     pkgs.unstable.remnote
     pkgs.unstable.nwg-displays
     pkgs.unstable.presenterm
+    superfile
+    vlc
   ];
 
-  environment.gnome.excludePackages = with pkgs; [nixos-render-docs pantheon.epiphany];
   services.xserver.excludePackages = with pkgs; [xterm];
 
   programs.xfconf.enable = true;

@@ -10,7 +10,7 @@
 with lib; {
   services.swaync = {
     enable = true;
-    package = pkgs.unstable.swaynotificationcenter;
+    package = pkgs.swaynotificationcenter;
     settings = {
       positionX = "right";
       positionY = "top";
