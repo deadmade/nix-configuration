@@ -38,7 +38,7 @@
     flake = "/home/deadmade/nix-configuration";
   };
 
-  programs.nano.enable = false;
+  programs.nano.enable = true;
   programs.neovim.enable = true;
   programs.neovim.defaultEditor = true;
 

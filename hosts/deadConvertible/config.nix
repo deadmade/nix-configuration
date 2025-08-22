@@ -25,7 +25,6 @@
 
       "${inputs.nix-mineral}/nix-mineral.nix"
 
-      outputs.nixosModules.desktop.firejail
       outputs.nixosModules.desktop.packages
       outputs.nixosModules.desktop.stylix
       outputs.nixosModules.desktop.vpn
@@ -108,8 +107,8 @@
     dive # look into docker image layers
     podman-tui # status of containers in the terminal
     #docker-compose # start group of containers for dev
-    podman-compose # start group of containers for dev
-    podman-desktop
+    unstable.podman-compose # start group of containers for dev
+    unstable.podman-desktop
   ];
 
   services.greetd = {

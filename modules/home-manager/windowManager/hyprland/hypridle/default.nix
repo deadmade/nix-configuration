@@ -42,10 +42,10 @@
           on-timeout = "hyprctl dispatch dpms off"; # Bildschirm aus nach 5,5 Min.
           on-resume = "hyprctl dispatch dpms on"; # Bildschirm an bei Aktivität
         }
-        {
-          timeout = 1800;
-          on-timeout = "systemctl suspend"; # Suspend nach 30 Min.
-        }
+        #{
+        #  timeout = 1800;
+        #  on-timeout = "systemctl suspend"; # Suspend nach 30 Min.
+        #}
       ];
     };
   };
