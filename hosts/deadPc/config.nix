@@ -60,7 +60,7 @@
     };
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = false;
@@ -123,7 +123,6 @@
     #docker-compose # start group of containers for dev
     unstable.podman-compose # start group of containers for dev
     unstable.podman-desktop
-    unstable.postman
   ];
 
   services.greetd = {

@@ -38,7 +38,7 @@
           on-timeout = "hyprlock --immediate"; # Sperrt den Bildschirm nach 5 Min.
         }
         {
-          timeout = 430;
+          timeout = 530;
           on-timeout = "hyprctl dispatch dpms off"; # Bildschirm aus nach 5,5 Min.
           on-resume = "hyprctl dispatch dpms on"; # Bildschirm an bei Aktivität
         }
