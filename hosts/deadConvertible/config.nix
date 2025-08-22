@@ -104,16 +104,26 @@
     inputs.neovim-config.packages.${pkgs.system}.nvim
     brightnessctl
     
-    dive # look into docker image layers
-    podman-tui # status of containers in the terminal
+    #dive # look into docker image layers
+    #podman-tui # status of containers in the terminal
     #docker-compose # start group of containers for dev
-    unstable.podman-compose # start group of containers for dev
-    unstable.podman-desktop
+    #unstable.podman-compose # start group of containers for dev
+    #unstable.podman-desktop
   ];
 
   services.greetd = {
     enable = true;
-    vt = 3;
+    vt = 3;  # virtualisation = {
+  #   podman = {
+  #     enable = true;
+
+  #     # Create a `docker` alias for podman, to use it as a drop-in replacement
+  #     dockerCompat = true;
+
+  #     # Required for containers under podman-compose to be able to talk to each other.
+  #     defaultNetwork.settings.dns_enabled = true;
+  #   };
+  # };
     settings = {
       default_session = {
         user = "deadmade";
@@ -132,17 +142,19 @@
   };
 
   virtualisation.containers.enable = true;
-  virtualisation = {
-    podman = {
-      enable = true;
+  # virtualisation = {
+  #   podman = {
+  #     enable = true;
 
-      # Create a `docker` alias for podman, to use it as a drop-in replacement
-      dockerCompat = true;
+  #     # Create a `docker` alias for podman, to use it as a drop-in replacement
+  #     dockerCompat = true;
 
-      # Required for containers under podman-compose to be able to talk to each other.
-      defaultNetwork.settings.dns_enabled = true;
-    };
-  };
+  #     # Required for containers under podman-compose to be able to talk to each other.
+  #     defaultNetwork.settings.dns_enabled = true;
+  #   };
+  # };
+
+  virtualisation.docker.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -19,6 +19,7 @@
 
   programs.zoxide = {
     enable = true;
+    package = pkgs.unstable.zoxide
     enableZshIntegration = true;
     options = [
       "--cmd z"
@@ -27,6 +28,7 @@
 
   programs.superfile = {
     enable = true;
+    package = pkgs.unstable.superfile;
     settings = {
       metadata = true;
       zoxide = true;
