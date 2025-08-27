@@ -18,7 +18,7 @@
     pkgs.unstable.thunderbird
     pkgs.unstable.opencode
     pkgs.unstable.remnote
-    pkgs.unstable.nwg-displays
+    pkgs.nwg-displays
     pkgs.unstable.presenterm
     superfile
     vlc

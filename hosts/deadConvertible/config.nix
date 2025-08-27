@@ -119,7 +119,8 @@
         user = "deadmade";
         command = "${pkgs.greetd.tuigreet}/bin/tuigreet 
         --time 
-        --issue 
+        --issue
+        --asterisks 
         --theme border=magenta;text=cyan;prompt=green;time=red;action=blue;button=yellow;container=black;input=red
         --cmd Hyprland"; # start Hyprland with a TUI login manager
       };

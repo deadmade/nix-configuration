@@ -19,7 +19,7 @@
       #background_opacity = "0.7";
       background_blur = 10;
 
-      editor = "vim";
+      editor = "nvim";
       tab_bar_edge = "top";
       tab_bar_margin_width = 0;
       tab_bar_margin_height = 0;
@@ -56,12 +56,4 @@
   home.packages = with pkgs; [
     jetbrains-mono # Ensure the font is installed
   ];
-
-  programs.zoxide = {
-    enable = true;
-    enableZshIntegration = true;
-    options = [
-      "--cmd z"
-    ];
-  };
 }
