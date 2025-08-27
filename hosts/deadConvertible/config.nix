@@ -48,7 +48,7 @@
   # Enable the X11 windowing system.
   services.xserver.enable = false;
 
-  boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = ["evdi" "wacom"];
 
   xdg.portal = {
@@ -113,17 +113,7 @@
 
   services.greetd = {
     enable = true;
-    vt = 3;  # virtualisation = {
-  #   podman = {
-  #     enable = true;
-
-  #     # Create a `docker` alias for podman, to use it as a drop-in replacement
-  #     dockerCompat = true;
-
-  #     # Required for containers under podman-compose to be able to talk to each other.
-  #     defaultNetwork.settings.dns_enabled = true;
-  #   };
-  # };
+    vt = 3; 
     settings = {
       default_session = {
         user = "deadmade";

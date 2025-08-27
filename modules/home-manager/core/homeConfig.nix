@@ -19,7 +19,7 @@
 
   programs.zoxide = {
     enable = true;
-    package = pkgs.unstable.zoxide
+    package = pkgs.unstable.zoxide;
     enableZshIntegration = true;
     options = [
       "--cmd z"
