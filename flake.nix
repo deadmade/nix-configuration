@@ -77,6 +77,12 @@
     };
 
     nix-jetbrains-plugins.url = "github:theCapypara/nix-jetbrains-plugins";
+
+    solaar = {
+      #url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz"; # For latest stable version
+      url = "github:Svenum/Solaar-Flake/main"; # Uncomment line for latest unstable version
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {

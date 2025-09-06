@@ -145,6 +145,9 @@
       open = false;
       powerManagement.enable = true;
     };
+    logitech.wireless = {
+      enable = true;
+    };
   };
 
   virtualisation.containers.enable = true;

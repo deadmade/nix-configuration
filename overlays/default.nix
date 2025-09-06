@@ -28,31 +28,16 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
-    # opencode = prev.opencode.overrideAttrs {
-    #  "opencode-node-modules-hash.x86_64-linux" = "sha256-VB7bikVFy8w82M6AkYXjsHx34CNHAGMgY69KISOokE4=";
-
-    #   version = "0.3.122";
-    #   src = prev.fetchFromGitHub {
-    #     owner = "sst";
-    #     repo = "opencode";
-    #     tag = "v${prev.opencode.version}";
-    #     hash = "sha256-2fvUSbQWBxjXLRfVFwJ6VNO2tx+qGa+IDRCSwFPqw+o=";
-    #   };
-
-    #   vendorHash = "sha256-nBwYVaBau1iTnPY3d5F/5/ENyjMCikpQYNI5whEJwBk=";
-    #   outputHash = "sha256-VB7bikVFy8w82M6AkYXjsHx34CNHAGMgY69KISOokE4=";
-    # };
-
-    # hyprlandPlugins.hyprsplit = prev.hyprlandPlugins.hyprsplit.overrideAttrs {
-    #   version = "0.50.0";
-    #   src = prev.fetchFromGitHub {
-    #     owner = "shezdy";
-    #     repo = "hyprsplit";
-    #     tag = "v0.50.1";
-    #     hash = "sha256-D0zfdUJXBRnNMmv/5qW+X4FJJ3/+t7yQmwJFkBuEgck=";
-    #   };
-
-    #};
+    logiops = prev.logiops.overrideAttrs (old: {
+      patches =
+        (old.patches or [])
+        ++ [
+          (prev.fetchpatch {
+            url = "https://github.com/PixlOne/logiops/commit/91aa0c12175f33a4184ccaf41181b0a799f7cc55.patch";
+            hash = "sha256-A+StDD+Dp7lPWVpuYR9JR5RuvwPU/5h50B0lY8Qu7nY=";
+          })
+        ];
+    });
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

@@ -5,4 +5,5 @@
   vpn = import ./vpn.nix;
   jetbrains = import ./jetbrains.nix;
   bluetooth = import ./bluetooth.nix;
+  logitech = import ./logitech.nix;
 }
