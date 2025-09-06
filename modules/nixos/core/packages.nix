@@ -18,6 +18,7 @@
     #pkgs.unstable.vulnix
     #age
     wl-clipboard
+    superfile
   ];
 
   home-manager.extraSpecialArgs = {inherit inputs outputs;};

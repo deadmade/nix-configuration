@@ -12,7 +12,7 @@
   environment.systemPackages = with pkgs; [
     pkgs.unstable.protonmail-desktop
     pkgs.unstable.kdePackages.okular
-    #pkgs.unstable.spotify
+    pkgs.unstable.spotify
     pkgs.unstable.spotify-player
     pkgs.unstable.libreoffice-fresh
     pkgs.unstable.thunderbird
@@ -20,8 +20,9 @@
     pkgs.unstable.remnote
     pkgs.nwg-displays
     pkgs.unstable.presenterm
-    superfile
     vlc
+    home-manager
+    pkgs.unstable.hyprland
   ];
 
   services.xserver.excludePackages = with pkgs; [xterm];
