@@ -150,18 +150,20 @@
     };
   };
 
-  virtualisation.containers.enable = true;
-  virtualisation = {
-    podman = {
-      enable = true;
+  # virtualisation.containers.enable = true;
+  # virtualisation = {
+  #   podman = {
+  #     enable = true;
 
-      # Create a `docker` alias for podman, to use it as a drop-in replacement
-      dockerCompat = true;
+  #     # Create a `docker` alias for podman, to use it as a drop-in replacement
+  #     dockerCompat = true;
 
-      # Required for containers under podman-compose to be able to talk to each other.
-      defaultNetwork.settings.dns_enabled = true;
-    };
-  };
+  #     # Required for containers under podman-compose to be able to talk to each other.
+  #     defaultNetwork.settings.dns_enabled = true;
+  #   };
+  # };
+
+  virtualisation.docker.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
