@@ -23,8 +23,6 @@
       inputs.chaotic.nixosModules.nyx-overlay
       inputs.chaotic.nixosModules.nyx-registry
 
-      "${inputs.nix-mineral}/nix-mineral.nix"
-
       outputs.nixosModules.virtualization.vm
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
@@ -67,7 +65,20 @@
   services.desktopManager.plasma6.enable = false;
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+    publish = {
+      enable = true;
+      userServices = true;
+    };
+  };
+  services.printing = {
+    enable = false;
+    browsing = true;
+    drivers = [pkgs.cnijfilter2 pkgs.canon-cups-ufr2];
+  };
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
@@ -119,9 +130,8 @@
     inputs.neovim-config.packages.${pkgs.system}.nvim
 
     dive # look into docker image layers
-    podman-tui # status of containers in the terminal
-    #docker-compose # start group of containers for dev
-    unstable.podman-compose # start group of containers for dev
+    unstable.docker-compose # start group of containers for dev
+    #unstable.podman-compose # start group of containers for dev
     unstable.podman-desktop
   ];
 
@@ -150,20 +160,22 @@
     };
   };
 
-  # virtualisation.containers.enable = true;
-  # virtualisation = {
-  #   podman = {
-  #     enable = true;
+  virtualisation.containers.enable = true;
+  virtualisation = {
+    podman = {
+      enable = true;
+      package = pkgs.unstable.podman;
 
-  #     # Create a `docker` alias for podman, to use it as a drop-in replacement
-  #     dockerCompat = true;
+      # Create a `docker` alias for podman, to use it as a drop-in replacement
+      dockerCompat = true;
 
-  #     # Required for containers under podman-compose to be able to talk to each other.
-  #     defaultNetwork.settings.dns_enabled = true;
-  #   };
-  # };
+      # Required for containers under podman-compose to be able to talk to each other.
+      defaultNetwork.settings.dns_enabled = true;
+      extraPackages = [];
+    };
+  };
 
-  virtualisation.docker.enable = true;
+  #virtualisation.docker.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -38,10 +38,10 @@ in
 
     # Hyprland aktivieren und konfigurieren
     wayland.windowManager.hyprland = {
-      package = pkgs.unstable.hyprland;
+      package = pkgs.hyprland;
       enable = true;
       xwayland.enable = true;
       systemd.enable = true;
-      plugins = [pkgs.unstable.hyprlandPlugins.hyprsplit];
+      plugins = [pkgs.hyprlandPlugins.hyprsplit];
     };
   }

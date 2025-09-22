@@ -22,7 +22,6 @@
     pkgs.unstable.presenterm
     vlc
     home-manager
-    pkgs.unstable.hyprland
   ];
 
   services.xserver.excludePackages = with pkgs; [xterm];

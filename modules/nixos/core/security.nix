@@ -1,13 +1,16 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = [
+    "${inputs.nix-mineral}/nix-mineral.nix"
+  ];
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.hyprland.enableGnomeKeyring = true;
 
-  security.apparmor = {
+  nix-mineral = {
     enable = true;
-    killUnconfinedConfinables = true;
-    packages = with pkgs; [
-      apparmor-profiles # Standard profiles
-      apparmor-utils
-    ];
+    };
   };
 }

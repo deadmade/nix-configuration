@@ -23,8 +23,6 @@
       inputs.chaotic.nixosModules.nyx-overlay
       inputs.chaotic.nixosModules.nyx-registry
 
-      "${inputs.nix-mineral}/nix-mineral.nix"
-
       outputs.nixosModules.desktop.packages
       outputs.nixosModules.desktop.stylix
       outputs.nixosModules.desktop.vpn
