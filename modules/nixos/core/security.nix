@@ -11,6 +11,17 @@
 
   nix-mineral = {
     enable = true;
+    overrides = {
+      compatibility.allow-ip-forward = true;
+      performance.allow-smt = true;
+      desktop = {
+        allow-multilib = true;
+        home-exec = true;
+        tmp-exec = true;
+      };
+      security = {
+        disable-intelme-kmodules = true;
+      };
     };
   };
 }
