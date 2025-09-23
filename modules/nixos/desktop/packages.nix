@@ -13,7 +13,6 @@
     pkgs.unstable.protonmail-desktop
     pkgs.unstable.kdePackages.okular
     pkgs.unstable.spotify
-    pkgs.unstable.spotify-player
     pkgs.unstable.libreoffice-fresh
     pkgs.unstable.thunderbird
     pkgs.unstable.opencode
@@ -23,6 +22,12 @@
     vlc
     home-manager
   ];
+
+  custom.firejail.spotify.enable = true;
+  custom.firejail.libreoffice.enable = true;
+  custom.firejail.thunderbird.enable = true;
+  custom.firejail.vlc.enable = true;
+  custom.firejail.librewolf.enable = true;
 
   services.xserver.excludePackages = with pkgs; [xterm];
 

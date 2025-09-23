@@ -24,6 +24,7 @@
       inputs.chaotic.nixosModules.nyx-registry
 
       outputs.nixosModules.virtualization.vm
+      outputs.customModules.firejail
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
     #++ (builtins.attrValues outputs.nixosModules.virtualization)
