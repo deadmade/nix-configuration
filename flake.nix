@@ -16,37 +16,78 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/release-25.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    nixpkgs = {
+      type = "github";
+      owner = "nixos";
+      repo = "nixpkgs";
+      ref = "release-25.05";
+    };
+
+    nixpkgs-unstable = {
+      type = "github";
+      owner = "nixos";
+      repo = "nixpkgs";
+      ref = "nixos-unstable";
+    };
+
+    chaotic = {
+      type = "github";
+      owner = "chaotic-cx";
+      repo = "nyx";
+      ref = "nyxpkgs-unstable";
+    };
 
     nixos-generators = {
-      url = "github:nix-community/nixos-generators";
+      type = "github";
+      owner = "nix-community";
+      repo = "nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-flatpak = {
-      url = "github:gmodena/nix-flatpak/?ref=latest";
+      type = "github";
+      owner = "gmodena";
+      repo = "nix-flatpak";
+      ref = "latest";
     };
 
-    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+    nixos-wsl = {
+      type = "github";
+      owner = "nix-community";
+      repo = "NixOS-WSL";
+      ref = "main";
+    };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      type = "github";
+      owner = "nix-community";
+      repo = "home-manager";
+      ref = "release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hardware.url = "github:nixos/nixos-hardware";
+    hardware = {
+      type = "github";
+      owner = "nixos";
+      repo = "nixos-hardware";
+    };
 
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    stylix.url = "github:nix-community/stylix/release-25.05";
+    stylix = {
+      type = "github";
+      owner = "nix-community";
+      repo = "stylix";
+      ref = "release-25.05";
+    };
 
     neovim-config = {
-      url = "github:deadmade/neovim-configuration";
+      type = "github";
+      owner = "deadmade";
+      repo = "neovim-configuration";
     };
 
     #neovim-config = {
@@ -54,33 +95,53 @@
     #};
 
     distro-grub-themes = {
-      url = "github:AdisonCavani/distro-grub-themes";
+      type = "github";
+      owner = "AdisonCavani";
+      repo = "distro-grub-themes";
     };
 
     arion = {
-      url = "github:hercules-ci/arion";
+      type = "github";
+      owner = "hercules-ci";
+      repo = "arion";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     sops-nix = {
-      url = "github:Mic92/sops-nix";
+      type = "github";
+      owner = "Mic92";
+      repo = "sops-nix";
+
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nixcord = {
-      url = "github:kaylorben/nixcord";
+      type = "github";
+      owner = "xaiyadev";
+      repo = "nixcord";
+      ref = "fix/user-cfg-no-option";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-mineral = {
-      url = "github:cynicsketch/nix-mineral";
+      type = "github";
+      owner = "cynicsketch";
+      repo = "nix-mineral";
       flake = false;
     };
 
-    nix-jetbrains-plugins.url = "github:theCapypara/nix-jetbrains-plugins";
+    nix-jetbrains-plugins = {
+      type = "github";
+      owner = "theCapypara";
+      repo = "nix-jetbrains-plugins";
+    };
 
     solaar = {
       #url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz"; # For latest stable version
-      url = "github:Svenum/Solaar-Flake/main"; # Uncomment line for latest unstable version
+      type = "github";
+      owner = "Svenum";
+      repo = "Solaar-Flake";
+      ref = "main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
