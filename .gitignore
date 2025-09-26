@@ -3,3 +3,5 @@ result
 result-*
 
 *.nix.kate-swp
+
+.direnv
