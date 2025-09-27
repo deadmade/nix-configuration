@@ -134,7 +134,16 @@
     unstable.docker-compose # start group of containers for dev
     #unstable.podman-compose # start group of containers for dev
     unstable.podman-desktop
+    unstable.qemu
   ];
+
+  programs.virt-manager.enable = true;
+
+  users.groups.libvirtd.members = ["deadmade"];
+
+  virtualisation.libvirtd.enable = true;
+
+  virtualisation.spiceUSBRedirection.enable = true;
 
   services.greetd = {
     enable = true;

@@ -156,10 +156,13 @@
     ...
   } @ inputs: let
     inherit (self) outputs;
-    systems = ["x86_64-linux"];
+    systems = [
+      "x86_64-linux"
+      "aarch64-linux"
+    ];
     forAllSystems = nixpkgs.lib.genAttrs systems;
     vars = import ./variables.nix;
-    pkgs = import nixpkgs-unstable { system = "x86_64-linux"; };
+    pkgs = import nixpkgs-unstable {system = "x86_64-linux";};
   in {
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
@@ -268,14 +271,14 @@
       };
     };
 
-      devShells.x86_64-linux.default = pkgs.mkShell {
-        packages = with pkgs;[
-          lazygit
-          sops
-        ];
+    devShells.x86_64-linux.default = pkgs.mkShell {
+      packages = with pkgs; [
+        lazygit
+        sops
+      ];
 
-        shellHook = ''
-        '';
-      };
+      shellHook = ''
+      '';
+    };
   };
 }
