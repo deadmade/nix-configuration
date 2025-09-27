@@ -6,7 +6,7 @@
   ...
 }: {
   imports = [
-      ./hardware-configuration.nix
+    ./hardware-configuration.nix
 
     #inputs.hardware.nixosModules.rasperry-pi-4
 

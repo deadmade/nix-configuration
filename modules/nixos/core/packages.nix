@@ -14,9 +14,6 @@
     git
     btop
     kitty
-    #cachix
-    #pkgs.unstable.vulnix
-    #age
     wl-clipboard
     superfile
   ];

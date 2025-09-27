@@ -275,6 +275,9 @@
       packages = with pkgs; [
         lazygit
         sops
+        cachix
+        vulnix
+        age
       ];
 
       shellHook = ''

@@ -130,20 +130,9 @@
     greetd.tuigreet
     inputs.neovim-config.packages.${pkgs.system}.nvim
 
-    dive # look into docker image layers
     unstable.docker-compose # start group of containers for dev
     #unstable.podman-compose # start group of containers for dev
-    unstable.podman-desktop
-    unstable.qemu
   ];
-
-  programs.virt-manager.enable = true;
-
-  users.groups.libvirtd.members = ["deadmade"];
-
-  virtualisation.libvirtd.enable = true;
-
-  virtualisation.spiceUSBRedirection.enable = true;
 
   services.greetd = {
     enable = true;
@@ -173,6 +162,7 @@
   virtualisation.containers.enable = true;
   virtualisation = {
     podman = {
+      package = pkgs.unstable.podman;
       enable = true;
 
       # Create a `docker` alias for podman, to use it as a drop-in replacement

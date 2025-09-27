@@ -22,14 +22,9 @@
       enable = true;
       plugins = [
         "gitfast"
-        "colored-man-pages"
-        "colorize"
-        "command-not-found"
         "docker"
+        "docker-compose"
         "dotnet"
-        "git-auto-fetch"
-        "gh"
-        "git"
         "sudo"
       ];
       #theme = "catppuccin";
