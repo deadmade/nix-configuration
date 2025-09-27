@@ -16,6 +16,8 @@
       ./hardware-configuration.nix
 
       inputs.hardware.nixosModules.common-pc-ssd
+
+      outputs.customModules.firejail
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
     ++ (builtins.attrValues outputs.nixosModules.virtualization);

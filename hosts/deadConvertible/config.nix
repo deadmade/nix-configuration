@@ -28,6 +28,8 @@
       outputs.nixosModules.desktop.vpn
       outputs.nixosModules.desktop.jetbrains
       outputs.nixosModules.virtualization.vm
+
+      outputs.customModules.firejail
     ]
     ++ (builtins.attrValues outputs.nixosModules.core);
 

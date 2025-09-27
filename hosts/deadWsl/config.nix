@@ -22,6 +22,8 @@
     outputs.nixosModules.core.localization
     #outputs.nixosModules.core.network
 
+    outputs.customModules.firejail
+
     #outputs.nixosModules.funshit
   ];
 

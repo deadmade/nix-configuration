@@ -1,0 +1,32 @@
+name: Build NixOS Configs
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Nix
+        uses: cachix/install-nix-action@v25
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          
+      - name: Flake checks
+        run: nix flake check
+
+      - name: Dry-run build deadPc
+        run: nix build .#nixosConfigurations.deadPc.config.system.build.toplevel --dry-run --print-out-paths
+
+      - name: Dry-run build deadConvertible
+        run: nix build .#nixosConfigurations.deadConvertible.config.system.build.toplevel --dry-run --print-out-paths
+
+      - name: Dry-run build deadWsl
+        run: nix build .#nixosConfigurations.deadWsl.config.system.build.toplevel --dry-run --print-out-paths
+
+
