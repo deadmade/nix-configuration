@@ -42,8 +42,14 @@
 
   environment.systemPackages = with pkgs; [
     inputs.neovim-config.packages.${pkgs.system}.nvim
-    pkgs.unstable.opencode
+    unstable.opencode
+    unstable.docker-compose
+    unstable.docker-buildx
   ];
+
+  virtualisation.docker.enable = true;
+
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   environment.variables.EDITOR = "nvim";
 

@@ -144,6 +144,13 @@
       ref = "main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixos-raspberrypi = {
+      type = "github";
+      owner = "nvmd";
+      repo = "nixos-raspberrypi";
+      ref = "main";
+    };
   };
 
   outputs = {
@@ -151,6 +158,7 @@
     nixpkgs,
     nixpkgs-unstable,
     nixos-wsl,
+    nixos-raspberrypi,
     nixos-generators,
     home-manager,
     ...
@@ -212,16 +220,11 @@
       };
 
       # build with nix build .#nixosConfigurations.deadPi.config.system.build.sdImage
-      deadPi = nixpkgs.lib.nixosSystem {
+      deadPi = nixos-raspberrypi.lib.nixosSystemFull {
+        specialArgs = inputs;
         system = "aarch64-linux";
         modules = [
-          "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64-installer.nix"
           ./hosts/deadPi
-
-          # extra config for sdImage generator
-          {
-            sdImage.compressImage = false;
-          }
         ];
       };
     };
