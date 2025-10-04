@@ -32,6 +32,14 @@
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
+  boot.binfmt.emulatedSystems = [
+    "aarch64-linux"
+    "riscv64-linux"
+  ];
+
+  # Enable cross-compilation support
+  nix.settings.extra-platforms = config.boot.binfmt.emulatedSystems;
+
   environment.pathsToLink = ["/share/zsh"];
 
   networking.hostName = "deadPc"; # Define your hostname.
@@ -48,6 +56,8 @@
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
+  services.udisks2.enable = true;
+
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
@@ -59,7 +69,8 @@
     };
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages;
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = false;
@@ -132,6 +143,7 @@
 
     unstable.docker-compose # start group of containers for dev
     #unstable.podman-compose # start group of containers for dev
+    qemu_full
   ];
 
   services.greetd = {

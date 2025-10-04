@@ -1,17 +1,19 @@
 {
-  description = "Deadmades's NixOS great config";
+  description = "Deadmades's NixOS config";
 
   # Set up caches for faster builds
   nixConfig = {
     extra-substituters = [
       "https://deadcache.cachix.org"
       "https://nix-community.cachix.org"
+      "https://cache.nixos.org"
       "https://chaotic-nyx.cachix.org/"
     ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "deadcache.cachix.org-1:k8yt2hshOzIWYT5B5Buj2/hK6bu2haiTz9juF4ERvcw="
       "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
+      cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
     ];
   };
 
@@ -170,7 +172,6 @@
     ];
     forAllSystems = nixpkgs.lib.genAttrs systems;
     vars = import ./variables.nix;
-    pkgs = import nixpkgs-unstable {system = "x86_64-linux";};
   in {
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
@@ -219,12 +220,16 @@
         ];
       };
 
-      # build with nix build .#nixosConfigurations.deadPi.config.system.build.sdImage
-      deadPi = nixos-raspberrypi.lib.nixosSystemFull {
-        specialArgs = inputs;
+      # Regular Pi configuration (not for SD image building)
+      deadPi = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs outputs vars;};
         system = "aarch64-linux";
         modules = [
+          "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64-installer.nix"
           ./hosts/deadPi
+          {
+            sdImage.compressImage = false;
+          }
         ];
       };
     };
@@ -255,36 +260,33 @@
     };
 
     # nix build .#deadPcIso
-    packages.x86_64-linux = {
-      deadPcIso = nixos-generators.nixosGenerate {
-        specialArgs = {inherit inputs outputs vars;};
-        system = "x86_64-linux";
-        modules = [
-          ./hosts/deadPc/config.nix
-        ];
-        format = "install-iso";
-      };
-      deadConvertibleIso = nixos-generators.nixosGenerate {
-        specialArgs = {inherit inputs outputs vars;};
-        system = "x86_64-linux";
-        modules = [
-          ./hosts/deadConvertible/config.nix
-        ];
-        format = "install-iso";
-      };
-    };
-
-    devShells.x86_64-linux.default = pkgs.mkShell {
-      packages = with pkgs; [
-        lazygit
-        sops
-        cachix
-        vulnix
-        age
-      ];
-
-      shellHook = ''
-      '';
-    };
+    packages = forAllSystems (
+      system: {
+        deadPcIso = nixos-generators.nixosGenerate {
+          specialArgs = {inherit inputs outputs vars;};
+          system = "x86_64-linux";
+          modules = [
+            ./hosts/deadPc/config.nix
+          ];
+          format = "install-iso";
+        };
+        deadConvertibleIso = nixos-generators.nixosGenerate {
+          specialArgs = {inherit inputs outputs vars;};
+          system = "x86_64-linux";
+          modules = [
+            ./hosts/deadConvertible/config.nix
+          ];
+          format = "install-iso";
+        };
+        deadPiSdImage = nixos-generators.nixosGenerate {
+          specialArgs = {inherit inputs outputs vars;};
+          system = "aarch64-linux";
+          modules = [
+            ./hosts/deadPi
+          ];
+          format = "vm";
+        };
+      }
+    );
   };
 }

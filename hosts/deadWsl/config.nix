@@ -49,7 +49,7 @@
 
   virtualisation.docker.enable = true;
 
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
   environment.variables.EDITOR = "nvim";
 
