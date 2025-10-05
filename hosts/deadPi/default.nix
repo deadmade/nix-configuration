@@ -44,6 +44,7 @@
     wget
     mergerfs
     superfile
+    git
   ];
 
   fileSystems."/mnt/disks/sda1" = {
@@ -102,8 +103,14 @@
 
     restic.server = {
       enable = true;
+      enableResticServer = true;
+      listenAddress = "192.168.1.42:8000";
       dataDir = "/storage";
-      extraFlags = ["--no-auth"];
+      repositories = {
+        tower-backup = {
+          passwordFile = "/storage/tower-backup.key";
+        };
+      };
     };
   };
 
@@ -122,11 +129,11 @@
       ];
     };
     defaultGateway = {
-      address = "192.168.1.1"; 
+      address = "192.168.1.1";
       interface = "end0";
     };
     nameservers = [
-      "192.168.1.1" 
+      "192.168.1.1"
     ];
     useDHCP = true;
   };
