@@ -43,6 +43,7 @@
     curl
     wget
     mergerfs
+    superfile
   ];
 
   fileSystems."/mnt/disks/sda1" = {
@@ -74,7 +75,7 @@
   services = {
     samba = {
       package = pkgs.samba4Full;
-      enable = true;
+      enable = false;
       openFirewall = true;
 
       shares.testshare = {
@@ -85,13 +86,13 @@
     };
 
     samba-wsdd = {
-      enable = true;
+      enable = false;
       discovery = true;
       openFirewall = true;
     };
 
     avahi = {
-      enable = true;
+      enable = false;
       openFirewall = true;
 
       publish.enable = true;
@@ -121,11 +122,11 @@
       ];
     };
     defaultGateway = {
-      address = "192.168.1.1"; # or whichever IP your router is
+      address = "192.168.1.1"; 
       interface = "end0";
     };
     nameservers = [
-      "192.168.1.1" # or whichever DNS server you want to use
+      "192.168.1.1" 
     ];
     useDHCP = true;
   };
@@ -137,7 +138,6 @@
     "net.ipv4.tcp_ecn" = true;
   };
 
-  # put your own configuration here, for example ssh keys:
   users.mutableUsers = true;
   users.users.nixos = {
     isNormalUser = true;
@@ -154,6 +154,6 @@
   nix.settings.trusted-users = ["admin" "deadmade" "nixos"];
 
   nixpkgs.hostPlatform = "aarch64-linux";
-  #nixpkgs.buildPlatform = "x86_64-linux"; # needed ffs
+  #nixpkgs.buildPlatform = "x86_64-linux"; # needed for cross compiling the sd image
   system.stateVersion = "25.05";
 }

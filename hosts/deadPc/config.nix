@@ -143,7 +143,7 @@
 
     unstable.docker-compose # start group of containers for dev
     #unstable.podman-compose # start group of containers for dev
-    qemu_full
+    kdePackages.dolphin
   ];
 
   services.greetd = {
