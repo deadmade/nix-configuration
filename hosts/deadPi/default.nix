@@ -71,26 +71,44 @@
     ];
   };
 
-  servies.sambe = {
-    sambe = {
+  services = {
+    samba = {
+      package = pkgs.samba4Full;
       enable = true;
+      openFirewall = true;
+
+      shares.testshare = {
+        path = "/storage";
+        writable = "true";
+        comment = "Hello World!";
+      };
+    };
+
+    samba-wsdd = {
+      enable = true;
+      discovery = true;
+      openFirewall = true;
+    };
+
+    avahi = {
+      enable = true;
+      openFirewall = true;
+
+      publish.enable = true;
+      publish.userServices = true;
+      #nssmdns4 = true;
+    };
+
+    restic.server = {
+      enable = true;
+      dataDir = "/storage";
+      extraFlags = ["--no-auth"];
     };
   };
 
-  services.restic.server = {
-    enable = true;
-    dataDir = "/storage";
-    extraFlags = ["--no-auth"];
-  };
-
-  #services.tailscale = {
-  #  enable = true;
-  #  useRoutingFeatures = "server";
-  #};
-
   # virtualisation.docker.enable = true;
 
-  networking.firewall.enable = false;
+  networking.firewall.enable = true;
 
   networking = {
     hostName = "deadpi";
