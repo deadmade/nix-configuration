@@ -103,20 +103,17 @@
 
     restic.server = {
       enable = true;
-      enableResticServer = true;
+      enableResticServer = true; 
       listenAddress = "192.168.1.42:8000";
       dataDir = "/storage";
-      repositories = {
-        tower-backup = {
-          passwordFile = "/storage/tower-backup.key";
-        };
-      };
+      extraFlags = ["--no-auth"];
     };
   };
 
   # virtualisation.docker.enable = true;
 
   networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = [ 8000 ];
 
   networking = {
     hostName = "deadpi";
@@ -129,11 +126,11 @@
       ];
     };
     defaultGateway = {
-      address = "192.168.1.1";
+      address = "192.168.1.1"; 
       interface = "end0";
     };
     nameservers = [
-      "192.168.1.1"
+      "192.168.1.1" 
     ];
     useDHCP = true;
   };
