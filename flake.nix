@@ -57,7 +57,7 @@
       type = "github";
       owner = "nix-community";
       repo = "NixOS-WSL";
-      ref = "main";
+      ref = "release-25.05";
     };
 
     home-manager = {
