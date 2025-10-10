@@ -9,7 +9,7 @@
     ];
     extra-trusted-public-keys = [
       "deadcache.cachix.org-1:k8yt2hshOzIWYT5B5Buj2/hK6bu2haiTz9juF4ERvcw="
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
     ];
   };
 
@@ -127,13 +127,6 @@
       ref = "main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nixos-raspberrypi = {
-      type = "github";
-      owner = "nvmd";
-      repo = "nixos-raspberrypi";
-      ref = "main";
-    };
   };
 
   outputs = {
@@ -141,7 +134,6 @@
     nixpkgs,
     nixpkgs-unstable,
     nixos-wsl,
-    nixos-raspberrypi,
     home-manager,
     ...
   } @ inputs: let
@@ -238,21 +230,5 @@
         ];
       };
     };
-
-    devShells = forAllSystems (system: {
-      default = nixpkgs.legacyPackages.${system}.mkShell {
-        packages = with nixpkgs.legacyPackages.${system}; [
-          lazygit
-          sops
-          cachix
-          vulnix
-          age
-          pre-commit
-        ];
-
-        shellHook = ''
-        '';
-      };
-    });
   };
 }
