@@ -16,6 +16,7 @@
       ./hardware-configuration.nix
 
       inputs.hardware.nixosModules.common-pc-ssd
+      inputs.sops-nix.nixosModules.sops
 
       outputs.customModules.firejail
     ]
@@ -89,10 +90,6 @@
       #  thunderbird
     ];
   };
-
-  # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = false;
-  services.xserver.displayManager.autoLogin.user = "deadmade";
 
   # Allow unfree packages
   nixpkgs = {

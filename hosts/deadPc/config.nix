@@ -19,10 +19,6 @@
       inputs.hardware.nixosModules.common-gpu-nvidia-nonprime
       inputs.hardware.nixosModules.common-pc-ssd
 
-      inputs.chaotic.nixosModules.nyx-cache
-      inputs.chaotic.nixosModules.nyx-overlay
-      inputs.chaotic.nixosModules.nyx-registry
-
       outputs.nixosModules.virtualization.vm
       outputs.customModules.firejail
     ]

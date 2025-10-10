@@ -10,6 +10,7 @@
   imports = [
     #outputs.homeManagerModules.coding
     outputs.homeManagerModules.terminal
+    outputs.homeManagerModules.coding.direnv
 
     outputs.homeManagerModules.core.aliases
     outputs.homeManagerModules.core.home

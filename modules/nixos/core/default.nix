@@ -6,5 +6,5 @@
   security = import ./security.nix;
   grub2-bootloader = import ./grub2-bootloader.nix;
   network = import ./network.nix;
-  optimisation = import ./optimize.nix;
+  optimize = import ./optimize.nix;
 }

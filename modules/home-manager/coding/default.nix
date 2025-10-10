@@ -1,6 +1,4 @@
 {
-  imports = [
-    ./VsCodium.nix
-    ./direnv.nix
-  ];
+  vscode = import ./VsCodium.nix;
+  direnv = import ./direnv.nix;
 }

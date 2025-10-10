@@ -5,15 +5,11 @@
   nixConfig = {
     extra-substituters = [
       "https://deadcache.cachix.org"
-      "https://nix-community.cachix.org"
       "https://cache.nixos.org"
-      "https://chaotic-nyx.cachix.org/"
     ];
     extra-trusted-public-keys = [
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "deadcache.cachix.org-1:k8yt2hshOzIWYT5B5Buj2/hK6bu2haiTz9juF4ERvcw="
-      "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
-      cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
     ];
   };
 
@@ -30,20 +26,6 @@
       owner = "nixos";
       repo = "nixpkgs";
       ref = "nixos-unstable";
-    };
-
-    chaotic = {
-      type = "github";
-      owner = "chaotic-cx";
-      repo = "nyx";
-      ref = "nyxpkgs-unstable";
-    };
-
-    nixos-generators = {
-      type = "github";
-      owner = "nix-community";
-      repo = "nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-flatpak = {
@@ -113,7 +95,7 @@
       type = "github";
       owner = "Mic92";
       repo = "sops-nix";
-
+      ref = "master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -139,7 +121,6 @@
     };
 
     solaar = {
-      #url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz"; # For latest stable version
       type = "github";
       owner = "Svenum";
       repo = "Solaar-Flake";
@@ -161,7 +142,6 @@
     nixpkgs-unstable,
     nixos-wsl,
     nixos-raspberrypi,
-    nixos-generators,
     home-manager,
     ...
   } @ inputs: let
@@ -213,12 +193,12 @@
         ];
       };
 
-      deadServer = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs vars systems;};
-        modules = [
-          ./hosts/deadServer/config.nix
-        ];
-      };
+      # deadServer = nixpkgs.lib.nixosSystem {
+      #   specialArgs = {inherit inputs outputs vars systems;};
+      #   modules = [
+      #     ./hosts/deadServer/config.nix
+      #   ];
+      # };
 
       # Regular Pi configuration (not for SD image building)
       deadPi = nixpkgs.lib.nixosSystem {
@@ -259,34 +239,20 @@
       };
     };
 
-    # nix build .#deadPcIso
-    packages = forAllSystems (
-      system: {
-        deadPcIso = nixos-generators.nixosGenerate {
-          specialArgs = {inherit inputs outputs vars;};
-          system = "x86_64-linux";
-          modules = [
-            ./hosts/deadPc/config.nix
-          ];
-          format = "install-iso";
-        };
-        deadConvertibleIso = nixos-generators.nixosGenerate {
-          specialArgs = {inherit inputs outputs vars;};
-          system = "x86_64-linux";
-          modules = [
-            ./hosts/deadConvertible/config.nix
-          ];
-          format = "install-iso";
-        };
-        deadPiSdImage = nixos-generators.nixosGenerate {
-          specialArgs = {inherit inputs outputs vars;};
-          system = "aarch64-linux";
-          modules = [
-            ./hosts/deadPi
-          ];
-          format = "vm";
-        };
-      }
-    );
+    devShells = forAllSystems (system: {
+      default = nixpkgs.legacyPackages.${system}.mkShell {
+        packages = with nixpkgs.legacyPackages.${system}; [
+          lazygit
+          sops
+          cachix
+          vulnix
+          age
+          pre-commit
+        ];
+
+        shellHook = ''
+        '';
+      };
+    });
   };
 }

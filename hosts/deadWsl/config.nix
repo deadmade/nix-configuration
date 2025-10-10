@@ -20,6 +20,7 @@
     outputs.nixosModules.core.packages
     outputs.nixosModules.core.user
     outputs.nixosModules.core.localization
+    outputs.nixosModules.core.optimize
     #outputs.nixosModules.core.network
 
     outputs.customModules.firejail
@@ -43,14 +44,10 @@
   environment.systemPackages = with pkgs; [
     inputs.neovim-config.packages.${pkgs.system}.nvim
     unstable.opencode
-    unstable.docker-compose
-    unstable.docker-buildx
+    home-manager
   ];
 
-  virtualisation.docker.enable = true;
-
-  boot.binfmt.emulatedSystems = ["aarch64-linux"];
-
+  wsl.docker-desktop.enable = true;
   environment.variables.EDITOR = "nvim";
 
   # This value determines the NixOS release from which the default
