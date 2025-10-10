@@ -5,3 +5,4 @@ result-*
 *.nix.kate-swp
 
 .direnv
+.pre-commit-config.yaml

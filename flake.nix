@@ -18,7 +18,7 @@
       type = "github";
       owner = "nixos";
       repo = "nixpkgs";
-      ref = "release-25.05";
+      ref = "nixos-25.05";
     };
 
     nixpkgs-unstable = {
@@ -127,13 +127,18 @@
       ref = "main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    git-hooks = {
+      type = "github";
+      owner = "cachix";
+      repo = "git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
     self,
     nixpkgs,
-    nixpkgs-unstable,
-    nixos-wsl,
     home-manager,
     ...
   } @ inputs: let
@@ -230,5 +235,40 @@
         ];
       };
     };
+
+    devShells = forAllSystems (system: let
+      pkgs = nixpkgs.legacyPackages.${system};
+      pre-commit-check = inputs.git-hooks.lib.${system}.run {
+        src = ./.;
+        hooks = {
+          # Nix formatting with alejandra (same as `nix fmt .`)
+          alejandra.enable = true;
+
+          # Remove dead code
+          deadnix.enable = true;
+
+          # Validate flake
+          flake-checker.enable = true;
+
+          check-merge-conflicts.enable = true;
+          convco.enable = true;
+          check-added-large-files.enable = true;
+          end-of-file-fixer.enable = true;
+          trufflehog.enable = true;
+        };
+      };
+    in {
+      default = pkgs.mkShell {
+        inherit (pre-commit-check) shellHook;
+        buildInputs = pre-commit-check.enabledPackages;
+        packages = with pkgs; [
+          lazygit
+          sops
+          cachix
+          vulnix
+          age
+        ];
+      };
+    });
   };
 }
