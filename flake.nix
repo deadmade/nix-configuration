@@ -134,6 +134,13 @@
       repo = "git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    colmena = {
+      type = "github";
+      owner = "zhaofengli";
+      repo = "colmena";
+      ref = "main";
+    };
   };
 
   outputs = {
@@ -267,6 +274,7 @@
           cachix
           vulnix
           age
+          colmena
         ];
       };
     });

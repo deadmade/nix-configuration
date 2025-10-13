@@ -9,7 +9,7 @@
     inputs.hardware.nixosModules.raspberry-pi-4
 
     outputs.nixosModules.core.localization
-    outputs.nixosModules.core.optimize
+    outputs.nixosModules.core.optimisation
   ];
 
   # trim down initrd modules
@@ -103,7 +103,6 @@
 
     restic.server = {
       enable = true;
-      enableResticServer = true;
       listenAddress = "192.168.1.42:8000";
       dataDir = "/storage";
       extraFlags = ["--no-auth"];
@@ -117,21 +116,6 @@
 
   networking = {
     hostName = "deadpi";
-    interfaces.end0 = {
-      ipv4.addresses = [
-        {
-          address = "192.168.1.42";
-          prefixLength = 24;
-        }
-      ];
-    };
-    defaultGateway = {
-      address = "192.168.1.1";
-      interface = "end0";
-    };
-    nameservers = [
-      "192.168.1.1"
-    ];
     useDHCP = true;
   };
 
