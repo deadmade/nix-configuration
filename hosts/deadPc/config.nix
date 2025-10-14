@@ -5,7 +5,6 @@
   config,
   pkgs,
   outputs,
-  vars,
   inputs,
   ...
 }: {
@@ -137,9 +136,10 @@
     greetd.tuigreet
     inputs.neovim-config.packages.${pkgs.system}.nvim
 
-    #unstable.docker-compose # start group of containers for dev
-    #unstable.podman-compose # start group of containers for dev
     kdePackages.dolphin
+
+    inputs.winboat.packages.${system}.winboat
+    pkgs.freerdp
   ];
 
   services.greetd = {
@@ -168,19 +168,6 @@
   };
 
   virtualisation.containers.enable = true;
-  # virtualisation = {
-  #   podman = {
-  #     package = pkgs.unstable.podman;
-  #     enable = true;
-
-  #     # Create a `docker` alias for podman, to use it as a drop-in replacement
-  #     dockerCompat = true;
-
-  #     # Required for containers under podman-compose to be able to talk to each other.
-  #     defaultNetwork.settings.dns_enabled = true;
-  #     extraPackages = [];
-  #   };
-  # };
 
   virtualisation.docker.enable = true;
 

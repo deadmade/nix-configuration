@@ -1,17 +1,11 @@
 {
   lib,
-  username,
   host,
-  config,
   pkgs,
-  inputs,
   ...
 }: let
   inherit
     (import ../hosts/${host}/variables.nix)
-    browser
-    terminal
-    keyboardLayout
     ;
 in
   with lib; {
@@ -38,10 +32,10 @@ in
 
     # Hyprland aktivieren und konfigurieren
     wayland.windowManager.hyprland = {
-      package = pkgs.hyprland;
+      package = pkgs.unstable.hyprland;
       enable = true;
       xwayland.enable = true;
       systemd.enable = true;
-      plugins = [pkgs.hyprlandPlugins.hyprsplit];
+      plugins = [pkgs.unstable.hyprlandPlugins.hyprsplit];
     };
   }

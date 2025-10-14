@@ -1,26 +1,24 @@
 {
-  inputs,
   outputs,
-  lib,
   config,
   pkgs,
-  host,
   ...
 }: {
   imports =
     [
       outputs.homeManagerModules.hyprland
-      outputs.homeManagerModules.coding
       outputs.homeManagerModules.browser.librewolf
       outputs.homeManagerModules.terminal
       outputs.homeManagerModules.socialMedia.vencord
       outputs.homeManagerModules.flatpak
     ]
-    ++ (builtins.attrValues outputs.homeManagerModules.core);
+    ++ (builtins.attrValues outputs.homeManagerModules.core)
+    ++ (builtins.attrValues outputs.homeManagerModules.coding);
 
   home.packages = with pkgs; [
     pkgs.unstable.p3x-onenote
     teams-for-linux
+    telegram-desktop
   ];
 
   wayland.windowManager.hyprland = {

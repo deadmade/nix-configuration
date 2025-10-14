@@ -904,7 +904,7 @@
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixos-unstable",
+        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1066,7 +1066,8 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "solaar": "solaar",
         "sops-nix": "sops-nix",
-        "stylix": "stylix"
+        "stylix": "stylix",
+        "winboat": "winboat"
       }
     },
     "snowfall-lib": {
@@ -1368,6 +1369,26 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "winboat": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1760451831,
+        "narHash": "sha256-feDYdMkfy2AnhZSIchu1N/sgxxeTIZPH4ZZ/Lv0c2lQ=",
+        "owner": "TibixDev",
+        "repo": "winboat",
+        "rev": "1b24d6030bdb88d43fcd96cfea09e631f5bcf9f4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "TibixDev",
+        "repo": "winboat",
         "type": "github"
       }
     }
