@@ -140,11 +140,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1760424534,
-        "narHash": "sha256-Rob0hhlVxmIC/4rU2qax/ljGE1KW1snukIgImKcBL1o=",
+        "lastModified": 1760501015,
+        "narHash": "sha256-MatDDax1Mtf0u7u21XWF+ftgBHIll1bI3J+zi6s4Q2k=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "b9d343afa0f4e1201fe9784978ae1ceed07c63a6",
+        "rev": "153725666433262f728f663c636d1016e53a2770",
         "type": "gitlab"
       },
       "original": {
@@ -678,11 +678,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1760426478,
-        "narHash": "sha256-ReEelrwYP8dA2AIco6Vb2Zb0+LF10bs4NHm64tsYlfE=",
+        "lastModified": 1760512888,
+        "narHash": "sha256-fOqBTyAhZvc/bKE6TsNKMgmHQvUHGUcZvs8iB5IQ4rU=",
         "owner": "deadmade",
         "repo": "neovim-configuration",
-        "rev": "c06243541cfa461f46cd5b6ffb74822b65667cd5",
+        "rev": "8b8a6844fb649b4ae1b9dcaa365794d3ed22bdb4",
         "type": "github"
       },
       "original": {
@@ -702,11 +702,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1760400370,
-        "narHash": "sha256-ghN+xxNfS9xz9VT2f49KjhVAWYBMfo2Z1r8YttPqZvc=",
+        "lastModified": 1760486707,
+        "narHash": "sha256-GRvWDKV5VGmUQShCUgZf4co9OiTgig98mulXf/MlVBM=",
         "owner": "nix-community",
         "repo": "neovim-nightly-overlay",
-        "rev": "921a313d1522414e15f0843bae028f5327b0e2e6",
+        "rev": "800a400cde11cbdc9296bc3246869495560d2c9e",
         "type": "github"
       },
       "original": {
@@ -718,11 +718,11 @@
     "neovim-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1760398177,
-        "narHash": "sha256-E9Qv7RWRU3qxHtidPyjOMCiow9pRUI5yiNldYaWIeV8=",
+        "lastModified": 1760483365,
+        "narHash": "sha256-VAquB4cK0A9UoBr4mec9NC56YghdrfEzY+VrAzun+/8=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "0ed5e00077dcc8ab1a99dd76a85628b11504ffa4",
+        "rev": "c8d6f3cf8a121985e6b2d96b27fdb6131cc7309e",
         "type": "github"
       },
       "original": {
@@ -895,11 +895,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1760284886,
-        "narHash": "sha256-TK9Kr0BYBQ/1P5kAsnNQhmWWKgmZXwUQr4ZMjCzWf2c=",
+        "lastModified": 1760349414,
+        "narHash": "sha256-W4Ri1ZwYuNcBzqQQa7NnWfrv0wHMo7rduTWjIeU9dZk=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "cf3f5c4def3c7b5f1fc012b3d839575dbe552d43",
+        "rev": "c12c63cd6c5eb34c7b4c3076c6a99e00fcab86ec",
         "type": "github"
       },
       "original": {
@@ -991,11 +991,11 @@
     },
     "nixpkgs_7": {
       "locked": {
-        "lastModified": 1760139962,
-        "narHash": "sha256-4xggC56Rub3WInz5eD7EZWXuLXpNvJiUPahGtMkwtuc=",
+        "lastModified": 1760423683,
+        "narHash": "sha256-Tb+NYuJhWZieDZUxN6PgglB16yuqBYQeMJyYBGCXlt8=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "7e297ddff44a3cc93673bb38d0374df8d0ad73e4",
+        "rev": "a493e93b4a259cd9fea8073f89a7ed9b1c5a1da2",
         "type": "github"
       },
       "original": {
@@ -1173,11 +1173,11 @@
         "tinted-zed": "tinted-zed"
       },
       "locked": {
-        "lastModified": 1760352574,
-        "narHash": "sha256-Wtp6XEiVDVmxGSYafyM6gdZVyOoqg7NMQd07RkpFFWM=",
+        "lastModified": 1760478648,
+        "narHash": "sha256-Y4l+Y3zUvqIDbyLrtOrzNvp1o50Fp9TYK+iwtwweFU4=",
         "owner": "nix-community",
         "repo": "stylix",
-        "rev": "ca10aa9c6703b088bdac02d8352fd91d5496e4ed",
+        "rev": "1ec254101285777db13922303cc47ded06e10bb3",
         "type": "github"
       },
       "original": {
@@ -1379,11 +1379,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1760451831,
-        "narHash": "sha256-feDYdMkfy2AnhZSIchu1N/sgxxeTIZPH4ZZ/Lv0c2lQ=",
+        "lastModified": 1760459934,
+        "narHash": "sha256-OQn5UqCOXsvaAwOG0p3ZiXmR+WfN3wf7H3zlc+uiByM=",
         "owner": "TibixDev",
         "repo": "winboat",
-        "rev": "1b24d6030bdb88d43fcd96cfea09e631f5bcf9f4",
+        "rev": "eac9a7f48ce9bf9c60b9e7743aaf53d5a0f6351e",
         "type": "github"
       },
       "original": {
