@@ -16,7 +16,11 @@
     config = {
       frameless = true;
       transparent = true;
+      notifyAboutUpdates = true;
+
       plugins = {
+        USRBG.enable = true;
+        unlockedAvatarZoom.enable = true;
         betterGifPicker.enable = true;
         betterRoleDot.enable = true;
         betterSettings.enable = true;

@@ -9,7 +9,6 @@
         "protonvpn-app --start-minimized &"
         "flatpak run com.rtosta.zapzap"
         "nm-applet --indicator &"
-        "kitty -e spotify_player &"
         "librewolf &"
       ];
 
@@ -28,9 +27,9 @@
         };
       };
 
-      gestures = {
-        workspace_swipe = true;
-      };
+      #gestures = {
+      #  workspace_swipe = true;
+      #};
 
       # Allgemeine Einstellungen
       general = {

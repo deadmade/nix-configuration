@@ -1,8 +1,6 @@
 {
-  config,
   pkgs,
   inputs,
-  outputs,
   ...
 }: {
   imports = [
@@ -16,10 +14,6 @@
     pkgs.unstable.libreoffice-fresh
     pkgs.unstable.thunderbird
     pkgs.unstable.opencode
-    pkgs.unstable.remnote
-    pkgs.nwg-displays
-    pkgs.unstable.presenterm
-    vlc
     home-manager
   ];
 
@@ -43,7 +37,7 @@
     flake = "/home/deadmade/nix-configuration";
   };
 
-  programs.nano.enable = true;
+  programs.nano.enable = false;
   programs.neovim.enable = true;
   programs.neovim.defaultEditor = true;
 

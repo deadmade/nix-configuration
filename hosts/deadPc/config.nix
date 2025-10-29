@@ -134,12 +134,10 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     greetd.tuigreet
-    inputs.neovim-config.packages.${pkgs.system}.nvim
+    inputs.neovim-config.packages.${pkgs.system}.nvim-full
 
-    kdePackages.dolphin
-
-    inputs.winboat.packages.${system}.winboat
-    pkgs.freerdp
+    #inputs.winboat.packages.${system}.winboat
+    #pkgs.freerdp
   ];
 
   services.greetd = {

@@ -20,5 +20,6 @@ in {
     (buildIdeWithPlugins pkgs.jetbrains "webstorm" pluginList)
     (buildIdeWithPlugins pkgs.jetbrains "rust-rover" pluginList)
     (buildIdeWithPlugins pkgs.jetbrains "pycharm-professional" pluginList)
+    #(buildIdeWithPlugins pkgs.jetbrains "jetbrains.datagrip")
   ];
 }

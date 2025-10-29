@@ -11,7 +11,6 @@ in
   with lib; {
     imports = [
       ./wpaperd
-      #./hyprpanel/hyprpanel.nix -> really strange stuff. I don't know what this is
       ./waybar
       ./hyprlock
       ./config.nix

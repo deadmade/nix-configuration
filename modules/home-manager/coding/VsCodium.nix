@@ -25,6 +25,8 @@
 
         # Nix Support
         jnoortheen.nix-ide
+
+        vscode-icons-team.vscode-icons
       ];
 
       userSettings = lib.mkForce {
