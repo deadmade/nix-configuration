@@ -65,7 +65,7 @@
   };
 
   #boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelPackages = pkgs.linuxPackages;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = false;
@@ -136,8 +136,7 @@
     greetd.tuigreet
     inputs.neovim-config.packages.${pkgs.system}.nvim-full
 
-    #inputs.winboat.packages.${system}.winboat
-    #pkgs.freerdp
+    pkgs.unstable.winboat
   ];
 
   services.greetd = {

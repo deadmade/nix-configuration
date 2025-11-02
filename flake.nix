@@ -4,12 +4,12 @@
   # Set up caches for faster builds
   nixConfig = {
     extra-substituters = [
-      "https://deadcache.cachix.org"
-      "https://cache.nixos.org"
+      # "https://deadcache.cachix.org"
+      # "https://cache.nixos.org"
     ];
     extra-trusted-public-keys = [
-      "deadcache.cachix.org-1:k8yt2hshOzIWYT5B5Buj2/hK6bu2haiTz9juF4ERvcw="
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      # "deadcache.cachix.org-1:k8yt2hshOzIWYT5B5Buj2/hK6bu2haiTz9juF4ERvcw="
+      # "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
     ];
   };
 
@@ -25,7 +25,7 @@
       type = "github";
       owner = "nixos";
       repo = "nixpkgs";
-      ref = "nixpkgs-unstable";
+      ref = "nixos-unstable";
     };
 
     nix-flatpak = {
@@ -101,9 +101,9 @@
 
     nixcord = {
       type = "github";
-      owner = "xaiyadev";
+      owner = "KaylorBen";
       repo = "nixcord";
-      ref = "fix/user-cfg-no-option";
+      ref = "main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -132,11 +132,6 @@
       type = "github";
       owner = "cachix";
       repo = "git-hooks.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    winboat = {
-      url = "github:TibixDev/winboat";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

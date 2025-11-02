@@ -99,11 +99,11 @@
         "stable": "stable"
       },
       "locked": {
-        "lastModified": 1755272288,
-        "narHash": "sha256-ypTPb2eKcOBbOoyvPV0j4ZOXs4kayo73/2KI456QnE0=",
+        "lastModified": 1762034856,
+        "narHash": "sha256-QVey3iP3UEoiFVXgypyjTvCrsIlA4ecx6Acaz5C8/PQ=",
         "owner": "zhaofengli",
         "repo": "colmena",
-        "rev": "5bf4ce6a24adba74a5184f4a9bef01d545a09473",
+        "rev": "349b035a5027f23d88eeb3bc41085d7ee29f18ed",
         "type": "github"
       },
       "original": {
@@ -294,11 +294,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1760948891,
-        "narHash": "sha256-TmWcdiUUaWk8J4lpjzu4gCGxWY6/Ok7mOK4fIFfBuU4=",
+        "lastModified": 1762040540,
+        "narHash": "sha256-z5PlZ47j50VNF3R+IMS9LmzI5fYRGY/Z5O5tol1c9I4=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "864599284fc7c0ba6357ed89ed5e2cd5040f0c04",
+        "rev": "0010412d62a25d959151790968765a70c436598b",
         "type": "github"
       },
       "original": {
@@ -665,11 +665,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1761383075,
-        "narHash": "sha256-CD3R1CvrIDFq4SFnoDxyTT/N1sreqAmPtUq4vfUC8Uk=",
+        "lastModified": 1761996900,
+        "narHash": "sha256-1XURw0oFac/jDYP/TjxOOO5DWABOQ6HOuAnXS7GGP5k=",
         "owner": "theCapypara",
         "repo": "nix-jetbrains-plugins",
-        "rev": "d5723590454849a51278421f66d594d086c87f8c",
+        "rev": "5a03f5a3d0ab9b465cdab58dc03da2a7b473bc8c",
         "type": "github"
       },
       "original": {
@@ -718,16 +718,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1758701706,
-        "narHash": "sha256-aEwPAnMQ/FIisvGswjm9T+QkIptuXDzeUo8vxTTX/Io=",
-        "owner": "xaiyadev",
+        "lastModified": 1761985367,
+        "narHash": "sha256-d3r/PvZPbxGyORCIhHFQCy9ErsZ5zvLsDfC7/YocN8M=",
+        "owner": "KaylorBen",
         "repo": "nixcord",
-        "rev": "418e383f8dc3a47b60e3ea16b06c7671b0e65ec2",
+        "rev": "59ffa1a20eb1311d1447a012fcd839c73cae77be",
         "type": "github"
       },
       "original": {
-        "owner": "xaiyadev",
-        "ref": "fix/user-cfg-no-option",
+        "owner": "KaylorBen",
+        "ref": "main",
         "repo": "nixcord",
         "type": "github"
       }
@@ -794,7 +794,7 @@
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixpkgs-unstable",
+        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -956,8 +956,7 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "solaar": "solaar",
         "sops-nix": "sops-nix",
-        "stylix": "stylix",
-        "winboat": "winboat"
+        "stylix": "stylix"
       }
     },
     "snowfall-lib": {
@@ -1237,26 +1236,6 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "winboat": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1761706386,
-        "narHash": "sha256-rTIOYFYUvnZG0x1ZF/NDWdvuiZVhBkzceKyDK8nC3+U=",
-        "owner": "TibixDev",
-        "repo": "winboat",
-        "rev": "197ce74c95713e9b67f6494aed58b7bd44e6064c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "TibixDev",
-        "repo": "winboat",
         "type": "github"
       }
     }
