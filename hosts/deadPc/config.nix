@@ -135,15 +135,17 @@
   environment.systemPackages = with pkgs; [
     greetd.tuigreet
     inputs.neovim-config.packages.${pkgs.system}.nvim-full
+    pkgs.unstable.winboat
+    #pkgs.unstable.john
   ];
 
   services.greetd = {
     enable = true;
-    vt = 3;
+    #vt = 3;
     settings = {
       default_session = {
         user = "deadmade";
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet 
+        command = "${pkgs.tuigreet}/bin/tuigreet 
         --issue 
         --theme border=magenta;text=cyan;prompt=green;time=red;action=blue;button=yellow;container=black;input=red
         --cmd Hyprland"; # start Hyprland with a TUI login manager

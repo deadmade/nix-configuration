@@ -10,7 +10,7 @@
   programs.nixcord = {
     discord.enable = false;
     enable = true;
-    vesktop.package = pkgs.vesktop;
+    vesktop.package = pkgs.unstable.vesktop;
     vesktop.enable = true;
 
     config = {
@@ -19,7 +19,7 @@
       notifyAboutUpdates = true;
 
       plugins = {
-        USRBG.enable = true;
+        usrbg.enable = true;
         unlockedAvatarZoom.enable = true;
         betterGifPicker.enable = true;
         betterRoleDot.enable = true;
@@ -43,8 +43,6 @@
         memberCount.enable = true;
         mentionAvatars.enable = true;
         messageLatency.enable = true;
-        moreCommands.enable = true;
-        moreKaomoji.enable = true;
         noBlockedMessages.enable = true;
         noDevtoolsWarning.enable = true;
         noF1.enable = true;
@@ -68,7 +66,6 @@
 
         showMeYourName = {
           enable = true;
-          mode = "nick-user";
         };
 
         messageLogger = {
@@ -76,7 +73,7 @@
           collapseDeleted = true;
         };
 
-        blurNSFW = {
+        blurNsfw = {
           enable = true;
           blurAmount = 30;
         };

@@ -13,7 +13,7 @@
     pkgs.unstable.spotify
     pkgs.unstable.libreoffice-fresh
     pkgs.unstable.thunderbird
-    pkgs.unstable.opencode
+    #pkgs.unstable.opencode
     home-manager
   ];
 

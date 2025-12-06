@@ -6,4 +6,5 @@
   jetbrains = import ./jetbrains.nix;
   bluetooth = import ./bluetooth.nix;
   logitech = import ./logitech.nix;
+  ai = import ./ai.nix;
 }

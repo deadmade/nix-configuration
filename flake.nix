@@ -18,7 +18,7 @@
       type = "github";
       owner = "nixos";
       repo = "nixpkgs";
-      ref = "nixos-25.05";
+      ref = "nixos-25.11";
     };
 
     nixpkgs-unstable = {
@@ -39,14 +39,14 @@
       type = "github";
       owner = "nix-community";
       repo = "NixOS-WSL";
-      ref = "release-25.05";
+      ref = "release-25.11";
     };
 
     home-manager = {
       type = "github";
       owner = "nix-community";
       repo = "home-manager";
-      ref = "release-25.05";
+      ref = "release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -65,7 +65,7 @@
       type = "github";
       owner = "nix-community";
       repo = "stylix";
-      ref = "release-25.05";
+      ref = "release-25.11";
     };
 
     neovim-config = {
@@ -132,6 +132,7 @@
       type = "github";
       owner = "cachix";
       repo = "git-hooks.nix";
+      ref = "master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -139,6 +140,13 @@
       type = "github";
       owner = "zhaofengli";
       repo = "colmena";
+      ref = "main";
+    };
+
+    llm-agents = {
+      type = "github";
+      owner = "numtide";
+      repo = "llm-agents.nix";
       ref = "main";
     };
   };
