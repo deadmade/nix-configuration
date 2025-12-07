@@ -63,6 +63,18 @@
         typingIndicator.enable = true;
         whoReacted.enable = true;
         youtubeAdblock.enable = true;
+        anonymiseFileNames.enable = true;
+        clearUrLs.enable = true;
+        experiments.enable = true;
+        fixCodeblockGap.enable = true;
+        fixImagesQuality.enable = true;
+        webScreenShareFixes.enable = true;
+        viewIcons.enable = true;
+        voiceMessages.enable = true;
+        vencordToolbox.enable = true;
+        validUser.enable = true;
+        summaries.enable = true;
+        showTimeoutDuration.enable = true;
 
         showMeYourName = {
           enable = true;

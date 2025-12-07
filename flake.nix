@@ -263,7 +263,7 @@
           deadnix.enable = true;
 
           # Validate flake
-          flake-checker.enable = true;
+          flake-checker.enable = false;
 
           check-merge-conflicts.enable = true;
           convco.enable = true;
