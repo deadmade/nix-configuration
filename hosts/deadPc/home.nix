@@ -8,12 +8,12 @@
     [
       outputs.homeManagerModules.hyprland
       outputs.homeManagerModules.browser.librewolf
-      outputs.homeManagerModules.terminal
       outputs.homeManagerModules.socialMedia.vencord
       outputs.homeManagerModules.flatpak
     ]
     ++ (builtins.attrValues outputs.homeManagerModules.core)
-    ++ (builtins.attrValues outputs.homeManagerModules.coding);
+    ++ (builtins.attrValues outputs.homeManagerModules.coding)
+    ++ (builtins.attrValues outputs.homeManagerModules.terminal);
 
   home.packages = with pkgs; [
     telegram-desktop

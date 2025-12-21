@@ -1,10 +1,4 @@
-{
-  config,
-  pkgs,
-  inputs,
-  outputs,
-  ...
-}: {
+{pkgs, ...}: {
   hardware.bluetooth.enable = false;
   hardware.bluetooth = {
     settings = {

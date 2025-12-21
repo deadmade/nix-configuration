@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   home.file.".config/wallpapers" = {
     source = ../../../../../wallpapers;
     recursive = true;
@@ -10,7 +6,7 @@
 
   services.wpaperd = {
     enable = true;
-    package = pkgs.unstable.wpaperd;
+    package = pkgs.wpaperd;
     settings = {
       default = {
         duration = "15m";

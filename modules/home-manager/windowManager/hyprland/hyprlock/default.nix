@@ -1,12 +1,7 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: {
+{pkgs, ...}: {
   programs.hyprlock = {
     enable = true;
-    package = pkgs.unstable.hyprlock;
+    package = pkgs.hyprlock;
     settings = {
       # Background configuration
       background = [

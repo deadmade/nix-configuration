@@ -1,16 +1,13 @@
 {
   lib,
-  username,
-  host,
   config,
   pkgs,
-  inputs,
   ...
 }:
 with lib; {
   programs.wofi = {
     enable = true;
-    package = pkgs.unstable.wofi;
+    package = pkgs.wofi;
     settings = {
       ## General
       show = "drun";

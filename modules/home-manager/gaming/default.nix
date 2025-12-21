@@ -2,7 +2,7 @@
   home.packages = with pkgs; [
     heroic
     (lutris.override {
-      extraLibraries = pkgs: [
+      extraLibraries = _pkgs: [
         wine
         wineWowPackages.stable
       ];

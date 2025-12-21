@@ -1,4 +1,4 @@
-{vars, ...}: {
+{...}: {
   project.name = "infrastructure";
 
   networks.dmz = {

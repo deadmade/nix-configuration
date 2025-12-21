@@ -1,5 +1,5 @@
 {
-  firefox = import ./firefox/firefox.nix;
-  floorp = import ./floorp/floorp.nix;
-  librewolf = import ./librewolf/librewolf.nix;
+  firefox = import ./firefox.nix;
+  floorp = import ./floorp.nix;
+  librewolf = import ./librewolf.nix;
 }

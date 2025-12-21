@@ -6,7 +6,7 @@
 
     settings = {
       # Command to run on startup
-      command = "tmux attach || tmux";
+      #command = "tmux attach || tmux";
 
       # Font Configuration
       font-family = "JetBrainsMono Nerd Font";

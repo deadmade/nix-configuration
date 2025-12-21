@@ -1,8 +1,6 @@
 {
   pkgs,
   inputs,
-  config,
-  vars,
   ...
 }: {
   environment.systemPackages = with pkgs; [sops];

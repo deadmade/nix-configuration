@@ -1,9 +1,3 @@
-{
-  config,
-  lib,
-  pkgs,
-  modulesPath,
-  ...
-}: {
+{lib, ...}: {
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }

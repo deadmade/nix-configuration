@@ -1,4 +1,4 @@
-{lib, ...}: {
+{...}: {
   time.timeZone = "Europe/Berlin";
 
   i18n = {

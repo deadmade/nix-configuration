@@ -1369,7 +1369,6 @@ with lib; let
   # Helper function to get profile path with fallback
   getProfilePath = program: let
     specificProfile = "${pkgs.firejail}/etc/firejail/${program}.profile";
-    defaultProfile = "${pkgs.firejail}/etc/firejail/default.profile";
   in
     # Always use the specific profile if it should exist, firejail will handle missing ones gracefully
     specificProfile;

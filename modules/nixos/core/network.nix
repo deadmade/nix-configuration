@@ -1,10 +1,4 @@
-{
-  pkgs,
-  host,
-  options,
-  lib,
-  ...
-}: {
+{lib, ...}: {
   networking = lib.mkDefault {
     networkmanager.enable = true;
     #   networkmanager.unmanaged = [

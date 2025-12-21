@@ -1,9 +1,4 @@
-{
-  pkgs,
-  vars,
-  lib,
-  ...
-}: {
+{pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     quickemu
     spice

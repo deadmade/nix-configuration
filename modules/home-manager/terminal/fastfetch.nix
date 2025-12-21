@@ -1,10 +1,7 @@
 {
   lib,
-  username,
-  host,
   config,
   pkgs,
-  inputs,
   ...
 }:
 with lib; {

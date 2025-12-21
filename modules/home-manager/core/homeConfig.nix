@@ -1,8 +1,4 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: {
+{pkgs, ...}: {
   # Home Manager Settings
   home.username = "deadmade";
   home.homeDirectory = "/home/deadmade";

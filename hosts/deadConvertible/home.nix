@@ -1,24 +1,19 @@
 {
-  inputs,
   outputs,
   pkgs,
-  username,
-  host,
   config,
   ...
-}: let
-  inherit (import ../../variables.nix) gitUsername gitEmail;
-in {
+}: {
   imports =
     [
       outputs.homeManagerModules.hyprland
       outputs.homeManagerModules.coding
       outputs.homeManagerModules.browser.librewolf
-      outputs.homeManagerModules.terminal
       outputs.homeManagerModules.socialMedia.vencord
       outputs.homeManagerModules.flatpak
     ]
-    ++ (builtins.attrValues outputs.homeManagerModules.core);
+    ++ (builtins.attrValues outputs.homeManagerModules.core)
+    ++ (builtins.attrValues outputs.homeManagerModules.terminal);
 
   home.packages = with pkgs; [
     pkgs.unstable.p3x-onenote
