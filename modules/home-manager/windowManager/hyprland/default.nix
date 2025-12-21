@@ -21,7 +21,7 @@ in
     ];
 
     # Home Manager Pakete
-    home.packages = with pkgs.unstable; [
+    home.packages = with pkgs; [
       hyprshot # Screenshot-Tool
       networkmanagerapplet
       wofi-emoji
@@ -31,10 +31,10 @@ in
 
     # Hyprland aktivieren und konfigurieren
     wayland.windowManager.hyprland = {
-      package = pkgs.unstable.hyprland;
+      package = pkgs.hyprland;
       enable = true;
       xwayland.enable = true;
       systemd.enable = true;
-      plugins = [pkgs.unstable.hyprlandPlugins.hyprsplit];
+      plugins = [pkgs.hyprlandPlugins.hyprsplit];
     };
   }

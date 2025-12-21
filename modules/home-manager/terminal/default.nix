@@ -5,5 +5,6 @@
     ./tmux
     ./zsh
     ./fastfetch
+    ./ghostty
   ];
 }

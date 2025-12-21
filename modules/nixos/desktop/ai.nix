@@ -10,5 +10,6 @@
     claude-code
     opencode
     gemini-cli
+    nanocoder
   ];
 }

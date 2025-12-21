@@ -134,7 +134,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     greetd.tuigreet
-    inputs.neovim-config.packages.${pkgs.system}.nvim-full
+    inputs.neovim-config.packages.${pkgs.system}.nvim
     pkgs.unstable.winboat
     #pkgs.unstable.john
   ];

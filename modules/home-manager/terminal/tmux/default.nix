@@ -1,10 +1,7 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   programs.tmux = {
-    enable = false; # Enable TMUX through Home Manager
+    enable = true; # Enable TMUX through Home Manager
+    clock24 = true;
     plugins = with pkgs; [
       {
         plugin = tmuxPlugins.catppuccin;
@@ -36,22 +33,10 @@
 
     extraConfig = ''
       # Start counting pane and window number at 1
-      set -g base-index 1
-      set -g pane-base-index 1
-
-      unbind r
-      bind r source-file ~/.config/tmux/tmux.conf
-
-      set -g mouse on
-      bind-key h select-pane -L
-      bind-key j select-pane -D
-      bind-key k select-pane -U
-      bind-key l select-pane -R
-      bind-key & kill-window
-      bind-key x kill-pane
 
       set-option -g status-position top
 
     '';
   };
+  programs.zsh.prezto.tmux.autoStartLocal = true;
 }
