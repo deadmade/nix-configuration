@@ -21,6 +21,7 @@
     outputs.nixosModules.core.user
     outputs.nixosModules.core.localization
     outputs.nixosModules.core.optimize
+    outputs.nixosModules.desktop.ai
     #outputs.nixosModules.core.network
 
     outputs.customModules.firejail
@@ -43,7 +44,6 @@
 
   environment.systemPackages = with pkgs; [
     inputs.neovim-config.packages.${pkgs.system}.nvim
-    unstable.opencode
     home-manager
   ];
 

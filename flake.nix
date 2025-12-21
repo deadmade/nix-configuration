@@ -74,9 +74,9 @@
       repo = "neovim-configuration";
     };
 
-    #neovim-config = {
-    # url = "git+file:/home/deadmade/neovim-configuration";
-    #};
+    # neovim-config = {
+    #   url = "git+file:../neovim-configuration";
+    # };
 
     distro-grub-themes = {
       type = "github";
