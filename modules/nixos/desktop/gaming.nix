@@ -16,5 +16,5 @@
     ];
   };
 
-  custom.firejail.steam.enable = true;
+  custom.firejail.steam.enable = false;
 }

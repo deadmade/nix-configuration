@@ -5,9 +5,12 @@
     enableZshIntegration = true;
 
     settings = {
+      # Command to run on startup
+      command = "tmux attach || tmux";
+
       # Font Configuration
       font-family = "JetBrainsMono Nerd Font";
-      font-size = 14;
+      font-size = 11;
 
       # Visual Effects
       background-opacity = 0.7;

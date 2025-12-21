@@ -68,15 +68,15 @@
       ref = "release-25.11";
     };
 
-    neovim-config = {
-      type = "github";
-      owner = "deadmade";
-      repo = "neovim-configuration";
-    };
-
     # neovim-config = {
-    #   url = "git+file:../neovim-configuration";
+    #   type = "github";
+    #   owner = "deadmade";
+    #   repo = "neovim-configuration";
     # };
+
+    neovim-config = {
+      url = "git+file:../neovim-configuration";
+    };
 
     distro-grub-themes = {
       type = "github";

@@ -67,7 +67,7 @@ Two-tier module system:
 - `funshit/` - Optional/experimental features
 
 **Home-Manager Modules** (`modules/home-manager/`):
-- `core/` - User fundamentals (home config, git, btop, nix config, stylix, aliases)
+- `core/` - User fundamentals (home  git, btop, nix  stylix, aliases)
 - `terminal/` - Terminal tools (kitty, starship, tmux, zsh, fastfetch, ghostty)
 - `windowManager/` - Hyprland + components (waybar, hyprlock, hypridle, wofi, swaync, wpaperd, wlogout)
 - `browser/` - Browser configs (firefox, librewolf, floorp)

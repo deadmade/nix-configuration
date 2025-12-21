@@ -13,7 +13,7 @@
       ];
 
       "$mainMod" = "SUPER";
-      "$terminal" = "kitty";
+      "$terminal" = "ghostty";
       "$fileManager" = "thunar";
 
       # Eingabe (Tastatur & Maus)

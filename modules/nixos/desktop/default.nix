@@ -7,4 +7,5 @@
   bluetooth = import ./bluetooth.nix;
   logitech = import ./logitech.nix;
   ai = import ./ai.nix;
+  tailscale = import ./tailscale.nix;
 }
