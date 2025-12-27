@@ -5,11 +5,11 @@
     uninstallUnmanaged = true;
     update.onActivation = true;
     packages = [
-      "md.obsidian.Obsidian"
+      #"md.obsidian.Obsidian"
       #"com.github.iwalton3.jellyfin-media-player"
       #"com.github.tchx84.Flatseal"
       #"io.kapsa.drive"
-      "com.rtosta.zapzap"
+      #"com.rtosta.zapzap"
     ];
     overrides = {
       global = {

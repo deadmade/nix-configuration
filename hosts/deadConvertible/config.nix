@@ -22,8 +22,6 @@
       outputs.nixosModules.desktop.vpn
       outputs.nixosModules.desktop.jetbrains
       outputs.nixosModules.virtualization.vm
-
-      outputs.customModules.firejail
     ]
     ++ (builtins.attrValues outputs.nixosModules.core);
 
@@ -94,7 +92,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    greetd.tuigreet
+    tuigreet
     inputs.neovim-config.packages.${pkgs.system}.nvim
     brightnessctl
 

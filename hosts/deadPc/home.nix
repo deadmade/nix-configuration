@@ -9,7 +9,7 @@
       outputs.homeManagerModules.hyprland
       outputs.homeManagerModules.browser.librewolf
       outputs.homeManagerModules.socialMedia.vencord
-      outputs.homeManagerModules.flatpak
+      #outputs.homeManagerModules.flatpak
     ]
     ++ (builtins.attrValues outputs.homeManagerModules.core)
     ++ (builtins.attrValues outputs.homeManagerModules.coding)

@@ -6,7 +6,7 @@
   security.pam.services.hyprland.enableGnomeKeyring = true;
 
   nix-mineral = {
-    enable = true;
+    enable = false;
     overrides = {
       compatibility.allow-ip-forward = true;
       performance.allow-smt = true;
@@ -21,6 +21,6 @@
     };
   };
 
-  services.dbus.apparmor = "enabled";
-  security.apparmor.enableCache = true;
+  #services.dbus.apparmor = "enabled";
+  #security.apparmor.enableCache = true;
 }

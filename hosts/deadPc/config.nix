@@ -19,7 +19,6 @@
       inputs.hardware.nixosModules.common-pc-ssd
 
       outputs.nixosModules.virtualization.vm
-      outputs.customModules.firejail
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
     #++ (builtins.attrValues outputs.nixosModules.virtualization)
@@ -133,8 +132,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    greetd.tuigreet
-    inputs.neovim-config.packages.${pkgs.system}.nvim
+    tuigreet
+    #inputs.neovim-config.packages.${pkgs.system}.nvim
+    #inputs.nvix.packages.${pkgs.system}.default
     pkgs.unstable.winboat
     #pkgs.unstable.john
   ];

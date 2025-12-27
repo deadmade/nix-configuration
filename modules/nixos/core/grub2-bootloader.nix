@@ -3,10 +3,6 @@
   lib,
   ...
 }: {
-  imports = [
-    inputs.distro-grub-themes.nixosModules.${"x86_64-linux"}.default
-  ];
-
   # Bootloader.
   boot.loader = lib.mkDefault {
     efi.canTouchEfiVariables = true;
@@ -29,9 +25,5 @@
         }
       '';
     };
-  };
-  distro-grub-themes = {
-    enable = true;
-    theme = "nixos";
   };
 }

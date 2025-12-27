@@ -15,6 +15,4 @@
       "--expose-wayland"
     ];
   };
-
-  custom.firejail.steam.enable = false;
 }

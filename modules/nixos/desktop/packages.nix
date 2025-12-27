@@ -13,21 +13,16 @@
     pkgs.unstable.spotify
     pkgs.unstable.libreoffice-fresh
     pkgs.unstable.thunderbird
+    pkgs.unstable.obsidian
+    pkgs.unstable.zapzap
     #pkgs.unstable.opencode
     home-manager
   ];
-
-  custom.firejail.spotify.enable = true;
-  custom.firejail.libreoffice.enable = true;
-  custom.firejail.thunderbird.enable = true;
-  custom.firejail.vlc.enable = true;
-  custom.firejail.librewolf.enable = true;
 
   services.xserver.excludePackages = with pkgs; [xterm];
 
   programs.xfconf.enable = true;
 
-  services.flatpak.enable = true;
   services.fwupd.enable = false;
 
   programs.nh = {

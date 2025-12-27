@@ -19,7 +19,6 @@
       notifyAboutUpdates = true;
 
       plugins = {
-        usrbg.enable = true;
         unlockedAvatarZoom.enable = true;
         betterGifPicker.enable = true;
         betterRoleDot.enable = true;
@@ -64,7 +63,6 @@
         whoReacted.enable = true;
         youtubeAdblock.enable = true;
         anonymiseFileNames.enable = true;
-        clearUrLs.enable = true;
         experiments.enable = true;
         fixCodeblockGap.enable = true;
         fixImagesQuality.enable = true;
@@ -83,11 +81,6 @@
         messageLogger = {
           enable = true;
           collapseDeleted = true;
-        };
-
-        blurNsfw = {
-          enable = true;
-          blurAmount = 30;
         };
 
         betterFolders = {

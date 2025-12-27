@@ -4,11 +4,11 @@
   # Set up caches for faster builds
   nixConfig = {
     extra-substituters = [
-      # "https://deadcache.cachix.org"
+      "https://deadcache.cachix.org"
       # "https://cache.nixos.org"
     ];
     extra-trusted-public-keys = [
-      # "deadcache.cachix.org-1:k8yt2hshOzIWYT5B5Buj2/hK6bu2haiTz9juF4ERvcw="
+      "deadcache.cachix.org-1:k8yt2hshOzIWYT5B5Buj2/hK6bu2haiTz9juF4ERvcw="
       # "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
     ];
   };
@@ -68,21 +68,17 @@
       ref = "release-25.11";
     };
 
-    # neovim-config = {
-    #   type = "github";
-    #   owner = "deadmade";
-    #   repo = "neovim-configuration";
-    # };
+    #neovim-config = {
+    #  type = "github";
+    #  owner = "deadmade";
+    #  repo = "neovim-configuration";
+    #};
 
-    neovim-config = {
-      url = "git+file:../neovim-configuration";
-    };
+    #neovim-config = {
+    #   url = "git+file:../neovim-configuration";
+    #};
 
-    distro-grub-themes = {
-      type = "github";
-      owner = "AdisonCavani";
-      repo = "distro-grub-themes";
-    };
+    nvix.url = "github:niksingh710/nvix";
 
     arion = {
       type = "github";
@@ -260,7 +256,7 @@
           alejandra.enable = true;
 
           # Remove dead code
-          deadnix.enable = true;
+          #deadnix.enable = true;
 
           # Validate flake
           flake-checker.enable = false;
