@@ -22,8 +22,6 @@
     outputs.nixosModules.desktop.ai
     #outputs.nixosModules.core.network
 
-    outputs.customModules.firejail
-
     #outputs.nixosModules.funshit
   ];
 
@@ -41,7 +39,7 @@
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   environment.systemPackages = with pkgs; [
-    inputs.neovim-config.packages.${pkgs.system}.nvim
+    #inputs.neovim-config.packages.${pkgs.system}.nvim
     home-manager
   ];
 
