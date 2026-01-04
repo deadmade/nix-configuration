@@ -9,7 +9,7 @@
     inputs.hardware.nixosModules.raspberry-pi-4
 
     outputs.nixosModules.core.localization
-    outputs.nixosModules.core.optimisation
+    outputs.nixosModules.core.optimize
   ];
 
   # trim down initrd modules
@@ -116,7 +116,7 @@
 
   networking = {
     hostName = "deadpi";
-    useDHCP = true;
+    useDHCP = lib.mkForce true;
   };
 
   # forwarding

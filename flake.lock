@@ -629,11 +629,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1767497014,
-        "narHash": "sha256-/KkagvdwDwYWVoEOBWSZ5C6ZkpXTaE891P37m5gY1hU=",
+        "lastModified": 1767537002,
+        "narHash": "sha256-EePEPSGHB4V/2I0XnDuWMWxHfuvZU/px5xCXyqb8Vbk=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "5d901d72146a84022c88b94e528b971f72267cab",
+        "rev": "1295ca9f0f7189e4732c35a8cc67de1efb266129",
         "type": "github"
       },
       "original": {
@@ -759,19 +759,11 @@
     },
     "nixCats": {
       "locked": {
-<<<<<<< HEAD
-        "lastModified": 1767504324,
-        "narHash": "sha256-1CkpIcJSPacdJEw3+7wQIlC64tQw4Q7yKez+QSg/G3s=",
-        "owner": "cynicsketch",
-        "repo": "nix-mineral",
-        "rev": "8244a64c1cd73eec844b3d06c65cf734d99952f1",
-=======
         "lastModified": 1767159145,
         "narHash": "sha256-rnx/0p6D7rKd7mjtgsdSZjpkutJMzUaVyo2mj0rmjWQ=",
         "owner": "BirdeeHub",
         "repo": "nixCats-nvim",
         "rev": "479ab18fbeabaf87564d3fb0eaf99ebebb05f2f8",
->>>>>>> 4ca4c4c (feat: changed mouse setup)
         "type": "github"
       },
       "original": {
@@ -903,12 +895,6 @@
     },
     "nixpkgs_10": {
       "locked": {
-<<<<<<< HEAD
-        "lastModified": 1767364772,
-        "narHash": "sha256-fFUnEYMla8b7UKjijLnMe+oVFOz6HjijGGNS1l7dYaQ=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-=======
         "lastModified": 1764522689,
         "narHash": "sha256-SqUuBFjhl/kpDiVaKLQBoD8TLD+/cTUzzgVFoaHrkqY=",
         "owner": "NixOS",
@@ -929,7 +915,6 @@
         "narHash": "sha256-fFUnEYMla8b7UKjijLnMe+oVFOz6HjijGGNS1l7dYaQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
->>>>>>> 4ca4c4c (feat: changed mouse setup)
         "rev": "16c7794d0a28b5a37904d55bcca36003b9109aaa",
         "type": "github"
       },
@@ -1006,19 +991,11 @@
     },
     "nixpkgs_7": {
       "locked": {
-<<<<<<< HEAD
-        "lastModified": 1767325753,
-        "narHash": "sha256-yA/CuWyqm+AQo2ivGy6PlYrjZBQm7jfbe461+4HF2fo=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "64049ca74d63e971b627b5f3178d95642e61cedd",
-=======
         "lastModified": 1767480499,
         "narHash": "sha256-8IQQUorUGiSmFaPnLSo2+T+rjHtiNWc+OAzeHck7N48=",
         "owner": "nixos",
         "repo": "nixpkgs",
         "rev": "30a3c519afcf3f99e2c6df3b359aec5692054d92",
->>>>>>> 4ca4c4c (feat: changed mouse setup)
         "type": "github"
       },
       "original": {
