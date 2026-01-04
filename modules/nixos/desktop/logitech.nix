@@ -44,7 +44,7 @@
   environment.etc."logid.cfg".text = ''
     devices: ({
         name: "MX Master 3S";
-        dpi: 1000;
+        dpi: 650;
         smartshift:
         {
             on: true;
@@ -93,7 +93,8 @@
                     mode: "OnRelease";
                     action =
                     {
-                        type: "None";
+                        type: "Keypress";
+                        keys: ["KEY_VOLUMEUP"];
                    };
                 },
                 {
@@ -101,7 +102,8 @@
                     mode: "OnRelease";
                     action =
                     {
-                        type: "None";
+                        type: "Keypress";
+                        keys: ["KEY_VOLUMEDOWN"];
                     };
                     },
                 {
@@ -110,7 +112,7 @@
                     action =
                     {
                         type: "Keypress";
-                        keys: ["KEY_LEFTCTRL", "KEY_C"];
+                        keys: ["KEY_PREVIOUSSONG"];
                     }
                     },
                 {
@@ -119,16 +121,16 @@
                     action =
                     {
                         type: "Keypress";
-                        keys: ["KEY_LEFTCTRL", "KEY_V"];
+                        keys: ["KEY_NEXTSONG"];
                     }
                     },
                 {
-                    direction: "None"
+                    direction: "None";
                     mode: "OnRelease";
                     action =
                     {
                         type: "Keypress";
-                        keys: ["KEY_ENTER"];
+                        keys: ["KEY_PLAYPAUSE"];
                     }
                 });
             };
@@ -145,7 +147,7 @@
             action =
             {
                 type: "Keypress";
-                keys: ["KEY_PAGEUP"]
+                keys: ["KEY_FORWARD"]
             }
         },
         {
@@ -153,7 +155,7 @@
             action =
             {
                 type: "Keypress";
-                keys: ["KEY_PAGEDOWN"]
+                keys: ["KEY_BACK"]
             }
         });
     });

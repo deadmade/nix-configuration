@@ -74,9 +74,9 @@
     #  repo = "neovim-configuration";
     #};
 
-    #neovim-config = {
-    #   url = "git+file:../neovim-configuration";
-    #};
+    neovim-config = {
+      url = "git+file:/home/deadmade/neovim-configuration";
+    };
 
     nvix.url = "github:niksingh710/nvix";
 
@@ -101,13 +101,6 @@
       repo = "nixcord";
       ref = "main";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nix-mineral = {
-      type = "github";
-      owner = "cynicsketch";
-      repo = "nix-mineral";
-      flake = false;
     };
 
     nix-jetbrains-plugins = {

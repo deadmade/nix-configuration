@@ -133,10 +133,12 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     tuigreet
-    #inputs.neovim-config.packages.${pkgs.system}.nvim
+    inputs.neovim-config.packages.${pkgs.system}.nvim
     #inputs.nvix.packages.${pkgs.system}.default
     pkgs.unstable.winboat
     #pkgs.unstable.john
+    pkgs.unstable.neovide
+    davinci-resolve
   ];
 
   services.greetd = {

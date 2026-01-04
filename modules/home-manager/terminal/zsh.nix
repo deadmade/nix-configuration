@@ -7,10 +7,30 @@
     icons = "auto";
   };
 
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+    # Colors are managed by Stylix
+  };
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;
+    autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+    historySubstringSearch.enable = true;
+
+    history = {
+      size = 10000;
+      save = 10000;
+      path = "$HOME/.zsh_history";
+      ignoreDups = true;
+      ignoreAllDups = true;
+      ignoreSpace = true;
+      expireDuplicatesFirst = true;
+      share = true;
+      extended = true;
+    };
 
     syntaxHighlighting.highlighters = [
       "main"
@@ -31,15 +51,15 @@
       enable = true;
       plugins = [
         "gitfast"
-        #"docker"
-        #"docker-compose"
         "dotnet"
         "sudo"
         "dirhistory"
         "history"
-        #"vi-mode"
+        "colored-man-pages"
+        "extract"
+        "command-not-found"
+        "fzf"
       ];
-      #theme = "catppuccin";
     };
   };
 

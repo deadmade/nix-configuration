@@ -9,7 +9,7 @@
   environment.systemPackages = with inputs.llm-agents.packages.${pkgs.system}; [
     claude-code
     opencode
-    gemini-cli
-    nanocoder
+    #gemini-cli
+    #nanocoder
   ];
 }

@@ -12,7 +12,6 @@
     curl
     git
     btop
-    kitty
     wl-clipboard
     superfile
   ];
