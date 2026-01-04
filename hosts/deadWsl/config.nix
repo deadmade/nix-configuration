@@ -39,7 +39,7 @@
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   environment.systemPackages = with pkgs; [
-    #inputs.neovim-config.packages.${pkgs.system}.nvim
+    #inputs.neovim-config.packages.${pkgs.stdenv.hostPlatform.system}.nvim
     home-manager
   ];
 

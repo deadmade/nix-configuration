@@ -10,9 +10,9 @@
     isNormalUser = true;
     description = vars.username;
     shell = pkgs.zsh; #TODO Make this configurable
-    extraGroups = ["networkmanager" "wheel" "dialout" "docker"];
+    extraGroups = ["networkmanager" "wheel" "dialout"];
     packages = with pkgs; [
-      # home-manager
+      #home-manager
     ];
   };
 

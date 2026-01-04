@@ -18,6 +18,7 @@
       inputs.hardware.nixosModules.common-gpu-nvidia-nonprime
       inputs.hardware.nixosModules.common-pc-ssd
 
+      outputs.nixosModules.virtualization.container
       outputs.nixosModules.virtualization.vm
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
@@ -63,7 +64,6 @@
     };
   };
 
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Enable the KDE Plasma Desktop Environment.
@@ -133,10 +133,8 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     tuigreet
-    inputs.neovim-config.packages.${pkgs.system}.nvim
-    #inputs.nvix.packages.${pkgs.system}.default
+    inputs.neovim-config.packages.${pkgs.stdenv.hostPlatform.system}.nvim
     pkgs.unstable.winboat
-    #pkgs.unstable.john
     pkgs.unstable.neovide
     davinci-resolve
   ];
@@ -165,10 +163,6 @@
       enable = true;
     };
   };
-
-  virtualisation.containers.enable = true;
-
-  virtualisation.docker.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

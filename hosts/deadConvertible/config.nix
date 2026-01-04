@@ -21,6 +21,7 @@
       outputs.nixosModules.desktop.stylix
       outputs.nixosModules.desktop.vpn
       outputs.nixosModules.virtualization.vm
+      outputs.nixosModules.virtualization.container
     ]
     ++ (builtins.attrValues outputs.nixosModules.core);
 
@@ -92,7 +93,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     tuigreet
-    inputs.neovim-config.packages.${pkgs.system}.nvim
+    inputs.neovim-config.packages.${pkgs.stdenv.hostPlatform.system}.nvim
     brightnessctl
 
     #dive # look into docker image layers
@@ -108,7 +109,7 @@
     settings = {
       default_session = {
         user = "deadmade";
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet 
+        command = "${pkgs.tuigreet}/bin/tuigreet 
         --time 
         --issue
         --asterisks 
@@ -122,21 +123,6 @@
     graphics.enable = true;
     graphics.enable32Bit = true;
   };
-
-  virtualisation.containers.enable = true;
-  # virtualisation = {
-  #   podman = {
-  #     enable = true;
-
-  #     # Create a `docker` alias for podman, to use it as a drop-in replacement
-  #     dockerCompat = true;
-
-  #     # Required for containers under podman-compose to be able to talk to each other.
-  #     defaultNetwork.settings.dns_enabled = true;
-  #   };
-  # };
-
-  virtualisation.docker.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

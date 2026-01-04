@@ -78,8 +78,6 @@
     #  url = "git+file:/home/deadmade/neovim-configuration";
     #};
 
-    nvix.url = "github:niksingh710/nvix";
-
     arion = {
       type = "github";
       owner = "hercules-ci";
@@ -123,13 +121,6 @@
       repo = "git-hooks.nix";
       ref = "master";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    colmena = {
-      type = "github";
-      owner = "zhaofengli";
-      repo = "colmena";
-      ref = "main";
     };
 
     llm-agents = {

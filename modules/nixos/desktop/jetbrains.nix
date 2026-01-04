@@ -14,7 +14,7 @@
     "some.awesome"
   ];
 in {
-  environment.systemPackages = with inputs.nix-jetbrains-plugins.lib."${pkgs.system}"; [
+  environment.systemPackages = with inputs.nix-jetbrains-plugins.lib."${pkgs.stdenv.hostPlatform.system}"; [
     (buildIdeWithPlugins pkgs.jetbrains "rider" pluginList)
     (buildIdeWithPlugins pkgs.jetbrains "webstorm" pluginList)
     (buildIdeWithPlugins pkgs.jetbrains "rust-rover" pluginList)

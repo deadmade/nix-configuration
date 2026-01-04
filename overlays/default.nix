@@ -33,8 +33,8 @@
         (old.patches or [])
         ++ [
           (prev.fetchpatch {
-            url = "https://github.com/PixlOne/logiops/commit/91aa0c12175f33a4184ccaf41181b0a799f7cc55.patch";
-            hash = "sha256-A+StDD+Dp7lPWVpuYR9JR5RuvwPU/5h50B0lY8Qu7nY=";
+            url = "https://github.com/PixlOne/logiops/commit/e15799553f97c1b8bab5d9b22b58453513b56217.patch";
+            hash = "sha256-4ME84R4F48/CJNcfLEJxhArrVgomnjMW11Vw7xb7Ffg=";
           })
         ];
     });
@@ -44,7 +44,7 @@
   # be accessible through 'pkgs.unstable'
   unstable-packages = final: _prev: {
     unstable = import inputs.nixpkgs-unstable {
-      system = final.system;
+      system = final.stdenv.hostPlatform.system;
       config.allowUnfree = true;
     };
   };
