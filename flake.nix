@@ -68,15 +68,15 @@
       ref = "release-25.11";
     };
 
-    #neovim-config = {
-    #  type = "github";
-    #  owner = "deadmade";
-    #  repo = "neovim-configuration";
-    #};
-
     neovim-config = {
-      url = "git+file:/home/deadmade/neovim-configuration";
+      type = "github";
+      owner = "deadmade";
+      repo = "neovim-configuration";
     };
+
+    #neovim-config = {
+    #  url = "git+file:/home/deadmade/neovim-configuration";
+    #};
 
     nvix.url = "github:niksingh710/nvix";
 
