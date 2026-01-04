@@ -103,7 +103,7 @@
 
     restic.server = {
       enable = true;
-      listenAddress = "192.168.1.42:8000";
+      listenAddress = "10.10.10.137:8000";
       dataDir = "/storage";
       extraFlags = ["--no-auth"];
     };
