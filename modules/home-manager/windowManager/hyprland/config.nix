@@ -111,6 +111,7 @@
         "$mainMod SHIFT, s, exec, hyprshot -m region output --clipboard-only"
         "$mainMod, N, exec, swaync-client -t"
         "$mainMod, x, exec, wofi-emoji"
+        "$mainMod, F, fullscreen, 0"
 
         "$mainMod, L, exec, hyprlock --immediate"
         "$mainMod SHIFT, L, exec, hyprlock & disown && systemctl suspend" # hibernation with lockscreen

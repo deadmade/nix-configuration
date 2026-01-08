@@ -97,7 +97,7 @@
       type = "github";
       owner = "KaylorBen";
       repo = "nixcord";
-      ref = "main";
+      ref = "38592e01087877116adc2af0876aebb61083b531";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -259,7 +259,6 @@
           cachix
           vulnix
           age
-          colmena
         ];
       };
     });

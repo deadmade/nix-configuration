@@ -27,6 +27,9 @@
         jnoortheen.nix-ide
 
         vscode-icons-team.vscode-icons
+
+        ms-python.python
+        tamasfe.even-better-toml
       ];
 
       userSettings = lib.mkForce {
@@ -36,6 +39,8 @@
 
         "workbench.colorTheme" = "Catppuccin Frappé";
         "files.autoSave" = "onFocusChange";
+        "autoType.serverCommand" = "/home/deadmade/python-auto-type/auto_type/.venv/bin/auto-type-server";
+        "explorer.excludeGitIgnore" = "true";
       };
     };
   };
