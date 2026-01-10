@@ -97,6 +97,7 @@ with lib; {
           right = [
             {
               id = "Tray";
+              drawerEnabled = false; # Show all tray icons directly in bar
             }
             {
               id = "Battery";
