@@ -159,6 +159,8 @@
         "$mainMod SHIFT, j, movewindow, d"
         "$mainMod SHIFT, k, movewindow, u"
         "$mainMod SHIFT, l, movewindow, r"
+
+        "gesture = 3, left, workspace, m-1"
       ];
 
       monitor = [
