@@ -14,6 +14,7 @@
     btop
     wl-clipboard
     superfile
+    kitty
   ];
 
   home-manager.extraSpecialArgs = {inherit inputs outputs;};

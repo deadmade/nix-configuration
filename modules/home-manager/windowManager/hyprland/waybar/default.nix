@@ -92,7 +92,7 @@ with lib; {
           format = " {usage}%";
           interval = 1;
           max-length = 10;
-          on-click = "kitty -e btop";
+          on-click = "ghostty -e btop";
         };
 
         "disk" = {
@@ -113,7 +113,7 @@ with lib; {
           "format-alt-click" = "click";
           tooltip = true;
           "tooltip-format" = "{used:0.1f}G/{total:0.1f}G";
-          "on-click-right" = "kitty --title btop sh -c 'btop' --utf-force";
+          "on-click-right" = "ghostty --title btop sh -c 'btop' --utf-force";
         };
 
         "network" = {
