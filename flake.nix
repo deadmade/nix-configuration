@@ -129,6 +129,11 @@
       repo = "llm-agents.nix";
       ref = "main";
     };
+
+    noctalia-shell = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
