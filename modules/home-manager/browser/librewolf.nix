@@ -8,7 +8,7 @@
 
   programs.librewolf = {
     enable = true;
-    package = pkgs.unstable.librewolf;
+    package = pkgs.librewolf;
     languagePacks = ["de" "en-US"];
 
     policies = {

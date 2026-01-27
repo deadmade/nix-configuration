@@ -23,18 +23,22 @@
         oderwat.indent-rainbow
         kamikillerto.vscode-colorize
 
-        # Nix Support
-        jnoortheen.nix-ide
-
         vscode-icons-team.vscode-icons
 
         ms-python.python
         tamasfe.even-better-toml
 
+        arrterian.nix-env-selector
+        jnoortheen.nix-ide
         mkhl.direnv
-        ms-toolsai.jupyter
-        redhat.vscode-yaml
+
         ms-toolsai.datawrangler
+        ms-toolsai.jupyter
+        #ms-toolsai.vscode-jupyter-powertoys
+        #ms-toolsai.jupyter-hub
+        ms-toolsai.jupyter-renderers
+
+        redhat.vscode-yaml
       ];
 
       userSettings = lib.mkForce {
@@ -45,7 +49,10 @@
         "workbench.colorTheme" = "Catppuccin Frappé";
         "files.autoSave" = "onFocusChange";
         "autoType.serverCommand" = "/home/deadmade/python-auto-type/auto_type/.venv/bin/auto-type-server";
-        "explorer.excludeGitIgnore" = "true";
+        "explorer.excludeGitIgnore" = true;
+        "direnv.restart.automatic" = true;
+
+        "nix.enableLanguageServer" = true;
 
         "editor.inlayHints.enabled" = "on";
         "editor.inlayHints.fontSize" = "12";
