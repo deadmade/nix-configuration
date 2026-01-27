@@ -12,13 +12,17 @@ with lib; {
     inputs.noctalia-shell.homeModules.default
   ];
 
+  home.file.".config/wallpapers" = {
+    source = ../../../../wallpapers;
+    recursive = true;
+  };
+
   # Configure noctalia-shell
   programs.noctalia-shell = {
     enable = true;
 
     systemd = {
       enable = true; # Use systemd instead of exec-once
-      mutableRuntimeSettings = true; # Allow GUI changes
     };
 
     # Plugin configuration
@@ -28,7 +32,6 @@ with lib; {
       sources = [];
     };
 
-    # Main settings configuration - based on existing ~/.config/noctalia/settings.json
     settings = {
       appLauncher = {
         autoPasteClipboard = false;
@@ -36,7 +39,7 @@ with lib; {
         customLaunchPrefix = "";
         customLaunchPrefixEnabled = false;
         enableClipPreview = true;
-        enableClipboardHistory = false;
+        enableClipboardHistory = true;
         iconMode = "tabler";
         ignoreMouseInput = false;
         pinnedApps = [];
@@ -45,7 +48,7 @@ with lib; {
         showCategories = true;
         showIconBackground = false;
         sortByMostUsed = true;
-        terminalCommand = "xterm -e";
+        terminalCommand = "ghostty -e";
         useApp2Unit = false;
         viewMode = "list";
       };
@@ -75,6 +78,9 @@ with lib; {
           center = [
             {
               id = "ActiveWindow";
+              maxWidth = 800; # Increase widget width to show more of window title
+              showIcon = true; # Show application icon
+              scrollingMode = "hover"; # Scroll text on hover if truncated
             }
           ];
           left = [
@@ -101,6 +107,12 @@ with lib; {
             }
             {
               id = "Battery";
+              displayMode = "alwaysShow"; # Always display battery percentage text
+              warningThreshold = 20; # Show warning at 20% battery
+              deviceNativePath = ""; # Use default battery device
+              showPowerProfiles = true; # Show power profile controls in battery panel
+              showNoctaliaPerformance = true; # Show Noctalia performance mode toggle in panel
+              hideIfNotDetected = false; # Keep widget visible even if battery not detected
             }
             {
               id = "Volume";
@@ -127,7 +139,7 @@ with lib; {
       calendar = {
         cards = [
           {
-            enabled = true;
+            enabled = false;
             id = "calendar-header-card";
           }
           {
@@ -135,7 +147,7 @@ with lib; {
             id = "calendar-month-card";
           }
           {
-            enabled = true;
+            enabled = false;
             id = "weather-card";
           }
         ];
@@ -148,7 +160,7 @@ with lib; {
         matugenSchemeType = "scheme-fruit-salad";
         predefinedScheme = "Noctalia (default)";
         schedulingMode = "off";
-        useWallpaperColors = false;
+        useWallpaperColors = true;
       };
 
       controlCenter = {
@@ -170,11 +182,11 @@ with lib; {
             id = "brightness-card";
           }
           {
-            enabled = true;
+            enabled = false;
             id = "weather-card";
           }
           {
-            enabled = true;
+            enabled = false;
             id = "media-sysmon-card";
           }
         ];
@@ -271,10 +283,10 @@ with lib; {
         firstDayOfWeek = -1;
         hideWeatherCityName = false;
         hideWeatherTimezone = false;
-        name = "Tokyo";
+        name = "Augsburg";
         showCalendarEvents = true;
         showCalendarWeather = true;
-        showWeekNumberInCalendar = false;
+        showWeekNumberInCalendar = true;
         use12hourFormat = false;
         useFahrenheit = false;
         weatherEnabled = true;
@@ -415,9 +427,9 @@ with lib; {
         ghostty = false;
         gtk = false;
         helix = false;
-        hyprland = false;
+        hyprland = true;
         kcolorscheme = false;
-        kitty = false;
+        kitty = true;
         mango = false;
         niri = false;
         pywalfox = false;
@@ -446,16 +458,16 @@ with lib; {
       };
 
       wallpaper = {
-        directory = "/home/${vars.username}/Pictures/Wallpapers";
+        directory = "/home/${vars.username}/.config/wallpapers";
         enableMultiMonitorDirectories = false;
         enabled = true;
         fillColor = "#000000";
         fillMode = "crop";
-        hideWallpaperFilenames = false;
+        hideWallpaperFilenames = true;
         monitorDirectories = [];
         overviewEnabled = false;
         panelPosition = "follow_bar";
-        randomEnabled = false;
+        randomEnabled = true;
         randomIntervalSec = 300;
         recursiveSearch = false;
         setWallpaperOnAllMonitors = true;
@@ -464,7 +476,7 @@ with lib; {
         transitionEdgeSmoothness = 0.05;
         transitionType = "random";
         useSolidColor = false;
-        useWallhaven = false;
+        useWallhaven = true;
         wallhavenApiKey = "";
         wallhavenCategories = "111";
         wallhavenOrder = "desc";

@@ -30,6 +30,11 @@
 
         ms-python.python
         tamasfe.even-better-toml
+
+        mkhl.direnv
+        ms-toolsai.jupyter
+        redhat.vscode-yaml
+        ms-toolsai.datawrangler
       ];
 
       userSettings = lib.mkForce {
@@ -41,6 +46,10 @@
         "files.autoSave" = "onFocusChange";
         "autoType.serverCommand" = "/home/deadmade/python-auto-type/auto_type/.venv/bin/auto-type-server";
         "explorer.excludeGitIgnore" = "true";
+
+        "editor.inlayHints.enabled" = "on";
+        "editor.inlayHints.fontSize" = "12";
+        "editor.inlayHints.padding" = "true";
       };
     };
   };

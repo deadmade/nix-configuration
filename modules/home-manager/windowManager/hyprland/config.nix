@@ -4,12 +4,12 @@
       exec-once = [
         # wpaperd disabled - using Noctalia wallpapers
         "hypridle &"
-        # noctalia-shell now started via systemd
         "vesktop --start-minimized &"
         "protonvpn-app --start-minimized &"
         "flatpak run com.rtosta.zapzap"
         "nm-applet --indicator &"
         "librewolf &"
+        "signal &"
       ];
 
       "$mainMod" = "SUPER";
@@ -130,7 +130,7 @@
         # Switch workspaces with mainMod + [0-9]
         "$mainMod, 1, split:workspace, 1"
         "$mainMod, 2, split:workspace, 2"
-        "$mainMod, 3, split:workspace, 4"
+        "$mainMod, 3, split:workspace, 3"
         "$mainMod, 4, split:workspace, 4"
         "$mainMod, 5, split:workspace, 5"
         "$mainMod, 6, split:workspace, 6"
