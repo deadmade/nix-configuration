@@ -137,6 +137,7 @@
     pkgs.unstable.winboat
     pkgs.unstable.neovide
     davinci-resolve
+    pkgs.unstable.vlc
   ];
 
   services.greetd = {

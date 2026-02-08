@@ -16,6 +16,10 @@
     pkgs.unstable.thunderbird
     pkgs.unstable.obsidian
     pkgs.unstable.signal-desktop
+    pkgs.unstable.vscode
+    pkgs.unstable.obs-studio
+    pkgs.unstable.legcord
+    #pkgs.unstable.opencode
     home-manager
   ];
 

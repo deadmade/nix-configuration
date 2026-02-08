@@ -23,9 +23,6 @@
         oderwat.indent-rainbow
         kamikillerto.vscode-colorize
 
-        # Nix Support
-        jnoortheen.nix-ide
-
         vscode-icons-team.vscode-icons
 
         ms-python.python
@@ -35,6 +32,15 @@
         ms-toolsai.jupyter
         redhat.vscode-yaml
         ms-toolsai.datawrangler
+        arrterian.nix-env-selector
+        jnoortheen.nix-ide
+        mkhl.direnv
+
+        ms-toolsai.datawrangler
+        ms-toolsai.jupyter
+        #ms-toolsai.vscode-jupyter-powertoys
+        #ms-toolsai.jupyter-hub
+        ms-toolsai.jupyter-renderers
       ];
 
       userSettings = lib.mkForce {
@@ -50,6 +56,10 @@
         "editor.inlayHints.enabled" = "on";
         "editor.inlayHints.fontSize" = "12";
         "editor.inlayHints.padding" = "true";
+        "explorer.excludeGitIgnore" = true;
+        "direnv.restart.automatic" = true;
+
+        "nix.enableLanguageServer" = true;
       };
     };
   };

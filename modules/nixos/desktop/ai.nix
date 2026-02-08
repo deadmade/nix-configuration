@@ -10,6 +10,7 @@
     claude-code
     opencode
     gemini-cli
-    #nanocoder
+    copilot-cli
+    coderabbit-cli
   ];
 }

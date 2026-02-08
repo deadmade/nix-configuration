@@ -2,6 +2,7 @@
   # # Install & Configure Git
   programs.git = {
     enable = true;
+    lfs.enable = true;
     settings = {
       user = {
         name = vars.gitUsername;
