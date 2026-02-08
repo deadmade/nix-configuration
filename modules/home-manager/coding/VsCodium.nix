@@ -51,7 +51,6 @@
         "workbench.colorTheme" = "Catppuccin Frappé";
         "files.autoSave" = "onFocusChange";
         "autoType.serverCommand" = "/home/deadmade/python-auto-type/auto_type/.venv/bin/auto-type-server";
-        "explorer.excludeGitIgnore" = "true";
 
         "editor.inlayHints.enabled" = "on";
         "editor.inlayHints.fontSize" = "12";
