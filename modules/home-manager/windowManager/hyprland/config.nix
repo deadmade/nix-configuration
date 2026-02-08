@@ -2,14 +2,14 @@
   wayland.windowManager.hyprland = {
     settings = {
       exec-once = [
-        "wpaperd &"
+        # wpaperd disabled - using Noctalia wallpapers
         "hypridle &"
-        "waybar &"
         "vesktop --start-minimized &"
         "protonvpn-app --start-minimized &"
         "flatpak run com.rtosta.zapzap"
         "nm-applet --indicator &"
         "librewolf &"
+        "signal &"
       ];
 
       "$mainMod" = "SUPER";
@@ -27,9 +27,9 @@
         };
       };
 
-      #gestures = {
-      #  workspace_swipe = true;
-      #};
+      gesture = [
+        "3, horizontal, workspace"
+      ];
 
       # Allgemeine Einstellungen
       general = {
@@ -112,6 +112,7 @@
         "$mainMod, N, exec, swaync-client -t"
         "$mainMod, x, exec, wofi-emoji"
         "$mainMod, F, fullscreen, 0"
+        "$mainMod, SPACE, exec, noctalia-shell ipc call launcher toggle" # App launcher
 
         "$mainMod, L, exec, hyprlock --immediate"
         "$mainMod SHIFT, L, exec, hyprlock & disown && systemctl suspend" # hibernation with lockscreen

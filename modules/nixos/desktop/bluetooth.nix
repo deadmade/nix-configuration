@@ -1,5 +1,5 @@
 {pkgs, ...}: {
-  hardware.bluetooth.enable = false;
+  hardware.bluetooth.enable = true;
   hardware.bluetooth = {
     settings = {
       General = {

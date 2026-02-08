@@ -2,6 +2,7 @@
   lib,
   host,
   pkgs,
+  inputs,
   ...
 }: let
   inherit
@@ -10,14 +11,15 @@
 in
   with lib; {
     imports = [
-      ./wpaperd
-      ./waybar
-      ./hyprlock
+      #./wpaperd.nix # Disabled - using Noctalia wallpapers
+      #./waybar.nix
+      ./hyprlock.nix
       ./config.nix
-      ./hypridle
-      ./wlogout
-      ./wofi
-      ./swaync
+      ./hypridle.nix
+      ./noctalia.nix
+      #./wlogout.nix
+      #./wofi.nix
+      #./swaync.nix
     ];
 
     # Home Manager Pakete
@@ -25,6 +27,7 @@ in
       hyprshot # Screenshot-Tool
       networkmanagerapplet
       wofi-emoji
+      # noctalia-shell now managed by noctalia.nix module
     ];
 
     services.network-manager-applet.enable = true;

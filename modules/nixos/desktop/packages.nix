@@ -11,9 +11,11 @@
     pkgs.unstable.protonmail-desktop
     pkgs.unstable.kdePackages.okular
     pkgs.unstable.spotify
-    pkgs.unstable.libreoffice-fresh
+    #pkgs.unstable.libreoffice-fresh
+    pkgs.unstable.onlyoffice-desktopeditors
     pkgs.unstable.thunderbird
     pkgs.unstable.obsidian
+    pkgs.unstable.signal-desktop
     pkgs.unstable.vscode
     pkgs.unstable.obs-studio
     pkgs.unstable.legcord

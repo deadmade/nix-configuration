@@ -5,6 +5,7 @@
   pkgs,
   outputs,
   inputs,
+  fetchurl,
   ...
 }: {
   imports =
@@ -20,6 +21,9 @@
       outputs.nixosModules.desktop.packages
       outputs.nixosModules.desktop.stylix
       outputs.nixosModules.desktop.vpn
+      outputs.nixosModules.desktop.ai
+      outputs.nixosModules.desktop.jetbrains
+      outputs.nixosModules.desktop.bluetooth
       outputs.nixosModules.virtualization.vm
       outputs.nixosModules.virtualization.container
     ]
@@ -75,6 +79,9 @@
     #media-session.enable = true;
   };
 
+  services.upower.enable = true;
+  services.power-profiles-daemon.enable = true;
+
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
   services.libinput.touchpad.tapping = true;
@@ -95,6 +102,8 @@
     tuigreet
     inputs.neovim-config.packages.${pkgs.stdenv.hostPlatform.system}.nvim
     brightnessctl
+    glab
+    pkgs.unstable.ladybird
 
     #dive # look into docker image layers
     #podman-tui # status of containers in the terminal
