@@ -7,5 +7,10 @@
 
   environment.systemPackages = with pkgs; [
     pkgs.unstable.protonvpn-gui
+    pkgs.unstable.proton-vpn-cli # CLI fallback
+    pkgs.unstable.networkmanager-openvpn # OpenVPN plugin
+    pkgs.unstable.wireguard-tools # wg utility for WireGuard :contentReference[oaicite:0]{index=1}
+    pkgs.unstable.libsecret # Secret Service API
+    pkgs.unstable.openvpn # the openvpn binary, if you want that backend
   ];
 }

@@ -8,6 +8,7 @@
     [
       outputs.homeManagerModules.hyprland
       outputs.homeManagerModules.browser.librewolf
+      #outputs.homeManagerModules.browser.brave
       outputs.homeManagerModules.socialMedia.vencord
       #outputs.homeManagerModules.flatpak
     ]
@@ -29,7 +30,7 @@
 
   wayland.windowManager.hyprland = {
     settings = {
-      # Drei Bildschirme konfigurieren (Passen die Namen mit `hyprctl monitors` an) -> umgedreht geht es. KP why
+      # Drei Bildschirme konfigurieren (Passen die Namen mit `hyprctl monitors` an)
       monitor = [
         "HDMI-A-1,1920x1080@60,3840x0,1" # Rechter Monitor
         "DP-2, 1920x1080@60,0x0,1" # Linker Monitor
