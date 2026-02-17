@@ -5,7 +5,7 @@
 }: {
   programs.vscode = {
     enable = true;
-    package = pkgs.unstable.vscodium;
+    package = pkgs.unstable.vscodium-fhs;
     profiles.default = {
       enableUpdateCheck = false;
       extensions = with pkgs.unstable.vscode-extensions; [
@@ -34,8 +34,8 @@
 
         ms-toolsai.datawrangler
         ms-toolsai.jupyter
-        #ms-toolsai.vscode-jupyter-powertoys
-        #ms-toolsai.jupyter-hub
+        ms-toolsai.vscode-jupyter-slideshow
+        ms-toolsai.vscode-jupyter-cell-tags
         ms-toolsai.jupyter-renderers
 
         redhat.vscode-yaml

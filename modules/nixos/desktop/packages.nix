@@ -15,7 +15,6 @@
     pkgs.unstable.onlyoffice-desktopeditors
     pkgs.unstable.thunderbird
     pkgs.unstable.obsidian
-    pkgs.unstable.zapzap
     pkgs.unstable.signal-desktop
     home-manager
   ];
