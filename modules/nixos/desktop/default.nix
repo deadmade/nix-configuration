@@ -4,8 +4,8 @@
   stylix = import ./stylix.nix;
   vpn = import ./vpn.nix;
   jetbrains = import ./jetbrains.nix;
-  bluetooth = import ./bluetooth.nix;
+  #bluetooth = import ./bluetooth.nix;
   logitech = import ./logitech.nix;
   ai = import ./ai.nix;
-  tailscale = import ./tailscale.nix;
+  #tailscale = import ./tailscale.nix;
 }

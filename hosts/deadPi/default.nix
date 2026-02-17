@@ -35,8 +35,6 @@
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
-  services.udisks2.enable = false;
-
   # systemPackages
   environment.systemPackages = with pkgs; [
     vim
