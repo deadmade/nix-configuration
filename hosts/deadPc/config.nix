@@ -18,14 +18,13 @@
       inputs.hardware.nixosModules.common-gpu-nvidia-nonprime
       inputs.hardware.nixosModules.common-pc-ssd
 
+      outputs.nixosModules.desktop.base
       outputs.nixosModules.virtualization.container
       outputs.nixosModules.virtualization.vm
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
     #++ (builtins.attrValues outputs.nixosModules.virtualization)
     ++ (builtins.attrValues outputs.nixosModules.desktop);
-
-  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
@@ -34,8 +33,6 @@
 
   # Enable cross-compilation support
   nix.settings.extra-platforms = config.boot.binfmt.emulatedSystems;
-
-  environment.pathsToLink = ["/share/zsh"];
 
   networking.hostName = "deadPc"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -51,20 +48,7 @@
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
-  services.udisks2.enable = false;
-
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-hyprland
-    ];
-    config = {
-      common.default = "hyprland";
-    };
-  };
-
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_6_18;
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = false;
@@ -84,22 +68,6 @@
     enable = false;
     browsing = true;
     drivers = [pkgs.cnijfilter2 pkgs.canon-cups-ufr2];
-  };
-
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
 
   # Enable touchpad support (enabled default in most desktopManager).

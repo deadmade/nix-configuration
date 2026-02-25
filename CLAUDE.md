@@ -39,7 +39,6 @@ This is a flake-based NixOS configuration tracking stable 25.11 plus unstable pa
 - **homeConfigurations**: User configurations (deadmade@<host>)
 - **nixosModules**: Reusable system-level modules
 - **homeManagerModules**: Reusable user-level modules
-- **customModules**: Custom NixOS extensions (e.g., firejail sandboxing)
 - **overlays**: Package modifications and unstable access
 
 ### Host Structure
@@ -55,6 +54,8 @@ Active hosts:
 - **deadConvertible**: Laptop with AMD GPU, touchpad/wacom support
 - **deadWsl**: Windows Subsystem for Linux configuration
 - **deadPi**: Raspberry Pi ARM configuration (aarch64-linux)
+
+Archived hosts are tracked in `hosts/STATUS.md`.
 
 ### Module Organization
 

@@ -20,6 +20,9 @@ jobs:
       - name: Flake checks
         run: nix flake check
 
+      - name: Eval deadPi
+        run: nix eval .#nixosConfigurations.deadPi.config.system.stateVersion
+
       - name: Dry-run build deadPc
         run: nix build .#nixosConfigurations.deadPc.config.system.build.toplevel --dry-run --print-out-paths
 
@@ -29,4 +32,11 @@ jobs:
       - name: Dry-run build deadWsl
         run: nix build .#nixosConfigurations.deadWsl.config.system.build.toplevel --dry-run --print-out-paths
 
+      - name: Eval home deadPc
+        run: nix eval .#homeConfigurations."deadmade@deadPc".activationPackage.drvPath
 
+      - name: Eval home deadConvertible
+        run: nix eval .#homeConfigurations."deadmade@deadConvertible".activationPackage.drvPath
+
+      - name: Eval home deadWsl
+        run: nix eval .#homeConfigurations."deadmade@deadWsl".activationPackage.drvPath

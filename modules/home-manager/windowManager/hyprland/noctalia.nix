@@ -105,15 +105,15 @@ with lib; {
               id = "Tray";
               drawerEnabled = false; # Show all tray icons directly in bar
             }
-            {
-              id = "Battery";
-              displayMode = "alwaysShow"; # Always display battery percentage text
-              warningThreshold = 20; # Show warning at 20% battery
-              deviceNativePath = ""; # Use default battery device
-              showPowerProfiles = true; # Show power profile controls in battery panel
-              showNoctaliaPerformance = true; # Show Noctalia performance mode toggle in panel
-              hideIfNotDetected = false; # Keep widget visible even if battery not detected
-            }
+            # {
+            #   id = "Battery";
+            #   displayMode = "alwaysShow"; # Always display battery percentage text
+            #   warningThreshold = 20; # Show warning at 20% battery
+            #   deviceNativePath = ""; # Use default battery device
+            #   showPowerProfiles = true; # Show power profile controls in battery panel
+            #   showNoctaliaPerformance = true; # Show Noctalia performance mode toggle in panel
+            #   hideIfNotDetected = false; # Keep widget visible even if battery not detected
+            # }
             {
               id = "Volume";
             }
@@ -160,7 +160,7 @@ with lib; {
         matugenSchemeType = "scheme-fruit-salad";
         predefinedScheme = "Noctalia (default)";
         schedulingMode = "off";
-        useWallpaperColors = true;
+        useWallpaperColors = false;
       };
 
       controlCenter = {

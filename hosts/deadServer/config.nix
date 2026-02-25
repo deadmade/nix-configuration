@@ -15,8 +15,6 @@
 
       inputs.hardware.nixosModules.common-pc-ssd
       inputs.sops-nix.nixosModules.sops
-
-      outputs.customModules.firejail
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
     ++ (builtins.attrValues outputs.nixosModules.virtualization);
@@ -118,7 +116,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  services.openssh.settings.PasswordAuthentication = true; # TODO Change this. Not so secure.
+  services.openssh.settings.PasswordAuthentication = false;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

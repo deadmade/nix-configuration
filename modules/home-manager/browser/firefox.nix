@@ -2,12 +2,14 @@
   inputs,
   pkgs,
   ...
-}: {
+}: let
+  system = pkgs.stdenv.hostPlatform.system;
+in {
   programs.firefox = {
     enable = false;
 
     profiles.Default = {
-      extensions = with inputs.firefox-addons.packages."x86_64-linux"; [
+      extensions = with inputs.firefox-addons.packages.${system}; [
         ublock-origin
         darkreader
         tabliss

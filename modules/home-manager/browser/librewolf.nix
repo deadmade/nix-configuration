@@ -2,7 +2,9 @@
   inputs,
   pkgs,
   ...
-}: {
+}: let
+  system = pkgs.stdenv.hostPlatform.system;
+in {
   imports = [
   ];
 
@@ -33,7 +35,7 @@
     };
 
     profiles.Default = {
-      extensions.packages = with inputs.firefox-addons.packages."x86_64-linux"; [
+      extensions.packages = with inputs.firefox-addons.packages.${system}; [
         ublock-origin
         darkreader
         consent-o-matic

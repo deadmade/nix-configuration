@@ -29,14 +29,10 @@
         tamasfe.even-better-toml
 
         mkhl.direnv
-        ms-toolsai.jupyter
         redhat.vscode-yaml
         ms-toolsai.datawrangler
         arrterian.nix-env-selector
         jnoortheen.nix-ide
-        mkhl.direnv
-
-        ms-toolsai.datawrangler
         ms-toolsai.jupyter
         #ms-toolsai.vscode-jupyter-powertoys
         #ms-toolsai.jupyter-hub

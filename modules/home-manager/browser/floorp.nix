@@ -2,7 +2,9 @@
   inputs,
   pkgs,
   ...
-}: {
+}: let
+  system = pkgs.stdenv.hostPlatform.system;
+in {
   programs.floorp = {
     enable = true;
     package = pkgs.unstable.floorp-bin;
@@ -30,7 +32,7 @@
     };
 
     profiles.Default = {
-      extensions = with inputs.firefox-addons.packages."x86_64-linux"; [
+      extensions = with inputs.firefox-addons.packages.${system}; [
         ublock-origin
         darkreader
         consent-o-matic
@@ -40,7 +42,6 @@
         sponsorblock
         clearurls
         privacy-badger
-        sponsorblock
         df-youtube
       ];
 

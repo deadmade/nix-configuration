@@ -1,10 +1,10 @@
 {pkgs, ...}: {
-  home.packages = with pkgs; [
+  home.packages = with pkgs.unstable; [
     heroic
     (lutris.override {
       extraLibraries = _pkgs: [
         wine
-        wineWowPackages.stable
+        wineWow64Packages.stable
       ];
     })
 

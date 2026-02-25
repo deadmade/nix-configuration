@@ -10,6 +10,7 @@
       outputs.homeManagerModules.browser.librewolf
       #outputs.homeManagerModules.browser.brave
       outputs.homeManagerModules.socialMedia.vencord
+      outputs.homeManagerModules.gaming
       #outputs.homeManagerModules.flatpak
     ]
     ++ (builtins.attrValues outputs.homeManagerModules.core)
