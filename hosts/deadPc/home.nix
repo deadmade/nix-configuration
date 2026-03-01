@@ -4,18 +4,9 @@
   pkgs,
   ...
 }: {
-  imports =
-    [
-      outputs.homeManagerModules.hyprland
-      outputs.homeManagerModules.browser.librewolf
-      #outputs.homeManagerModules.browser.brave
-      outputs.homeManagerModules.socialMedia.vencord
-      outputs.homeManagerModules.gaming
-      #outputs.homeManagerModules.flatpak
-    ]
-    ++ (builtins.attrValues outputs.homeManagerModules.core)
-    ++ (builtins.attrValues outputs.homeManagerModules.coding)
-    ++ (builtins.attrValues outputs.homeManagerModules.terminal);
+  imports = [
+    outputs.homeManagerProfiles.desktopGaming
+  ];
 
   home.packages = with pkgs; [
     telegram-desktop

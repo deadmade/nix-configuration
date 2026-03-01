@@ -7,27 +7,17 @@
   inputs,
   ...
 }: {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
 
-      inputs.hardware.nixosModules.common-cpu-amd
-      inputs.hardware.nixosModules.common-gpu-amd
-      inputs.hardware.nixosModules.common-pc-laptop
-      inputs.hardware.nixosModules.common-pc-ssd
+    inputs.hardware.nixosModules.common-cpu-amd
+    inputs.hardware.nixosModules.common-gpu-amd
+    inputs.hardware.nixosModules.common-pc-laptop
+    inputs.hardware.nixosModules.common-pc-ssd
 
-      outputs.nixosModules.desktop.base
-      outputs.nixosModules.desktop.packages
-      outputs.nixosModules.desktop.stylix
-      outputs.nixosModules.desktop.vpn
-      outputs.nixosModules.desktop.ai
-      outputs.nixosModules.desktop.jetbrains
-      outputs.nixosModules.desktop.bluetooth
-      outputs.nixosModules.virtualization.vm
-      outputs.nixosModules.virtualization.container
-    ]
-    ++ (builtins.attrValues outputs.nixosModules.core);
+    outputs.nixosProfiles.desktop
+  ];
 
   networking.hostName = "deadConvertible"; # Define your hostname.
   networking.networkmanager.enable = true;
@@ -73,12 +63,6 @@
     brightnessctl
     glab
     pkgs.unstable.ladybird
-
-    #dive # look into docker image layers
-    #podman-tui # status of containers in the terminal
-    #docker-compose # start group of containers for dev
-    #unstable.podman-compose # start group of containers for dev
-    #unstable.podman-desktop
   ];
 
   services.greetd = {

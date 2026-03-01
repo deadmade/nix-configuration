@@ -3,7 +3,6 @@
     settings = {
       exec-once = [
         # wpaperd disabled - using Noctalia wallpapers
-        "hypridle &"
         "vesktop --start-minimized &"
         "protonvpn-app --start-minimized &"
         "flatpak run com.rtosta.zapzap"
@@ -114,8 +113,8 @@
         "$mainMod, F, fullscreen, 0"
         "$mainMod, SPACE, exec, noctalia-shell ipc call launcher toggle" # App launcher
 
-        "$mainMod, L, exec, hyprlock --immediate"
-        "$mainMod SHIFT, L, exec, hyprlock & disown && systemctl suspend" # hibernation with lockscreen
+        "$mainMod, L, exec, noctalia-shell ipc call lockScreen lock || loginctl lock-session"
+        "$mainMod SHIFT, L, exec, noctalia-shell ipc call sessionMenu action suspend || systemctl suspend"
 
         # Move focus with mainMod + arrow keys
         "$mainMod, left, movefocus, l"

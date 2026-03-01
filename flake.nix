@@ -16,6 +16,12 @@
   };
 
   inputs = {
+    flake-parts = {
+      type = "github";
+      owner = "hercules-ci";
+      repo = "flake-parts";
+    };
+
     nixpkgs = {
       type = "github";
       owner = "nixos";
@@ -138,136 +144,14 @@
     };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    home-manager,
-    ...
-  } @ inputs: let
-    inherit (self) outputs;
-    systems = [
-      "x86_64-linux"
-      "aarch64-linux"
-    ];
-    forAllSystems = nixpkgs.lib.genAttrs systems;
-    vars = import ./variables.nix;
-  in {
-    # Formatter for your nix files, available through 'nix fmt'
-    # Other options beside 'alejandra' include 'nixpkgs-fmt'
-    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
-
-    # Your custom packages and modifications, exported as overlays
-    overlays = import ./overlays {inherit inputs;};
-
-    # Reusable nixos modules you might want to export
-    # These are usually stuff you would upstream into nixpkgs
-    nixosModules = import ./modules/nixos;
-
-    # Reusable home-manager modules you might want to export
-    # These are usually stuff you would upstream into home-manager
-    homeManagerModules = import ./modules/home-manager;
-
-    nixosConfigurations = {
-      deadConvertible = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs vars;};
-        modules = [
-          ./hosts/deadConvertible/config.nix
-        ];
-      };
-
-      deadPc = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs vars;};
-        modules = [
-          ./hosts/deadPc/config.nix
-        ];
-      };
-
-      deadWsl = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs vars;};
-        modules = [
-          ./hosts/deadWsl/config.nix
-        ];
-      };
-
-      # deadServer = nixpkgs.lib.nixosSystem {
-      #   specialArgs = {inherit inputs outputs vars systems;};
-      #   modules = [
-      #     ./hosts/deadServer/config.nix
-      #   ];
-      # };
-
-      # Regular Pi configuration (not for SD image building)
-      deadPi = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs vars;};
-        system = "aarch64-linux";
-        modules = [
-          "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64-installer.nix"
-          ./hosts/deadPi
-          {
-            sdImage.compressImage = false;
-          }
-        ];
-      };
+  outputs = inputs @ {flake-parts, ...}:
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      imports = [
+        ./flake/modules/constants.nix
+        ./flake/modules/exports.nix
+        ./flake/modules/hosts.nix
+        ./flake/modules/home.nix
+        ./flake/modules/per-system.nix
+      ];
     };
-
-    # home-manager switch --flake .#deadmade@<host>
-    homeConfigurations = {
-      "${vars.username}@deadConvertible" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = {inherit inputs outputs vars;};
-        modules = [
-          ./hosts/deadConvertible/home.nix
-        ];
-      };
-      "${vars.username}@deadWsl" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = {inherit inputs outputs vars;};
-        modules = [
-          ./hosts/deadWsl/home.nix
-        ];
-      };
-      "${vars.username}@deadPc" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = {inherit inputs outputs vars systems;};
-        modules = [
-          ./hosts/deadPc/home.nix
-        ];
-      };
-    };
-
-    devShells = forAllSystems (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-      pre-commit-check = inputs.git-hooks.lib.${system}.run {
-        src = ./.;
-        hooks = {
-          # Nix formatting with alejandra (same as `nix fmt .`)
-          alejandra.enable = true;
-
-          # Remove dead code
-          #deadnix.enable = true;
-
-          # Validate flake
-          flake-checker.enable = false;
-
-          check-merge-conflicts.enable = true;
-          convco.enable = true;
-          check-added-large-files.enable = true;
-          end-of-file-fixer.enable = true;
-          trufflehog.enable = true;
-        };
-      };
-    in {
-      default = pkgs.mkShell {
-        inherit (pre-commit-check) shellHook;
-        buildInputs = pre-commit-check.enabledPackages;
-        packages = with pkgs; [
-          lazygit
-          sops
-          cachix
-          vulnix
-          age
-        ];
-      };
-    });
-  };
 }

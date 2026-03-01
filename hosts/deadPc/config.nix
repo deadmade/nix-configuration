@@ -8,23 +8,17 @@
   inputs,
   ...
 }: {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./sops.nix
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./sops.nix
 
-      inputs.hardware.nixosModules.common-cpu-amd-pstate
-      inputs.hardware.nixosModules.common-gpu-nvidia-nonprime
-      inputs.hardware.nixosModules.common-pc-ssd
+    inputs.hardware.nixosModules.common-cpu-amd-pstate
+    inputs.hardware.nixosModules.common-gpu-nvidia-nonprime
+    inputs.hardware.nixosModules.common-pc-ssd
 
-      outputs.nixosModules.desktop.base
-      outputs.nixosModules.virtualization.container
-      outputs.nixosModules.virtualization.vm
-    ]
-    ++ (builtins.attrValues outputs.nixosModules.core)
-    #++ (builtins.attrValues outputs.nixosModules.virtualization)
-    ++ (builtins.attrValues outputs.nixosModules.desktop);
+    outputs.nixosProfiles.desktopAll
+  ];
 
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"

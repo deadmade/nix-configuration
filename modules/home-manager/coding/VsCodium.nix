@@ -37,6 +37,7 @@
         #ms-toolsai.vscode-jupyter-powertoys
         #ms-toolsai.jupyter-hub
         ms-toolsai.jupyter-renderers
+        vue.volar
       ];
 
       userSettings = lib.mkForce {

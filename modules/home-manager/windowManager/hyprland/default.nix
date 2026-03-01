@@ -13,9 +13,9 @@ in
     imports = [
       #./wpaperd.nix # Disabled - using Noctalia wallpapers
       #./waybar.nix
-      ./hyprlock.nix
+      #./hyprlock.nix
       ./config.nix
-      ./hypridle.nix
+      #./hypridle.nix
       ./noctalia.nix
       #./wlogout.nix
       #./wofi.nix
