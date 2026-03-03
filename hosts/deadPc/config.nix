@@ -97,7 +97,6 @@
     tuigreet
     inputs.neovim-config.packages.${pkgs.stdenv.hostPlatform.system}.nvim
     pkgs.unstable.winboat
-    pkgs.unstable.neovide
     davinci-resolve
     pkgs.unstable.vlc
   ];
