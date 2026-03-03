@@ -23,7 +23,7 @@
       outputs.nixosModules.desktop.vpn
       outputs.nixosModules.desktop.ai
       outputs.nixosModules.desktop.jetbrains
-      outputs.nixosModules.desktop.bluetooth
+      outputs.nixosModules.desktop.gaming
       outputs.nixosModules.virtualization.vm
       outputs.nixosModules.virtualization.container
     ]
@@ -105,6 +105,9 @@
     glab
     pkgs.unstable.ladybird
     pkgs.unstable.vscode
+    pkgs.unstable.remnote
+
+    pkgs.unstable.gnome-network-displays
 
     #dive # look into docker image layers
     #podman-tui # status of containers in the terminal
@@ -112,6 +115,10 @@
     #unstable.podman-compose # start group of containers for dev
     #unstable.podman-desktop
   ];
+
+  #network display
+  networking.firewall.allowedTCPPorts = [7236 7250];
+  networking.firewall.allowedUDPPorts = [7236 5353];
 
   services.greetd = {
     enable = true;

@@ -18,18 +18,30 @@ with lib; {
   };
 
   # Configure noctalia-shell
-  programs.noctalia-shell = {
+  programs.noctalia-shell = lib.mkForce {
     enable = true;
 
     systemd = {
       enable = true; # Use systemd instead of exec-once
     };
 
-    # Plugin configuration
     plugins = {
-      version = 1;
-      states = {};
-      sources = [];
+      sources = [
+        {
+          enabled = true;
+          name = "Official Noctalia Plugins";
+          url = "https://github.com/noctalia-dev/noctalia-plugins";
+        }
+      ];
+      states = {
+        catwalk = {
+          enabled = false;
+          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+        };
+        privacy-indicator.enabled = true;
+        github-feed.enabled = false;
+      };
+      version = 2;
     };
 
     settings = {
@@ -64,6 +76,7 @@ with lib; {
 
       bar = {
         density = "default";
+        capsuleOpacity = 1;
         exclusive = true;
         floating = false;
         marginHorizontal = 8;
@@ -86,6 +99,19 @@ with lib; {
           left = [
             {
               id = "Workspace";
+            }
+            {
+              hideMode = "hidden";
+              hideWhenIdle = false;
+              id = "MediaMini";
+              maxWidth = 145;
+              scrollingMode = "hover";
+              showAlbumArt = false;
+              showArtistFirst = true;
+              showProgressRing = true;
+              showVisualizer = false;
+              useFixedWidth = false;
+              visualizerType = "linear";
             }
             {
               id = "SystemMonitor";
@@ -118,13 +144,29 @@ with lib; {
               id = "Volume";
             }
             {
+              displayMode = "onhover";
+              id = "WiFi";
+            }
+            {
+              colorName = "error";
+              id = "SessionMenu";
+            }
+            {
               id = "Clock";
             }
             {
+              hideWhenZero = true;
               id = "NotificationHistory";
+              showUnreadBadge = true;
             }
             {
+              colorizeDistroLogo = false;
+              colorizeSystemIcon = "primary";
+              customIconPath = "";
+              enableColorization = true;
+              icon = "noctalia";
               id = "ControlCenter";
+              useDistroLogo = true;
             }
           ];
         };
@@ -424,7 +466,7 @@ with lib; {
         enableUserTemplates = false;
         foot = false;
         fuzzel = false;
-        ghostty = false;
+        ghostty = true;
         gtk = false;
         helix = false;
         hyprland = true;
@@ -476,7 +518,7 @@ with lib; {
         transitionEdgeSmoothness = 0.05;
         transitionType = "random";
         useSolidColor = false;
-        useWallhaven = true;
+        useWallhaven = false;
         wallhavenApiKey = "";
         wallhavenCategories = "111";
         wallhavenOrder = "desc";
