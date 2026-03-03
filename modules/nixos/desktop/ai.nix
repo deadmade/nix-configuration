@@ -10,5 +10,6 @@
     copilot-cli
     coderabbit-cli
     codex
+    tuicr
   ];
 }
