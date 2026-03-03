@@ -5,3 +5,7 @@ creation_rules:
     key_groups:
     - age:
       - *deadWsl
+  - path_regex: secrets/deadServer.yaml$
+    key_groups:
+    - age:
+      - *deadWsl

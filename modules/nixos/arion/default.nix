@@ -9,6 +9,7 @@
 
     ./infrastructure
     ./nextcloud
+    ./matrix
   ];
 
   environment.systemPackages = with pkgs; [arion];

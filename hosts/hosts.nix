@@ -39,4 +39,12 @@
       }
     ];
   };
+
+  deadServer = {
+    system = "x86_64-linux";
+    nixosModules = [
+      ./deadServer/config.nix
+    ];
+    enableHome = false;
+  };
 }

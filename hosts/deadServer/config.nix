@@ -12,12 +12,17 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./sops.nix
 
       inputs.hardware.nixosModules.common-pc-ssd
       inputs.sops-nix.nixosModules.sops
+      outputs.nixosModules.arion
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
-    ++ (builtins.attrValues outputs.nixosModules.virtualization);
+    ++ [
+      outputs.nixosModules.virtualization.container
+      outputs.nixosModules.virtualization.vm
+    ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.grub.device = lib.mkForce "/dev/sda";
