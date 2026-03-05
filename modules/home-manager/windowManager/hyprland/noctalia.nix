@@ -34,12 +34,10 @@ with lib; {
         }
       ];
       states = {
-        catwalk = {
-          enabled = false;
+        privacy-indicator = {
+          enabled = true;
           sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
         };
-        privacy-indicator.enabled = true;
-        github-feed.enabled = false;
       };
       version = 2;
     };
@@ -101,19 +99,6 @@ with lib; {
               id = "Workspace";
             }
             {
-              hideMode = "hidden";
-              hideWhenIdle = false;
-              id = "MediaMini";
-              maxWidth = 145;
-              scrollingMode = "hover";
-              showAlbumArt = false;
-              showArtistFirst = true;
-              showProgressRing = true;
-              showVisualizer = false;
-              useFixedWidth = false;
-              visualizerType = "linear";
-            }
-            {
               id = "SystemMonitor";
               compactMode = false; # Show numeric text values
               useMonospaceFont = true; # Use monospace font for alignment
@@ -131,15 +116,15 @@ with lib; {
               id = "Tray";
               drawerEnabled = false; # Show all tray icons directly in bar
             }
-            # {
-            #   id = "Battery";
-            #   displayMode = "alwaysShow"; # Always display battery percentage text
-            #   warningThreshold = 20; # Show warning at 20% battery
-            #   deviceNativePath = ""; # Use default battery device
-            #   showPowerProfiles = true; # Show power profile controls in battery panel
-            #   showNoctaliaPerformance = true; # Show Noctalia performance mode toggle in panel
-            #   hideIfNotDetected = false; # Keep widget visible even if battery not detected
-            # }
+            {
+              id = "Battery";
+              displayMode = "alwaysShow"; # Always display battery percentage text
+              warningThreshold = 20; # Show warning at 20% battery
+              deviceNativePath = ""; # Use default battery device
+              showPowerProfiles = true; # Show power profile controls in battery panel
+              showNoctaliaPerformance = true; # Show Noctalia performance mode toggle in panel
+              hideIfNotDetected = true; # Keep widget visible even if battery not detected
+            }
             {
               id = "Volume";
             }

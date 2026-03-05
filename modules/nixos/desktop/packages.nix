@@ -12,7 +12,6 @@
     pkgs.unstable.kdePackages.okular
     pkgs.unstable.spotify
     pkgs.unstable.libreoffice-fresh
-    pkgs.unstable.onlyoffice-desktopeditors
     pkgs.unstable.thunderbird
     pkgs.unstable.obsidian
     pkgs.unstable.signal-desktop

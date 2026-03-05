@@ -5,7 +5,7 @@
 }: {
   programs.vscode = {
     enable = true;
-    package = pkgs.unstable.vscodium-fhs;
+    package = pkgs.unstable.vscodium;
     profiles.default = {
       enableUpdateCheck = false;
       extensions = with pkgs.unstable.vscode-extensions; [
