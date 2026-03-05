@@ -1,9 +1,9 @@
 {
   home.shellAliases = {
     nos = "nh os switch .";
-    nhs = "nh home switch . -b backup-$(date +%Y%m%d-%H%M%S)";
+    nhs = "nh home switch . -b backup --force";
     nosf = "nh os switch . --update";
-    nhsf = "nh home switch . --update -b backup-$(date +%Y%m%d-%H%M%S)";
+    nhsf = "nh home switch . --update -b backup --fore";
     tinf = "cd \"/home/deadmade/Tinf2023-LessonSummaries/DHBW Heidenheim/2025 SoSe\"";
   };
 }

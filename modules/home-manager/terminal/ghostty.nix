@@ -6,7 +6,7 @@
 
     settings = {
       # Command to run on startup
-      #command = "tmux attach || tmux";
+      command = "tmux new-session -A -s main";
       term = "xterm-256color";
 
       # Font Configuration
