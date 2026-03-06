@@ -5,12 +5,12 @@
   nixConfig = {
     extra-substituters = [
       "https://deadcache.cachix.org"
-      # "https://cache.nixos.org"
+      "https://cache.nixos.org"
       "https://cache.numtide.com"
     ];
     extra-trusted-public-keys = [
       "deadcache.cachix.org-1:k8yt2hshOzIWYT5B5Buj2/hK6bu2haiTz9juF4ERvcw="
-      # "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
     ];
   };

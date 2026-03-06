@@ -61,6 +61,7 @@
     ];
 
     extraConfig = ''
+      set -g status-position top
     '';
   };
   programs.zsh.prezto.tmux.autoStartLocal = true;

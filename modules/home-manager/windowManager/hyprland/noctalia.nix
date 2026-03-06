@@ -451,10 +451,10 @@ with lib; {
         enableUserTemplates = false;
         foot = false;
         fuzzel = false;
-        ghostty = true;
+        ghostty = false;
         gtk = false;
         helix = false;
-        hyprland = true;
+        hyprland = false;
         kcolorscheme = false;
         kitty = true;
         mango = false;
