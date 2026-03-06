@@ -1,4 +1,4 @@
 {
-  vscode = import ./VsCodium.nix;
+  vscode = import ./vscodium.nix;
   direnv = import ./direnv.nix;
 }

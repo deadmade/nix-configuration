@@ -1,6 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   config,
   pkgs,
@@ -81,15 +78,6 @@
   # Enable automatic login for the user.
   services.displayManager.autoLogin.enable = false;
   services.displayManager.autoLogin.user = "deadmade";
-
-  # Allow unfree packages
-  nixpkgs = {
-    overlays = [
-      outputs.overlays.unstable-packages
-      outputs.overlays.modifications
-    ];
-    config.allowUnfree = true;
-  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

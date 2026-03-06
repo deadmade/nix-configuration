@@ -1,6 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   pkgs,
   outputs,
@@ -28,8 +25,6 @@
   boot.loader.grub.device = lib.mkForce "/dev/sda";
   # System runs in legacy mode
   boot.loader.grub.efiSupport = lib.mkForce false;
-
-  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   environment.pathsToLink = ["/share/zsh"];
 
@@ -90,14 +85,6 @@
       kdePackages.kate
       #  thunderbird
     ];
-  };
-
-  # Allow unfree packages
-  nixpkgs = {
-    overlays = [
-      outputs.overlays.unstable-packages
-    ];
-    config.allowUnfree = true;
   };
 
   # List packages installed in system profile. To search, run:

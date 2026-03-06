@@ -1,5 +1,6 @@
 {outputs, ...}: {
   imports = [
+    outputs.nixosModules.core.defaults
     outputs.nixosModules.core.packages
     outputs.nixosModules.core.user
     outputs.nixosModules.core.localization

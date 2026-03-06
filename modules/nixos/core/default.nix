@@ -1,4 +1,5 @@
 {
+  defaults = import ./defaults.nix;
   packages = import ./packages.nix;
   themes = import ./themes.nix;
   user = import ./user.nix;

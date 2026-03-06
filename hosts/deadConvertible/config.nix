@@ -1,11 +1,7 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   pkgs,
   outputs,
   inputs,
-  fetchurl,
   ...
 }: {
   imports =
@@ -28,8 +24,6 @@
       outputs.nixosModules.virtualization.container
     ]
     ++ (builtins.attrValues outputs.nixosModules.core);
-
-  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   environment.pathsToLink = ["/share/zsh"];
 
@@ -86,15 +80,6 @@
   services.libinput.enable = true;
   services.libinput.touchpad.tapping = true;
   services.libinput.touchpad.clickMethod = "clickfinger";
-
-  # Allow unfree packages
-  nixpkgs = {
-    overlays = [
-      outputs.overlays.unstable-packages
-      outputs.overlays.modifications
-    ];
-    config.allowUnfree = true;
-  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

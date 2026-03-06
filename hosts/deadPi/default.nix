@@ -8,6 +8,7 @@
   imports = [
     inputs.hardware.nixosModules.raspberry-pi-4
 
+    outputs.nixosModules.core.defaults
     outputs.nixosModules.core.localization
     outputs.nixosModules.core.optimize
   ];
@@ -32,8 +33,6 @@
       "xhci_pci"
     ];
   };
-
-  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # systemPackages
   environment.systemPackages = with pkgs; [
@@ -77,10 +76,12 @@
       enable = false;
       openFirewall = true;
 
-      shares.testshare = {
-        path = "/storage";
-        writable = "true";
-        comment = "Hello World!";
+      settings = {
+        testshare = {
+          path = "/storage";
+          "read only" = "no";
+          comment = "Hello World!";
+        };
       };
     };
 
@@ -127,6 +128,7 @@
   users.mutableUsers = true;
   users.users.nixos = {
     isNormalUser = true;
+    initialHashedPassword = lib.mkForce null;
     hashedPassword = "$y$j9T$PLtMO97QQTuR0XDRy3SAz.$Wg2UvrJsJ4t0DcSTa1ATQgDI4G0PrYiWT3XFmUYtC1.";
     extraGroups = ["wheel" "docker"];
   };

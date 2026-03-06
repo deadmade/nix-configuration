@@ -17,22 +17,10 @@
     inputs.nixos-wsl.nixosModules.default
     outputs.nixosProfiles.wsl
     #outputs.nixosModules.core.network
-
-    #outputs.nixosModules.funshit
   ];
 
   wsl.enable = true;
   wsl.defaultUser = vars.username;
-
-  # Allow unfree packages
-  nixpkgs = {
-    overlays = [
-      outputs.overlays.unstable-packages
-    ];
-    config.allowUnfree = true;
-  };
-
-  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   environment.systemPackages = with pkgs; [
     #inputs.neovim-config.packages.${pkgs.stdenv.hostPlatform.system}.nvim
