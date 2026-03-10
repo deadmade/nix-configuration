@@ -20,7 +20,8 @@
       outputs.nixosModules.desktop.ai
       outputs.nixosModules.desktop.jetbrains
       outputs.nixosModules.desktop.gaming
-      outputs.nixosModules.desktop.rustdesk
+      outputs.nixosModules.desktop.tailscale
+      outputs.nixosModules.desktop.wayvnc
       outputs.nixosModules.virtualization.vm
       outputs.nixosModules.virtualization.container
     ]
