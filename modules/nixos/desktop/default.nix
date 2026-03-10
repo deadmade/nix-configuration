@@ -8,4 +8,5 @@
   bluetooth = import ./bluetooth.nix;
   logitech = import ./logitech.nix;
   ai = import ./ai.nix;
+  rustdesk = import ./rustdesk.nix;
 }

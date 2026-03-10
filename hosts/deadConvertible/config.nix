@@ -20,6 +20,7 @@
       outputs.nixosModules.desktop.ai
       outputs.nixosModules.desktop.jetbrains
       outputs.nixosModules.desktop.gaming
+      outputs.nixosModules.desktop.rustdesk
       outputs.nixosModules.virtualization.vm
       outputs.nixosModules.virtualization.container
     ]

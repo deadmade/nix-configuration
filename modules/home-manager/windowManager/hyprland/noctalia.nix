@@ -1,12 +1,11 @@
 {
   pkgs,
-  lib,
   config,
   inputs,
   vars,
+  lib,
   ...
-}:
-with lib; {
+}: {
   # Import the noctalia home-manager module from flake
   imports = [
     inputs.noctalia-shell.homeModules.default
@@ -18,7 +17,7 @@ with lib; {
   };
 
   # Configure noctalia-shell
-  programs.noctalia-shell = lib.mkForce {
+  programs.noctalia-shell = {
     enable = true;
 
     systemd = {
@@ -35,6 +34,14 @@ with lib; {
       ];
       states = {
         privacy-indicator = {
+          enabled = true;
+          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+        };
+        news = {
+          enabled = true;
+          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+        };
+        ip-monitor = {
           enabled = true;
           sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
         };
@@ -74,7 +81,6 @@ with lib; {
 
       bar = {
         density = "default";
-        capsuleOpacity = 1;
         exclusive = true;
         floating = false;
         marginHorizontal = 8;

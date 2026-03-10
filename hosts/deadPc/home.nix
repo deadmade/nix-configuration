@@ -10,7 +10,6 @@
   ];
 
   home.packages = with pkgs; [
-    telegram-desktop
   ];
 
   wayland.windowManager.hyprland = {
@@ -23,6 +22,108 @@
       ];
     };
   };
+
+  programs.noctalia-shell.settings.bar.screenOverrides = lib.mkForce [
+    {
+      name = "DP-2";
+      widgets = {
+        left = [
+          {
+            id = "Launcher";
+          }
+          {
+            id = "Clock";
+          }
+          {
+            id = "SystemMonitor";
+          }
+          {
+            id = "ActiveWindow";
+          }
+          {
+            id = "MediaMini";
+          }
+        ];
+        center = [
+          {
+            id = "Workspace";
+          }
+        ];
+        right = [
+          {
+            id = "Tray";
+          }
+          {
+            id = "NotificationHistory";
+          }
+          {
+            id = "Battery";
+          }
+          {
+            id = "Volume";
+          }
+          {
+            id = "Brightness";
+          }
+          {
+            id = "ControlCenter";
+          }
+        ];
+      };
+    }
+    {
+      name = "HDMI-A-1";
+      widgets = {
+        left = [
+          {
+            id = "Workspace";
+          }
+          {
+            id = "plugin:news";
+          }
+          {
+            id = "plugin:ip-monitor";
+          }
+        ];
+        center = [
+        ];
+        right = [
+          {
+            id = "Tray";
+            drawerEnabled = false; # Show all tray icons directly in bar
+          }
+          {
+            id = "Volume";
+          }
+          {
+            displayMode = "onhover";
+            id = "WiFi";
+          }
+          {
+            colorName = "error";
+            id = "SessionMenu";
+          }
+          {
+            id = "Clock";
+          }
+          {
+            hideWhenZero = true;
+            id = "NotificationHistory";
+            showUnreadBadge = true;
+          }
+          {
+            colorizeDistroLogo = false;
+            colorizeSystemIcon = "primary";
+            customIconPath = "";
+            enableColorization = true;
+            icon = "noctalia";
+            id = "ControlCenter";
+            useDistroLogo = true;
+          }
+        ];
+      };
+    }
+  ];
 
   gtk = {
     enable = true;

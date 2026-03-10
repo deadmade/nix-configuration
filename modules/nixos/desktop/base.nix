@@ -10,7 +10,7 @@
       xdg-desktop-portal-hyprland
     ];
     config = {
-      common.default = "hyprland";
+      common.default = ["hyprland" "gtk"];
     };
   };
 
