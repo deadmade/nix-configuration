@@ -15,6 +15,7 @@
     base16Scheme = "${pkgs.base16-schemes}/share/themes/dracula.yaml";
 
     autoEnable = true;
+    targets.noctalia-shell.enable = true;
 
     polarity = "dark";
     opacity = {

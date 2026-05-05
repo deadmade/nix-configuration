@@ -20,10 +20,6 @@
   programs.noctalia-shell = {
     enable = true;
 
-    systemd = {
-      enable = true; # Use systemd instead of exec-once
-    };
-
     plugins = {
       sources = [
         {
@@ -34,14 +30,6 @@
       ];
       states = {
         privacy-indicator = {
-          enabled = true;
-          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
-        };
-        news = {
-          enabled = true;
-          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
-        };
-        ip-monitor = {
           enabled = true;
           sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
         };

@@ -3,12 +3,11 @@
     settings = {
       exec-once = [
         # wpaperd disabled - using Noctalia wallpapers
-        "vesktop --start-minimized &"
-        "protonvpn-app --start-minimized &"
-        "flatpak run com.rtosta.zapzap"
-        "nm-applet --indicator &"
-        "librewolf &"
-        "signal &"
+        #"vesktop --start-minimized"
+        #"nm-applet --indicator "
+        "librewolf"
+        #"signal"
+        "noctalia-shell"
       ];
 
       "$mainMod" = "SUPER";
@@ -114,7 +113,7 @@
         "$mainMod, SPACE, exec, noctalia-shell ipc call launcher toggle" # App launcher
 
         "$mainMod, L, exec, noctalia-shell ipc call lockScreen lock || loginctl lock-session"
-        "$mainMod SHIFT, L, exec, noctalia-shell ipc call sessionMenu action suspend || systemctl suspend"
+        "$mainMod SHIFT, L, exec, noctalia-shell ipc call sessionMenu lockAndSuspend || systemctl suspend"
 
         # Move focus with mainMod + arrow keys
         "$mainMod, left, movefocus, l"

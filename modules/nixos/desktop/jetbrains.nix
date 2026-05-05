@@ -25,6 +25,6 @@ in {
     #(buildIdeWithPlugins pkgs "rust-rover" pluginList)
     #(buildIdeWithPlugins pkgs "pycharm" pluginList)
     #(buildIdeWithPlugins pkgs "jetbrains.datagrip")
-    (pkgs.jetbrains.plugins.addPlugins pycharm (lib.attrValues plugins))
+    #(pkgs.jetbrains.plugins.addPlugins pycharm (lib.attrValues plugins))
   ];
 }

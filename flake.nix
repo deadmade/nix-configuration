@@ -4,12 +4,10 @@
   # Set up caches for faster builds
   nixConfig = {
     extra-substituters = [
-      "https://deadcache.cachix.org"
       "https://cache.nixos.org"
       "https://cache.numtide.com"
     ];
     extra-trusted-public-keys = [
-      "deadcache.cachix.org-1:k8yt2hshOzIWYT5B5Buj2/hK6bu2haiTz9juF4ERvcw="
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
     ];
@@ -141,6 +139,20 @@
     noctalia-shell = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    chiplang-nix = {
+      type = "github";
+      owner = "deadmade";
+      repo = "chiplang-nix";
+    };
+
+    freetube-nix = {
+      type = "github";
+      owner = "deadmade";
+      repo = "FreeTube-Nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
   };
 

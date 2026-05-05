@@ -93,14 +93,13 @@
   environment.systemPackages = with pkgs; [
     tuigreet
     inputs.neovim-config.packages.${pkgs.stdenv.hostPlatform.system}.nvim
-    pkgs.unstable.winboat
-    davinci-resolve
+    inputs.chiplang-nix.packages.${pkgs.stdenv.hostPlatform.system}.depthfinder
     pkgs.unstable.vlc
+    pkgs.unstable.telegram-desktop
   ];
 
   services.greetd = {
     enable = true;
-    #vt = 3;
     settings = {
       default_session = {
         user = "deadmade";

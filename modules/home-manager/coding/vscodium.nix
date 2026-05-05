@@ -30,14 +30,14 @@
 
         mkhl.direnv
         redhat.vscode-yaml
-        ms-toolsai.datawrangler
+        #ms-toolsai.datawrangler
         arrterian.nix-env-selector
-        jnoortheen.nix-ide
-        ms-toolsai.jupyter
-        ms-toolsai.vscode-jupyter-slideshow
-        ms-toolsai.vscode-jupyter-cell-tags
-        ms-toolsai.jupyter-renderers
-        vue.volar
+        #jnoortheen.nix-ide
+        #ms-toolsai.jupyter
+        #ms-toolsai.vscode-jupyter-slideshow
+        #ms-toolsai.vscode-jupyter-cell-tags
+        #ms-toolsai.jupyter-renderers
+        #vue.volar
       ];
 
       userSettings = lib.mkForce {
