@@ -14,8 +14,34 @@
     inputs.hardware.nixosModules.common-gpu-nvidia-nonprime
     inputs.hardware.nixosModules.common-pc-ssd
 
+    inputs.nix-mineral.nixosModules.nix-mineral
+
     outputs.nixosProfiles.desktopAll
+    outputs.nixosModules.virtualization.vmware
   ];
+
+  # Security hardening via nix-mineral (alpha software — see overrides below).
+  # Rebuild with `nixos-rebuild boot` + reboot so the previous generation stays
+  # available in the bootloader for rollback.
+  nix-mineral = {
+    enable = true;
+    preset = ["default"]; # balanced; "maximum" = stricter, "compatibility" = relax for gaming
+
+    # --- Likely-needed relaxations for a gaming desktop. Uncomment as needed. ---
+    settings = {
+      # 32-bit libraries for Steam / Proton / Wine:
+      # system.multilib = true;
+      # Relax process-tracing restriction (some anti-cheat / debuggers / Gamescope):
+      # system.yama = "relaxed";
+      # If lockdown or only-signed-modules blocks the NVIDIA stack / hibernation:
+      # kernel.lockdown = false;
+      # kernel.only-signed-modules = false;
+    };
+
+    # Allow executing binaries from home and /tmp (Steam shaders, launchers, installers):
+    # filesystems.normal."/home".options."noexec" = false;
+    # filesystems.normal."/tmp".options."noexec" = false;
+  };
 
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"

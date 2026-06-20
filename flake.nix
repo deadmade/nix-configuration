@@ -167,6 +167,13 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-mineral = {
+      type = "github";
+      owner = "cynicsketch";
+      repo = "nix-mineral";
+      ref = "main";
+    };
   };
 
   outputs = inputs @ {flake-parts, ...}:
