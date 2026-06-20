@@ -106,7 +106,9 @@
           margin_ends = 0; # span the full screen width (default 180 leaves end gaps)
           start = ["workspaces" "cpu" "temp" "ram" "network_rx" "network_tx"];
           center = ["active_window"];
-          end = ["tray" "battery" "volume" "network" "session" "clock" "notifications" "control-center"];
+          # control-center is the rightmost button; useDistroLogo makes it show
+          # the detected OS logo (NixOS here) instead of the default noctalia icon.
+          end = ["tray" "battery" "volume" "network" "session" "clock" "notifications" {id = "control-center"; useDistroLogo = true;}];
         };
       };
 
@@ -132,8 +134,19 @@
       };
 
       weather = {
-        enabled = true;
+        enabled = false;
         unit = "metric";
+      };
+
+      # Clock popup (click the bar clock) renders these cards. Disable the two
+      # calendar cards so the popup shows no calendar; the weather card is also
+      # gated by weather.enabled above.
+      calendar = {
+        cards = [
+          {id = "calendar-header-card"; enabled = false;}
+          {id = "calendar-month-card"; enabled = false;}
+          {id = "weather-card"; enabled = false;}
+        ];
       };
 
       wallpaper = {
