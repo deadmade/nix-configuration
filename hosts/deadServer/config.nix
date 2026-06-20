@@ -9,11 +9,8 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./sops.nix
 
       inputs.hardware.nixosModules.common-pc-ssd
-      inputs.sops-nix.nixosModules.sops
-      outputs.nixosModules.arion
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
     ++ [

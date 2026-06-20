@@ -84,21 +84,6 @@
     #  url = "git+file:/home/deadmade/neovim-configuration";
     #};
 
-    arion = {
-      type = "github";
-      owner = "hercules-ci";
-      repo = "arion";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    sops-nix = {
-      type = "github";
-      owner = "Mic92";
-      repo = "sops-nix";
-      ref = "master";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nixcord = {
       type = "github";
       owner = "KaylorBen";
