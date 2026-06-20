@@ -10,8 +10,8 @@
 
   stylix = lib.mkDefault {
     enable = true;
-    image = ../../../wallpapers/bloodMoon.jpg;
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/dracula.yaml";
+    image = ../../../wallpapers/dark-waves.jpg;
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
 
     homeManagerIntegration.followSystem = true;
     homeManagerIntegration.autoImport = true;

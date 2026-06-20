@@ -11,15 +11,8 @@
 in
   with lib; {
     imports = [
-      #./wpaperd.nix # Disabled - using Noctalia wallpapers
-      #./waybar.nix
-      #./hyprlock.nix
       ./config.nix
-      #./hypridle.nix
       ./noctalia.nix
-      #./wlogout.nix
-      #./wofi.nix
-      #./swaync.nix
     ];
 
     # Home Manager Pakete
@@ -27,17 +20,20 @@ in
       hyprshot # Screenshot-Tool
       networkmanagerapplet
       wofi-emoji
-      # noctalia-shell now managed by noctalia.nix module
     ];
 
     services.network-manager-applet.enable = true;
 
+    # hyprsplit Lua library (require("hyprsplit") in config.nix). Hyprland adds
+    # ~/.config/hypr to the Lua package.path, so this resolves at runtime.
+    home.file.".config/hypr/hyprsplit/init.lua".source = "${inputs.hyprsplit}/init.lua";
+
     # Hyprland aktivieren und konfigurieren
     wayland.windowManager.hyprland = {
-      package = pkgs.hyprland;
+      package = pkgs.unstable.hyprland; # 0.55.x, required for the Lua config format
       enable = true;
+      configType = "lua"; # Generate hyprland.lua instead of hyprland.conf
       xwayland.enable = true;
       systemd.enable = true;
-      plugins = [pkgs.hyprlandPlugins.hyprsplit];
     };
   }

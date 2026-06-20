@@ -1,168 +1,139 @@
 {
   wayland.windowManager.hyprland = {
+    # Declarative parts map to hl.<name>(...) calls in the generated
+    # ~/.config/hypr/hyprland.lua. Attributes with `_var` become `local`s, so
+    # they are visible to the raw Lua in `extraConfig` below.
     settings = {
-      exec-once = [
-        # wpaperd disabled - using Noctalia wallpapers
-        #"vesktop --start-minimized"
-        #"nm-applet --indicator "
-        "librewolf"
-        #"signal"
-        "noctalia-shell"
-      ];
+      mainMod._var = "SUPER";
+      terminal._var = "ghostty";
+      fileManager._var = "thunar";
 
-      "$mainMod" = "SUPER";
-      "$terminal" = "ghostty";
-      "$fileManager" = "thunar";
+      # All keyword-style sections live under a single hl.config({ ... }) call.
+      config = {
+        # Eingabe (Tastatur & Maus)
+        input = {
+          kb_layout = "de"; # Tastaturlayout auf Deutsch setzen
+          follow_mouse = 1;
+          sensitivity = 0;
+          touchpad = {
+            natural_scroll = true;
+            # tap-to-click defaults to true in Hyprland 0.55; the lua setter
+            # rejects the hyphenated nested key, so it is left at the default.
+          };
+        };
 
-      # Eingabe (Tastatur & Maus)
-      input = {
-        kb_layout = "de"; # Tastaturlayout auf Deutsch setzen
-        follow_mouse = 1;
-        sensitivity = 0;
-        touchpad = {
-          natural_scroll = true;
-          tap-to-click = true;
+        # Allgemeine Einstellungen
+        general = {
+          layout = "dwindle";
+          gaps_in = 4;
+          gaps_out = 8;
+          border_size = 2;
+        };
+
+        misc = {
+          disable_hyprland_logo = true;
+          always_follow_on_dnd = true;
+          layers_hog_keyboard_focus = true;
+          animate_manual_resizes = false;
+          enable_swallow = true;
+          focus_on_activate = true;
+          middle_click_paste = false;
+        };
+
+        dwindle = {
+          # pseudotile is a dispatcher in 0.55 (bound to SUPER+P), not a setting.
+          preserve_split = true;
+        };
+
+        # Dekorationen & Effekte
+        decoration = {
+          rounding = 5;
+        };
+
+        # Hyprland's default animation preset matches the previous custom curves,
+        # so just enable animations instead of re-declaring every hl.curve/anim.
+        animations = {
+          enabled = true;
         };
       };
-
-      gesture = [
-        "3, horizontal, workspace"
-      ];
-
-      # Allgemeine Einstellungen
-      general = {
-        layout = "dwindle";
-        gaps_in = 4;
-        gaps_out = 8;
-        border_size = 2;
-        no_border_on_floating = false;
-      };
-
-      plugins = {
-        hyprsplit = {
-          num_workspaces = 10;
-        };
-      };
-
-      misc = {
-        disable_hyprland_logo = true;
-        always_follow_on_dnd = true;
-        layers_hog_keyboard_focus = true;
-        animate_manual_resizes = false;
-        enable_swallow = true;
-        focus_on_activate = true;
-        new_window_takes_over_fullscreen = 2;
-        middle_click_paste = false;
-      };
-
-      dwindle = {
-        pseudotile = true;
-        preserve_split = true;
-      };
-
-      # Dekorationen & Effekte
-      decoration = {
-        rounding = 5;
-      };
-
-      animations = {
-        enabled = true;
-
-        bezier = [
-          "easeOutQuint,0.23,1,0.32,1"
-          "easeInOutCubic,0.65,0.05,0.36,1"
-          "linear,0,0,1,1"
-          "almostLinear,0.5,0.5,0.75,1.0"
-          "quick,0.15,0,0.1,1"
-        ];
-
-        animation = [
-          "global, 1, 10, default"
-          "border, 1, 5.39, easeOutQuint"
-          "windows, 1, 4.79, easeOutQuint"
-          "windowsIn, 1, 4.1, easeOutQuint, popin 87%"
-          "windowsOut, 1, 1.49, linear, popin 87%"
-          "fadeIn, 1, 1.73, almostLinear"
-          "fadeOut, 1, 1.46, almostLinear"
-          "fade, 1, 3.03, quick"
-          "layers, 1, 3.81, easeOutQuint"
-          "layersIn, 1, 4, easeOutQuint, fade"
-          "layersOut, 1, 1.5, linear, fade"
-          "fadeLayersIn, 1, 1.79, almostLinear"
-          "fadeLayersOut, 1, 1.39, almostLinear"
-          "workspaces, 1, 1.94, almostLinear, fade"
-          "workspacesIn, 1, 1.21, almostLinear, fade"
-          "workspacesOut, 1, 1.94, almostLinear, fade"
-        ];
-      };
-
-      # Keybindings
-      bind = [
-        "$mainMod, Q, exec, $terminal"
-        "$mainMod, C, killactive,"
-        "$mainMod, E, exec, $fileManager"
-        "$mainMod, V, togglefloating,"
-        "$mainMod, P, pseudo," # dwindle
-        "$mainMod, J, togglesplit," # dwindle
-        "$mainMod, W, exec, librewolf" # Browser
-        "$mainMod SHIFT, Q, exit, " # Currently not really working
-        "$mainMod SHIFT, s, exec, hyprshot -m region output --clipboard-only"
-        "$mainMod, N, exec, swaync-client -t"
-        "$mainMod, x, exec, wofi-emoji"
-        "$mainMod, F, fullscreen, 0"
-        "$mainMod, SPACE, exec, noctalia-shell ipc call launcher toggle" # App launcher
-
-        "$mainMod, L, exec, noctalia-shell ipc call lockScreen lock || loginctl lock-session"
-        "$mainMod SHIFT, L, exec, noctalia-shell ipc call sessionMenu lockAndSuspend || systemctl suspend"
-
-        # Move focus with mainMod + arrow keys
-        "$mainMod, left, movefocus, l"
-        "$mainMod, right, movefocus, r"
-        "$mainMod, up, movefocus, u"
-        "$mainMod, down, movefocus, d"
-        "$mainMod, h, movefocus, l"
-        "$mainMod, j, movefocus, d"
-        "$mainMod, k, movefocus, u"
-        "$mainMod, l, movefocus, r"
-
-        # Switch workspaces with mainMod + [0-9]
-        "$mainMod, 1, split:workspace, 1"
-        "$mainMod, 2, split:workspace, 2"
-        "$mainMod, 3, split:workspace, 3"
-        "$mainMod, 4, split:workspace, 4"
-        "$mainMod, 5, split:workspace, 5"
-        "$mainMod, 6, split:workspace, 6"
-        "$mainMod, 7, split:workspace, 7"
-        "$mainMod, 8, split:workspace, 8"
-        "$mainMod, 9, split:workspace, 9"
-        "$mainMod, 0, split:workspace, 10"
-
-        # Move active window to a workspace with mainMod + SHIFT + [0-9]
-        "$mainMod SHIFT, 1, split:movetoworkspace, 1"
-        "$mainMod SHIFT, 2, split:movetoworkspace, 2"
-        "$mainMod SHIFT, 3, split:movetoworkspace, 3"
-        "$mainMod SHIFT, 4, split:movetoworkspace, 4"
-        "$mainMod SHIFT, 5, split:movetoworkspace, 5"
-        "$mainMod SHIFT, 6, split:movetoworkspace, 6"
-        "$mainMod SHIFT, 7, split:movetoworkspace, 7"
-        "$mainMod SHIFT, 8, split:movetoworkspace, 8"
-        "$mainMod SHIFT, 9, split:movetoworkspace, 9"
-        "$mainMod SHIFT, 0, split:movetoworkspace, 10"
-
-        # window control
-        "$mainMod SHIFT, left, movewindow, l"
-        "$mainMod SHIFT, right, movewindow, r"
-        "$mainMod SHIFT, up, movewindow, u"
-        "$mainMod SHIFT, down, movewindow, d"
-        "$mainMod SHIFT, h, movewindow, l"
-        "$mainMod SHIFT, j, movewindow, d"
-        "$mainMod SHIFT, k, movewindow, u"
-        "$mainMod SHIFT, l, movewindow, r"
-      ];
 
       monitor = [
-        ",preferred,auto,auto"
+        {
+          output = "";
+          mode = "preferred";
+          position = "auto";
+          scale = "auto";
+        }
+      ];
+
+      gesture = [
+        {
+          fingers = 3;
+          direction = "horizontal";
+          action = "workspace";
+        }
       ];
     };
+
+    # Raw Lua: autostart, keybindings, and the hyprsplit Lua library. This is
+    # appended after the settings above, so the `mainMod`/`terminal`/`fileManager`
+    # locals are in scope here.
+    extraConfig = ''
+      -- hyprsplit: awesome/dwm-like per-monitor workspaces (Lua library)
+      local hs = require("hyprsplit")
+      hs.config({ num_workspaces = 10 })
+
+      -- Autostart
+      -- noctalia is started by its systemd user service (programs.noctalia.systemd.enable),
+      -- bound to graphical-session.target, so it is not exec'd here.
+      hl.on("hyprland.start", function()
+        hl.exec_cmd("librewolf")
+      end)
+
+      -- Keybindings
+      hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
+      hl.bind(mainMod .. " + C", hl.dsp.window.close())
+      hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
+      hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
+      hl.bind(mainMod .. " + P", hl.dsp.window.pseudo()) -- dwindle
+      hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle
+      hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("librewolf"))
+      hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exit())
+      hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("hyprshot -m region output --clipboard-only"))
+      hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("noctalia msg panel-toggle notifications"))
+      hl.bind(mainMod .. " + X", hl.dsp.exec_cmd("wofi-emoji"))
+      hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
+      hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("noctalia msg panel-toggle launcher")) -- App launcher
+
+      hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("noctalia msg session lock || loginctl lock-session"))
+      hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("noctalia msg session lock-and-suspend || systemctl suspend"))
+
+      -- Move focus (arrows + vim keys)
+      hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
+      hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
+      hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "up" }))
+      hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
+      hl.bind(mainMod .. " + h", hl.dsp.focus({ direction = "left" }))
+      hl.bind(mainMod .. " + j", hl.dsp.focus({ direction = "down" }))
+      hl.bind(mainMod .. " + k", hl.dsp.focus({ direction = "up" }))
+      hl.bind(mainMod .. " + l", hl.dsp.focus({ direction = "right" }))
+
+      -- Switch / move-to workspaces on the current monitor (hyprsplit)
+      for i = 1, 10 do
+        local key = i % 10 -- 10 maps to key 0
+        hl.bind(mainMod .. " + " .. key,         hs.dsp.focus({ workspace = i }))
+        hl.bind(mainMod .. " + SHIFT + " .. key, hs.dsp.window.move({ workspace = i, follow = false }))
+      end
+
+      -- Move window within the layout
+      hl.bind(mainMod .. " + SHIFT + left",  hl.dsp.window.move({ direction = "left" }))
+      hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ direction = "right" }))
+      hl.bind(mainMod .. " + SHIFT + up",    hl.dsp.window.move({ direction = "up" }))
+      hl.bind(mainMod .. " + SHIFT + down",  hl.dsp.window.move({ direction = "down" }))
+      hl.bind(mainMod .. " + SHIFT + h", hl.dsp.window.move({ direction = "left" }))
+      hl.bind(mainMod .. " + SHIFT + j", hl.dsp.window.move({ direction = "down" }))
+      hl.bind(mainMod .. " + SHIFT + k", hl.dsp.window.move({ direction = "up" }))
+      hl.bind(mainMod .. " + SHIFT + l", hl.dsp.window.move({ direction = "right" }))
+    '';
   };
 }

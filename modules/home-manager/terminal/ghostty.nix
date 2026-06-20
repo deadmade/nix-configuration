@@ -9,16 +9,12 @@
       command = "tmux new-session -A -s main";
       term = "xterm-256color";
 
-      # Font Configuration
-      font-family = "JetBrainsMono Nerd Font";
+      # Font size (family is provided by Stylix). Color theme is provided by the
+      # Stylix ghostty target; opacity comes from stylix.opacity.terminal.
       font-size = 11;
 
       # Visual Effects
-      background-opacity = 0.7;
       background-blur = 10;
-
-      # Theme (built-in Catppuccin Mocha)
-      theme = "Catppuccin Mocha";
 
       # Tab Configuration
       window-new-tab-position = "end";

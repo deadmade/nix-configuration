@@ -57,7 +57,6 @@
         "history"
         "colored-man-pages"
         "extract"
-        "command-not-found"
         "fzf"
       ];
     };

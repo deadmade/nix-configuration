@@ -7,15 +7,17 @@
     inputs.stylix.homeModules.stylix
   ];
 
-  # This is here because without it, stylix colours can't be accessed
-
+  # Home-manager is used standalone here (flake.homeConfigurations), so the
+  # NixOS stylix module's homeManagerIntegration.followSystem does NOT apply.
+  # The full theme must therefore be defined here as well; keep base16Scheme,
+  # fonts, cursor, opacity and wallpaper in sync with
+  # modules/nixos/desktop/stylix.nix.
   stylix = {
     enable = true;
-    image = ../../../wallpapers/bloodMoon.jpg;
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/dracula.yaml";
+    image = ../../../wallpapers/dark-waves.jpg;
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
 
     autoEnable = true;
-    targets.noctalia-shell.enable = true;
 
     polarity = "dark";
     opacity = {
@@ -42,6 +44,7 @@
 
     targets = {
       hyprlock.enable = false;
+      # Starship is themed by its own custom starship.toml palette, not Stylix.
       starship.enable = false;
       librewolf.profileNames = ["Default"];
     };

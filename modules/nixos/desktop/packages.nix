@@ -21,6 +21,7 @@
     pkgs.unstable.remnote
     home-manager
     nautilus
+    inputs.tuitr.packages.${system}.default
   ];
 
   services.xserver.excludePackages = with pkgs; [xterm];

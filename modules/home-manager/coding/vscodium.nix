@@ -3,7 +3,7 @@
   lib,
   ...
 }: {
-  programs.vscode = {
+  programs.vscodium = {
     enable = true;
     package = pkgs.unstable.vscodium;
     profiles.default = {
@@ -15,29 +15,12 @@
         # Productivity
         vscodevim.vim
         yzhang.markdown-all-in-one
-        esbenp.prettier-vscode
-
-        ms-azuretools.vscode-docker
-        #chrmarti.regex
-        #wayou.vscode-todo-highlight
-        oderwat.indent-rainbow
-        kamikillerto.vscode-colorize
-
-        vscode-icons-team.vscode-icons
 
         ms-python.python
-        tamasfe.even-better-toml
 
         mkhl.direnv
         redhat.vscode-yaml
-        #ms-toolsai.datawrangler
         arrterian.nix-env-selector
-        #jnoortheen.nix-ide
-        #ms-toolsai.jupyter
-        #ms-toolsai.vscode-jupyter-slideshow
-        #ms-toolsai.vscode-jupyter-cell-tags
-        #ms-toolsai.jupyter-renderers
-        #vue.volar
       ];
 
       userSettings = lib.mkForce {
@@ -45,7 +28,7 @@
         "extensions.autoCheckUpdates" = false;
         "extensions.autoUpdate" = false;
 
-        "workbench.colorTheme" = "Catppuccin Frappé";
+        "workbench.colorTheme" = "Catppuccin Mocha";
         "files.autoSave" = "onFocusChange";
         "autoType.serverCommand" = "/home/deadmade/python-auto-type/auto_type/.venv/bin/auto-type-server";
 

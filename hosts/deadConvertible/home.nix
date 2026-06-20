@@ -14,16 +14,24 @@
   ];
 
   wayland.windowManager.hyprland = {
+    # Lua config: hl.monitor() requires a table, not the legacy string form.
     settings = {
       monitor = [
-        "eDP-1, 1920x1200@60,0x0,1"
-      ];
-
-      bind = [
-        "$mainMod, F5,exec,brightnessctl set 10%-"
-        "$mainMod, F6,exec,brightnessctl set 10%+"
+        {
+          output = "eDP-1";
+          mode = "1920x1200@60";
+          position = "0x0";
+          scale = 1;
+        }
       ];
     };
+
+    # Lua config: hl.bind() takes (keys, dispatcher), so the legacy comma-string
+    # bind form is expressed as raw Lua here (merged via types.lines).
+    extraConfig = ''
+      hl.bind("SUPER + F5", hl.dsp.exec_cmd("brightnessctl set 10%-"))
+      hl.bind("SUPER + F6", hl.dsp.exec_cmd("brightnessctl set 10%+"))
+    '';
   };
 
   services.wpaperd = {

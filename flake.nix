@@ -24,7 +24,7 @@
       type = "github";
       owner = "nixos";
       repo = "nixpkgs";
-      ref = "nixos-25.11";
+      ref = "nixos-26.05";
     };
 
     nixpkgs-unstable = {
@@ -45,14 +45,14 @@
       type = "github";
       owner = "nix-community";
       repo = "NixOS-WSL";
-      ref = "release-25.11";
+      ref = "release-26.05";
     };
 
     home-manager = {
       type = "github";
       owner = "nix-community";
       repo = "home-manager";
-      ref = "release-25.11";
+      ref = "release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -71,7 +71,7 @@
       type = "github";
       owner = "nix-community";
       repo = "stylix";
-      ref = "release-25.11";
+      ref = "release-26.05";
     };
 
     neovim-config = {
@@ -136,9 +136,17 @@
       ref = "main";
     };
 
-    noctalia-shell = {
-      url = "github:noctalia-dev/noctalia-shell";
+    noctalia = {
+      url = "github:noctalia-dev/noctalia";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # hyprsplit is now a Lua library (the C++ plugin is deprecated and does not
+    # build against Hyprland >=0.55). We only need its init.lua, so pull the repo
+    # as a non-flake source and require() it from the Lua config.
+    hyprsplit = {
+      url = "github:shezdy/hyprsplit";
+      flake = false;
     };
 
     chiplang-nix = {
@@ -148,11 +156,16 @@
     };
 
     freetube-nix = {
-      type = "github";
-      owner = "deadmade";
-      repo = "FreeTube-Nix";
+      url = "path:/home/deadmade/FreeTube-Nix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
+    };
+
+    tuitr.url = "github:deadmade/tuitr";
+
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 

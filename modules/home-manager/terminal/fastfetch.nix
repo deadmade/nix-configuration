@@ -10,7 +10,7 @@ with lib; {
     package = pkgs.fastfetch;
     settings = {
       logo = {
-        source = "${config.xdg.configHome}/wallpapers/deadImg.jpg";
+        source = "${config.xdg.configHome}/wallpapers/minimalist-black-hole.png";
         height = 15;
         padding = {
           left = 2;

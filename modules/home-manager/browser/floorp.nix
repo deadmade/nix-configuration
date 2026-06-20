@@ -172,9 +172,9 @@ in {
         "browser.display.use_document_fonts" = 1;
         "font.default.x-western" = "sans-serif";
         "font.size.variable.x-western" = 16;
-        "font.name.monospace.x-western" = "ComicShannsMono Nerd Font Mono";
-        "font.name.sans-serif.x-western" = "ComicShannsMono Nerd Font Propo";
-        "font.name.serif.x-western" = "ComicShannsMono Nerd Font Propo";
+        "font.name.monospace.x-western" = "JetBrainsMono Nerd Font Mono";
+        "font.name.sans-serif.x-western" = "Montserrat";
+        "font.name.serif.x-western" = "Montserrat";
 
         "app.update.auto" = false;
         "dom.image-lazy-loading.enabled" = true;
