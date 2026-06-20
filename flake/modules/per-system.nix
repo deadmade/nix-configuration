@@ -18,15 +18,18 @@
     };
   in {
     formatter = pkgs.alejandra;
+
+    # Vendored packages, also exposed so `nix build .#helium` works and CI can
+    # verify the build after the auto-update bumps its version/hashes.
+    packages.helium = pkgs.callPackage ../../pkgs/helium {};
+
     devShells.default = pkgs.mkShell {
       inherit (pre-commit-check) shellHook;
       buildInputs = pre-commit-check.enabledPackages;
       packages = with pkgs; [
         lazygit
-        sops
         cachix
         vulnix
-        age
         ripgrep
       ];
     };

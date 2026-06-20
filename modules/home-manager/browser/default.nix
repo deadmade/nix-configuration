@@ -2,5 +2,5 @@
   firefox = import ./firefox.nix;
   floorp = import ./floorp.nix;
   librewolf = import ./librewolf.nix;
-  brave = import ./brave.nix;
+  helium = import ./helium.nix;
 }

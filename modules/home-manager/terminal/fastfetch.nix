@@ -10,7 +10,8 @@ with lib; {
     package = pkgs.fastfetch;
     settings = {
       logo = {
-        source = "${config.xdg.configHome}/wallpapers/minimalist-black-hole.png";
+        # Same avatar as the noctalia lock screen (see modules/home-manager/assets).
+        source = "${../assets/avatar.jpg}";
         height = 15;
         padding = {
           left = 2;

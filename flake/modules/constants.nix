@@ -9,7 +9,7 @@
       gitUsername = "deadmade";
       gitEmail = "manuel.schuelein@proton.me";
       username = "deadmade";
-      browser = "brave";
+      browser = "helium";
       terminal = "kitty";
       keyboardLayout = "de";
       consoleKeyMap = "de";
