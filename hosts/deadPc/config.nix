@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   outputs,
   inputs,
   ...
@@ -24,7 +25,7 @@
   # Rebuild with `nixos-rebuild boot` + reboot so the previous generation stays
   # available in the bootloader for rollback.
   nix-mineral = {
-    enable = true;
+    enable = false;
     preset = ["default"]; # balanced; "maximum" = stricter, "compatibility" = relax for gaming
 
     # --- Likely-needed relaxations for a gaming desktop. Uncomment as needed. ---
@@ -95,7 +96,9 @@
   services.pipewire = {
     enable = true;
     alsa.enable = true;
-    alsa.support32Bit = true;
+    # Hardened kernel disables 32-bit exec (ia32_emulation=0), so the i686
+    # pipewire/ffado stack can't build. Override desktop/base.nix here.
+    alsa.support32Bit = lib.mkForce false;
     pulse.enable = true;
   };
 
