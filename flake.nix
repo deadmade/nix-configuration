@@ -140,11 +140,11 @@
       repo = "chiplang-nix";
     };
 
-    freetube-nix = {
-      url = "path:/home/deadmade/FreeTube-Nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-    };
+    #    freetube-nix = {
+    #      url = "path:/home/deadmade/FreeTube-Nix";
+    #      inputs.nixpkgs.follows = "nixpkgs";
+    #      inputs.home-manager.follows = "home-manager";
+    #    };
 
     tuitr.url = "github:deadmade/tuitr";
 

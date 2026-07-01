@@ -471,26 +471,6 @@
         "type": "github"
       }
     },
-    "freetube-nix": {
-      "inputs": {
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1778064674,
-        "narHash": "sha256-ZJtQSvHWdLSBAdhydkZD94AmfoOcFlxegk2JnzxMa20=",
-        "path": "/home/deadmade/FreeTube-Nix",
-        "type": "path"
-      },
-      "original": {
-        "path": "/home/deadmade/FreeTube-Nix",
-        "type": "path"
-      }
-    },
     "fromYaml": {
       "flake": false,
       "locked": {
@@ -1145,7 +1125,6 @@
         "chiplang-nix": "chiplang-nix",
         "firefox-addons": "firefox-addons",
         "flake-parts": "flake-parts",
-        "freetube-nix": "freetube-nix",
         "git-hooks": "git-hooks",
         "hardware": "hardware",
         "home-manager": "home-manager",

@@ -19,7 +19,6 @@
       outputs.nixosModules.desktop.vpn
       outputs.nixosModules.desktop.ai
       outputs.nixosModules.desktop.jetbrains
-      outputs.nixosModules.desktop.gaming
       outputs.nixosModules.desktop.tailscale
       outputs.nixosModules.desktop.wayvnc
       outputs.nixosModules.virtualization.vm
@@ -65,7 +64,7 @@
   services.pipewire = {
     enable = true;
     alsa.enable = true;
-    alsa.support32Bit = true;
+    alsa.support32Bit = false;
     pulse.enable = true;
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
@@ -90,11 +89,8 @@
     inputs.neovim-config.packages.${pkgs.stdenv.hostPlatform.system}.nvim
     brightnessctl
     glab
-    pkgs.unstable.ladybird
     pkgs.unstable.vscode
     pkgs.unstable.remnote
-
-    pkgs.unstable.gnome-network-displays
 
     #dive # look into docker image layers
     #podman-tui # status of containers in the terminal

@@ -8,7 +8,7 @@
     claude-code
     antigravity-cli
     #coderabbit-cli
-    codex
+    #codex
     tuicr
     #hermes-agent
   ];
