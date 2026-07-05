@@ -14,6 +14,7 @@
       inputs.hardware.nixosModules.common-pc-laptop
       inputs.hardware.nixosModules.common-pc-ssd
 
+      outputs.nixosModules.desktop.bluetooth
       outputs.nixosModules.desktop.packages
       outputs.nixosModules.desktop.stylix
       outputs.nixosModules.desktop.vpn
@@ -53,6 +54,7 @@
     };
   };
 
+  hardware.enableRedistributableFirmware = true;
   hardware.cpu.amd.updateMicrocode = true;
 
   # Enable CUPS to print documents.
@@ -91,12 +93,6 @@
     glab
     pkgs.unstable.vscode
     pkgs.unstable.remnote
-
-    #dive # look into docker image layers
-    #podman-tui # status of containers in the terminal
-    #docker-compose # start group of containers for dev
-    #unstable.podman-compose # start group of containers for dev
-    #unstable.podman-desktop
   ];
 
   #network display

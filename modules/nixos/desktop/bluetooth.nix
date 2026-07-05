@@ -11,8 +11,9 @@
   };
 
   environment.systemPackages = with pkgs; [
-    #blueman
   ];
+
+  services.blueman.enable = true;
 
   #wiegurad setup
   # https://nixos.wiki/wiki/WireGuard

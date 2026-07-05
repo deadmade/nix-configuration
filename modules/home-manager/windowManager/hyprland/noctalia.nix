@@ -108,7 +108,19 @@
           center = ["active_window"];
           # control-center is the rightmost button; useDistroLogo makes it show
           # the detected OS logo (NixOS here) instead of the default noctalia icon.
-          end = ["tray" "battery" "volume" "network" "session" "clock" "notifications" {id = "control-center"; useDistroLogo = true;}];
+          end = [
+            "tray"
+            "battery"
+            "volume"
+            "network"
+            "session"
+            "clock"
+            "notifications"
+            {
+              id = "control-center";
+              useDistroLogo = true;
+            }
+          ];
         };
       };
 
@@ -143,9 +155,18 @@
       # gated by weather.enabled above.
       calendar = {
         cards = [
-          {id = "calendar-header-card"; enabled = false;}
-          {id = "calendar-month-card"; enabled = false;}
-          {id = "weather-card"; enabled = false;}
+          {
+            id = "calendar-header-card";
+            enabled = false;
+          }
+          {
+            id = "calendar-month-card";
+            enabled = false;
+          }
+          {
+            id = "weather-card";
+            enabled = false;
+          }
         ];
       };
 

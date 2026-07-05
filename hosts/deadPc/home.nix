@@ -35,6 +35,13 @@
           position = "1920x0";
           scale = 1;
         } # Mittlerer Monitor
+        {
+          output = "";
+          mode = "preferred";
+          position = "auto";
+          scale = 1;
+          mirror = "DP-3";
+        }
       ];
     };
   };
