@@ -113,7 +113,7 @@
       for i = 1, 10 do
         local key = i % 10 -- 10 maps to key 0
         hl.bind(mainMod .. " + " .. key,         hs.dsp.focus({ workspace = i }))
-        hl.bind(mainMod .. " + SHIFT + " .. key, hs.dsp.window.move({ workspace = i, follow = false }))
+        hl.bind(mainMod .. " + SHIFT + " .. key, hs.dsp.window.move({ workspace = i, follow = true }))
       end
 
       -- Move window within the layout
