@@ -89,10 +89,12 @@
   environment.systemPackages = with pkgs; [
     tuigreet
     inputs.neovim-config.packages.${pkgs.stdenv.hostPlatform.system}.nvim
+    #inputs.chiplang-nix.packages.${pkgs.stdenv.hostPlatform.system}.depthfinder
     brightnessctl
     glab
     pkgs.unstable.vscode
     pkgs.unstable.remnote
+    pkgs.unstable.ladybird
   ];
 
   #network display
@@ -105,10 +107,10 @@
     settings = {
       default_session = {
         user = "deadmade";
-        command = "${pkgs.tuigreet}/bin/tuigreet 
-        --time 
+        command = "${pkgs.tuigreet}/bin/tuigreet
+        --time
         --issue
-        --asterisks 
+        --asterisks
         --theme border=magenta;text=cyan;prompt=green;time=red;action=blue;button=yellow;container=black;input=red
         --cmd Hyprland"; # start Hyprland with a TUI login manager
       };
