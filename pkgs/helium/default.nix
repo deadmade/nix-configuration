@@ -74,7 +74,7 @@
   flags ? [],
 }: let
   pname = "helium";
-  version = "0.14.3.1";
+  version = "0.14.4.1";
 
   suffix =
     {
@@ -87,8 +87,8 @@
     or (throw "helium: unsupported system ${stdenv.hostPlatform.system}");
 
   hashes = {
-    x86_64-linux = "sha256-Vd83SY+tSPEJ1UiclNrzbe0GRd+yfOoIZ3ts9oDTtNc=";
-    aarch64-linux = "sha256-hk552NH79m9S0GACnlsXHqO/7LWkEkKG8wsRrkUrpXE=";
+    x86_64-linux = "sha256-PC4w1OeCUwEjw6oBbBTTRGiuwCCkivEv2ZRPRRypj0I=";
+    aarch64-linux = "sha256-4XfUs4HARWSNM7lUOvzFt6gtK1QK0Isi1UwSusHErDI=";
   };
 
   src = fetchurl {
