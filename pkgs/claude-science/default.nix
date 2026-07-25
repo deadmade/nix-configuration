@@ -16,13 +16,23 @@
 # patchelf pass as unsafe rather than relying on that. Stripping corrupts it
 # the same way. Hence dontPatchELF/dontStrip plus the byte-identity check.
 #
-# So the interpreter stays /lib64/ld-linux-x86-64.so.2, which on NixOS is
-# supplied by nix-ld (programs.nix-ld.enable, set unconditionally in
-# modules/nixos/core/packages.nix). That makes this package depend on a
-# system-level toggle rather than being self-contained — the deliberate
-# trade-off for keeping the payload intact. An FHS wrapper would also work but
-# is the wrong tool here: it would sandbox the filesystem away from a program
-# whose purpose is reading your local data.
+# The interpreter therefore stays /lib64/ld-linux-x86-64.so.2. Rather than
+# depend on the host's nix-ld for that path, the wrapper below starts an outer
+# bubblewrap namespace and binds its own patched nix-ld over it, alongside a
+# bash/coreutils shim at /bin and a real CA bundle at /etc/ssl/certs. Those are
+# exactly the three paths claude-science's *inner* sandboxes bind through, so
+# whatever lands there is visible to micromamba during conda env creation and
+# to MCP server subprocesses.
+#
+# The outer namespace is an overlay mechanism, not a security boundary: / is
+# bound read-only and $HOME, /tmp, /run and /dev are re-bound, so the program
+# can still read your data — which is its whole purpose. The actual boundary is
+# claude-science's own inner bwrap, untouched here.
+#
+# --dev-bind /dev /dev rather than --dev /dev, deliberately: a minimal devtmpfs
+# hides /dev/dri and /dev/nvidia*, and claude-science does GPU compute. Since
+# --ro-bind / / already exposes the filesystem, binding real /dev costs no
+# isolation that this namespace was providing.
 #
 # UPDATING — read this when the build fails with a hash mismatch.
 # Upstream publishes no version manifest, only the binaries themselves, so
@@ -40,7 +50,6 @@
   stdenv,
   runCommand,
   fetchurl,
-  makeWrapper,
   bubblewrap,
   bash,
   coreutils,
@@ -156,61 +165,117 @@ in
     dontPatchELF = true;
     dontStrip = true;
 
-    nativeBuildInputs = [makeWrapper];
+    # Nothing to do at build time: the binary is installed as-is and the wrapper
+    # is a shell script written by hand. makeWrapper cannot express this — the
+    # bwrap argv embeds store paths from two derivations and has to resolve $HOME
+    # and $PWD fresh on every launch.
+    nativeBuildInputs = [];
 
-    # Two hard runtime deps, both fatal at startup if missing. bubblewrap is the
-    # agent sandbox (its only alternative being --dangerously-no-sandbox, which
-    # grants full $HOME read/write and unrestricted network); socat bridges the
-    # sandbox's network egress. Upstream expects both from the distro — they are
-    # the only two the binary names in "Install it with: apt-get install ..."
-    # messages — so shipping them here is what makes the package self-contained.
-    #
-    # `bash` is here for a NixOS-specific reason. The sandbox bind-mounts a fixed
-    # FHS list — /usr /lib /lib64 /bin /sbin /opt /nix — which notably includes
-    # /nix but NOT /run. Resolved off a normal NixOS PATH, `bash` is
-    # /run/current-system/sw/bin/bash, so every sandboxed command dies with
-    # `bwrap: execvp /run/current-system/sw/bin/bash: No such file or directory`
-    # (this breaks the conda-backed Python/R MCP envs while the daemon itself
-    # still starts). Putting a /nix/store bash first on PATH puts the real
-    # interpreter inside a bound prefix; verified to take the error count to 0.
-    # coreutils is here for the same reason: the sandbox probe execs a bare
-    # `true`, resolved through PATH *inside* the namespace, so it has to come
-    # from a bound prefix too.
-    #
-    # The two --run lines fix the same /run-is-not-bound problem for nix-ld
-    # itself. NixOS exports NIX_LD=/run/current-system/sw/share/nix-ld/lib/ld.so;
-    # inside the sandbox that path does not exist, so nix-ld aborts with
-    # `[nix-ld] FATAL: panicked ... Posix(2)` (ENOENT) and *every* bundled MCP
-    # env — biomart, variants, expression, rna, … — fails to create while the
-    # daemon itself still comes up healthy. Both variables are symlinks into
-    # /nix/store, so canonicalising them at launch lands them inside the bound
-    # prefix. Resolving at runtime rather than baking in a store path keeps this
-    # following programs.nix-ld.libraries across system generations.
-    #
     # A shell wrapper is safe here where patchelf is not: it renames rather than
-    # rewrites, so the payload is untouched and /proc/self/exe still resolves to
-    # the intact ELF in libexec. A *binary* wrapper (makeBinaryWrapper) would
-    # break it — /proc/self/exe would resolve to the wrapper.
+    # rewrites, so the payload is untouched. The final exec is
+    # `bwrap -- $out/libexec/claude-science`, so /proc/self/exe still resolves to
+    # the intact ELF. A *binary* wrapper (makeBinaryWrapper) would break that —
+    # /proc/self/exe would resolve to the wrapper.
+    #
+    # bubblewrap is also claude-science's own agent sandbox (its only alternative
+    # being --dangerously-no-sandbox, which grants full $HOME read/write and
+    # unrestricted network); socat bridges the sandbox's network egress. Those
+    # are the only two the binary names in "Install it with: apt-get install ..."
+    # messages. procps and ripgrep are needed by its process and search helpers.
+    #
+    # The heredoc is unquoted, so two escaping layers stack. Store paths use
+    # ${"\${...}"} (Nix interpolates); runtime shell variables are written \$NAME
+    # (backslash is literal in a Nix '' string, and the heredoc turns \$ into $);
+    # $out is expanded by the heredoc at build time. Never write a bare
+    # ${"\${"} for a shell construct — Nix would interpolate it. That is why the
+    # LD_LIBRARY_PATH logic below is an if/else rather than ${"\${VAR:+...}"}.
+    #
+    # Backticks are command substitution here too, evaluated at build time — even
+    # inside what looks like a shell comment. Keep them out of the heredoc
+    # entirely; an unescaped pair silently deletes the text between them.
     installPhase = ''
-      runHook preInstall
+            runHook preInstall
 
-      install -Dm755 $src $out/libexec/claude-science
+            install -Dm755 $src $out/libexec/claude-science
+            mkdir -p $out/bin
 
-      makeWrapper $out/libexec/claude-science $out/bin/claude-science \
-        --prefix PATH : ${lib.makeBinPath [bubblewrap socat bash coreutils]} \
-        --run 'if [ -n "''${NIX_LD:-}" ]; then export NIX_LD="$(${coreutils}/bin/readlink -f "$NIX_LD")"; fi' \
-        --run 'if [ -n "''${NIX_LD_LIBRARY_PATH:-}" ]; then export NIX_LD_LIBRARY_PATH="$(${coreutils}/bin/readlink -f "$NIX_LD_LIBRARY_PATH")"; fi'
+            cat > $out/bin/claude-science <<WRAPPER
+      #!${bash}/bin/bash
+      # claude-science rewrites its own binary in place on update, which cannot work
+      # from a read-only store. Versions are Nix's job; see the UPDATING note.
+      export DISABLE_AUTOUPDATER=1
 
-      runHook postInstall
+      export PATH="${lib.makeBinPath [sandboxShellShim bash bubblewrap procps ripgrep socat]}:\$PATH"
+
+      if [ -n "\$LD_LIBRARY_PATH" ]; then
+        export LD_LIBRARY_PATH="${lib.makeLibraryPath [stdenv.cc.cc.lib]}:\$LD_LIBRARY_PATH"
+      else
+        export LD_LIBRARY_PATH="${lib.makeLibraryPath [stdenv.cc.cc.lib]}"
+      fi
+
+      # The inner sandbox --ro-binds /etc/ssl from the outer namespace, but NixOS
+      # routes /etc/ssl/certs/ca-certificates.crt through a /etc/static symlink that
+      # dangles inside the sandbox's tmpfs /etc. Point at the real bundle.
+      export SSL_CERT_FILE="${cacert}/etc/ssl/certs/ca-bundle.crt"
+      export CURL_CA_BUNDLE="${cacert}/etc/ssl/certs/ca-bundle.crt"
+
+      # These need no sandbox, and skipping bwrap keeps them working where user
+      # namespaces are unavailable — containers, CI, some WSL kernels. Without this
+      # bypass those environments fail with "bwrap: setting up uid map: Permission
+      # denied" before printing anything.
+      case "\$1" in
+        --version|-V|--help|-h)
+          exec $out/libexec/claude-science "\$@"
+          ;;
+      esac
+
+      # /bin is shadowed with a tmpfs because NixOS /bin holds only sh, but MCP
+      # connectors launched by claude-science's Python bridge invoke
+      # "bwrap ... /bin/bash". Symlinking both names covers both resolution
+      # paths. (Quotes, not backticks: this heredoc is unquoted, so backticks
+      # would be command substitution evaluated at build time.)
+      exec ${bubblewrap}/bin/bwrap \\
+        --ro-bind / / \\
+        --tmpfs /lib64 \\
+        --ro-bind ${patchedNixLd}/libexec/nix-ld /lib64/ld-linux-x86-64.so.2 \\
+        --tmpfs /etc/ssl/certs \\
+        --ro-bind ${cacert}/etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt \\
+        --ro-bind ${cacert}/etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-bundle.crt \\
+        --tmpfs /bin \\
+        --symlink ${sandboxShellShim}/bin/sh /bin/sh \\
+        --symlink ${sandboxShellShim}/bin/bash /bin/bash \\
+        --bind /run /run \\
+        --bind /tmp /tmp \\
+        --bind "\$HOME" "\$HOME" \\
+        --proc /proc \\
+        --dev-bind /dev /dev \\
+        --chdir "\$PWD" \\
+        --die-with-parent \\
+        -- \\
+        $out/libexec/claude-science "\$@"
+      WRAPPER
+
+            chmod +x $out/bin/claude-science
+
+            runHook postInstall
     '';
 
-    # Guard the invariant: if any fixup ever mutates the binary, fail loudly at
-    # build time rather than shipping a silently crippled Bun runtime.
+    # Guard the invariants: if any fixup ever mutates the binary, or the wrapper
+    # loses a bind whose absence only shows up much later at runtime, fail loudly
+    # at build time rather than shipping something silently crippled.
     doInstallCheck = true;
     installCheckPhase = ''
       runHook preInstallCheck
+
       cmp $src $out/libexec/claude-science \
         || (echo "claude-science: binary was modified during the build; the Bun payload is corrupt" >&2; exit 1)
+
+      grep -q '${patchedNixLd}/libexec/nix-ld' $out/bin/claude-science \
+        || (echo "claude-science: wrapper does not bind the patched nix-ld" >&2; exit 1)
+
+      grep -q -- '--dev-bind /dev /dev' $out/bin/claude-science \
+        || (echo "claude-science: wrapper lost --dev-bind; GPU device nodes would be hidden" >&2; exit 1)
+
       runHook postInstallCheck
     '';
 
