@@ -229,6 +229,19 @@ in
           ;;
       esac
 
+      # NIX_LD and NIX_LD_LIBRARY_PATH are unset rather than passed through, and
+      # this is load-bearing. nix-ld reads those env vars in preference to its
+      # compile-time defaults, and NixOS exports
+      # NIX_LD=/run/current-system/sw/... system-wide. /run is not bound by
+      # claude-science's inner sandbox, so a leaked NIX_LD makes nix-ld panic at
+      # main.rs:187 with Posix(2) (ENOENT) and every bundled MCP env fails to
+      # create — surfacing confusingly as "acquire timeout 8000ms" once those
+      # envs land on their retry cooldown. Clearing them is what makes the
+      # bundled loader and library farm authoritative; without it the patched
+      # compile-time defaults are never consulted at all. Verified A/B: with
+      # NIX_LD set, a conda python in a nested sandbox dies with exactly that
+      # panic; with it unset, the same python runs.
+      #
       # /bin is shadowed with a tmpfs because NixOS /bin holds only sh, but MCP
       # connectors launched by claude-science's Python bridge invoke
       # "bwrap ... /bin/bash". Symlinking both names covers both resolution
@@ -238,6 +251,8 @@ in
         --ro-bind / / \\
         --tmpfs /lib64 \\
         --ro-bind ${patchedNixLd}/libexec/nix-ld /lib64/ld-linux-x86-64.so.2 \\
+        --unsetenv NIX_LD \\
+        --unsetenv NIX_LD_LIBRARY_PATH \\
         --tmpfs /etc/ssl/certs \\
         --ro-bind ${cacert}/etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt \\
         --ro-bind ${cacert}/etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-bundle.crt \\
@@ -275,6 +290,9 @@ in
 
       grep -q -- '--dev-bind /dev /dev' $out/bin/claude-science \
         || (echo "claude-science: wrapper lost --dev-bind; GPU device nodes would be hidden" >&2; exit 1)
+
+      grep -q -- '--unsetenv NIX_LD' $out/bin/claude-science \
+        || (echo "claude-science: wrapper lost --unsetenv NIX_LD; the host NIX_LD would override the bundled loader and every MCP env would fail to create" >&2; exit 1)
 
       runHook postInstallCheck
     '';
