@@ -2,4 +2,5 @@
 # overlays/default.nix) so they're available as `pkgs.<name>`.
 {pkgs}: {
   helium = pkgs.callPackage ./helium {};
+  claude-science = pkgs.callPackage ./claude-science {};
 }
