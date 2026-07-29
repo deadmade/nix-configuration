@@ -14,7 +14,7 @@
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
     ++ [
-      outputs.nixosModules.virtualization.container
+      outputs.nixosModules.virtualization.docker
       outputs.nixosModules.virtualization.vm
     ];
 

@@ -1,5 +1,5 @@
 {
   vm = import ./vm.nix;
-  container = import ./container.nix;
+  docker = import ./docker.nix;
   vmware = import ./vmware.nix;
 }

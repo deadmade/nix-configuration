@@ -23,7 +23,7 @@
       outputs.nixosModules.desktop.tailscale
       outputs.nixosModules.desktop.wayvnc
       outputs.nixosModules.virtualization.vm
-      outputs.nixosModules.virtualization.container
+      outputs.nixosModules.virtualization.docker
     ]
     ++ (builtins.attrValues outputs.nixosModules.core);
 

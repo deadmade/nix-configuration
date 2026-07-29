@@ -1,6 +1,6 @@
 {outputs, ...}: {
   imports = [
-    outputs.nixosModules.virtualization.container
+    outputs.nixosModules.virtualization.docker
     outputs.nixosModules.virtualization.vm
   ];
 }
