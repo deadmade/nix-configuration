@@ -108,19 +108,26 @@ Rationale for each non-obvious line:
   consequence `docker compose up` resolves to `podman compose up`, which then
   delegates to the `docker-compose` provider. Both command spellings work.
 - `defaultNetwork.settings.dns_enabled` enables DNS resolution between
-  containers on the default network. Docker provides this implicitly; Podman
-  does not.
+  containers on the default network. **Verified 2026-08-01: this only reaches
+  rootful podman** — the option writes `/etc/containers/networks/podman.json`,
+  while rootless podman keeps its networks in
+  `~/.local/share/containers/storage/networks/` and uses the built-in default
+  network with DNS off. Accepted as-is: user-defined networks (which
+  `docker compose` always creates) get `dns_enabled = true` automatically,
+  matching Docker, whose *default* bridge likewise has no name-based DNS. The
+  setting stays for rootful consistency should the rootful socket ever be
+  enabled.
 - `DOCKER_HOST` points Docker-API clients (`lazydocker`, `docker-compose`,
   anything else expecting `/var/run/docker.sock`) at the rootless socket.
 
-**Open implementation detail:** `environment.sessionVariables` reaches sessions
-through both `/etc/set-environment` (shell-sourced, expands `$XDG_RUNTIME_DIR`)
-and PAM (which does not expand reliably). The literal `$XDG_RUNTIME_DIR` form
-must therefore be confirmed to expand in a real session before this is
-considered done — `echo $DOCKER_HOST` after reboot. If it arrives unexpanded,
-fall back to setting it in Home Manager, where the value is written into the
-shell profile and expansion is guaranteed. Hardcoding `/run/user/1000` is a last
-resort, since it bakes in a UID.
+**Open implementation detail — resolved 2026-08-01:**
+`environment.sessionVariables` reaches sessions through both
+`/etc/set-environment` (shell-sourced, expands `$XDG_RUNTIME_DIR`) and PAM
+(which does not expand reliably). Verified in a fresh login shell:
+`DOCKER_HOST=unix:///run/user/1000/podman/podman.sock` — expansion works, no
+Home Manager fallback needed. (When testing from an existing session, unset
+`__NIXOS_SET_ENVIRONMENT_DONE` first, or the nested shell skips
+`/etc/set-environment` and the variable appears empty.)
 
 Three deliberate deletions from the current module:
 
