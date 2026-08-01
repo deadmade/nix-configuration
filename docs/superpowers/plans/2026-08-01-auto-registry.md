@@ -248,7 +248,7 @@ Replace the entire file with:
   projectOutputs = {
     overlays = import ../../overlays {inherit inputs;};
     nixosModules = registry ../../modules/nixos;
-    homeManagerModules = registry ../../modules/home-manager;
+    homeManagerModules = import ../../modules/home-manager;
     nixosProfiles = import ../../profiles/nixos;
     homeManagerProfiles = import ../../profiles/home-manager;
   };
@@ -257,6 +257,15 @@ in {
   flake = projectOutputs;
 }
 ```
+
+`homeManagerModules` deliberately stays on the direct import at this
+checkpoint: the helper skips `dir`'s own top-level `default.nix` by rule, and
+the hand-written `modules/home-manager/default.nix` is what flattens
+`windowManager/hyprland` to the `hyprland` attr — routing home through the
+helper here would surface `windowManager` early and break the no-op
+guarantee. Task 4 switches this line to `registry ../../modules/home-manager`
+together with the registry deletions and reference updates. (`modules/nixos`'s
+top-level `default.nix` maps domains verbatim, so nixos is safe to route now.)
 
 - [ ] **Step 2: Verify registries are unchanged**
 
@@ -304,7 +313,7 @@ git commit -m 'refactor(flake): build module registries with auto-discovery help
 **Files:**
 - Delete: `modules/nixos/default.nix`, `modules/home-manager/default.nix`, `modules/nixos/{core,desktop,gaming,virtualization}/default.nix`, `modules/home-manager/{core,browser,coding,terminal,socialMedia}/default.nix`
 - Delete (untracked, empty): `modules/home-manager/terminal/tmux/`
-- Modify: `profiles/home-manager/desktop-dev.nix:4`, `profiles/home-manager/wsl.nix:6`
+- Modify: `profiles/home-manager/desktop-dev.nix:4`, `profiles/home-manager/wsl.nix:6`, `flake/modules/exports.nix:6` (homeManagerModules → helper; Task 3 left it on the direct import to preserve the no-op checkpoint)
 
 **Interfaces:**
 - Consumes: auto-discovery wiring from Task 3.
@@ -352,6 +361,21 @@ to:
       outputs.homeManagerModules.core.homeConfig
 ```
 
+In `flake/modules/exports.nix`, change:
+
+```nix
+    homeManagerModules = import ../../modules/home-manager;
+```
+
+to:
+
+```nix
+    homeManagerModules = registry ../../modules/home-manager;
+```
+
+(The top-level `modules/home-manager/default.nix` is deleted in Step 1, so the
+direct import would fail from here on; the helper takes over.)
+
 - [ ] **Step 3: Verify the registry diff is exactly the four renames**
 
 ```bash
@@ -397,10 +421,10 @@ Expected: passes; informational warnings about non-standard outputs (`nixosProfi
 
 ```bash
 cd /home/deadmade/nix-configuration
-alejandra profiles/home-manager/desktop-dev.nix profiles/home-manager/wsl.nix
-git add profiles/home-manager/desktop-dev.nix profiles/home-manager/wsl.nix
+alejandra profiles/home-manager/desktop-dev.nix profiles/home-manager/wsl.nix flake/modules/exports.nix
+git add profiles/home-manager/desktop-dev.nix profiles/home-manager/wsl.nix flake/modules/exports.nix
 git commit -m 'refactor(modules): drop hand-written registry files for auto-discovery' \
-  -- profiles/home-manager/desktop-dev.nix profiles/home-manager/wsl.nix \
+  -- profiles/home-manager/desktop-dev.nix profiles/home-manager/wsl.nix flake/modules/exports.nix \
      modules/nixos/default.nix modules/home-manager/default.nix \
      modules/nixos/core/default.nix modules/nixos/desktop/default.nix \
      modules/nixos/gaming/default.nix modules/nixos/virtualization/default.nix \
