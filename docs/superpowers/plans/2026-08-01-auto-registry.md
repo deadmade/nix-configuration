@@ -35,15 +35,19 @@
 cd /home/deadmade/nix-configuration
 export V="/tmp/claude-1000/-home-deadmade-nix-configuration/7bd72be7-131c-489d-9107-8196b43118c2/scratchpad/auto-registry"
 mkdir -p "$V"
-nix eval --json --apply 'ms: builtins.mapAttrs (n: v: if builtins.isAttrs v then builtins.attrNames v else "leaf") ms' '.#nixosModules' > "$V/before-nixos.json"
+nix eval --impure --json \
+  --expr 'import /home/deadmade/nix-configuration/modules/nixos' \
+  --apply 'ms: builtins.mapAttrs (n: v: if builtins.isAttrs v then builtins.attrNames v else "leaf") ms' > "$V/before-nixos.json"
 nix eval --json --apply 'ms: builtins.mapAttrs (n: v: if builtins.isAttrs v then builtins.attrNames v else "leaf") ms' '.#homeManagerModules' > "$V/before-home.json"
 jq -s '{nixos: .[0], home: .[1]}' "$V/before-nixos.json" "$V/before-home.json" > "$V/before-registries.json"
 ```
 
+The nixos dump MUST bypass the flake output: flake-parts types `flake.nixosModules` and wraps each entry in a `{_class, _file, imports}` module shim, so `nix eval '.#nixosModules'` shows only wrapper attrs and would make the before/after diff blind. `homeManagerModules` is untyped and passes through unwrapped, so the flake output is fine there.
+
 - [ ] **Step 2: Verify the dump is sane**
 
 Run: `jq . "$V/before-registries.json"`
-Expected: `.nixos` has keys `core desktop gaming virtualization`; `.home` has keys `core browser hyprland coding terminal gaming socialMedia flatpak`; `.home.hyprland`, `.home.gaming`, `.home.flatpak` are `"leaf"`.
+Expected: `.nixos` has keys `core desktop gaming virtualization`, each listing real module names (e.g. `.nixos.core` = `defaults grub2-bootloader localization network nixsecauditor optimize packages security themes user`, sorted) — NOT `_class`/`_file`/`imports`; `.home` has keys `core browser hyprland coding terminal gaming socialMedia flatpak`; `.home.hyprland`, `.home.gaming`, `.home.flatpak` are `"leaf"`.
 
 - [ ] **Step 3: Capture drvPaths for every host and home config**
 
@@ -259,7 +263,9 @@ in {
 ```bash
 cd /home/deadmade/nix-configuration
 export V="/tmp/claude-1000/-home-deadmade-nix-configuration/7bd72be7-131c-489d-9107-8196b43118c2/scratchpad/auto-registry"
-nix eval --json --apply 'ms: builtins.mapAttrs (n: v: if builtins.isAttrs v then builtins.attrNames v else "leaf") ms' '.#nixosModules' > "$V/wired-nixos.json"
+nix eval --impure --json \
+  --expr '(import /home/deadmade/nix-configuration/flake/lib/registry.nix) /home/deadmade/nix-configuration/modules/nixos' \
+  --apply 'ms: builtins.mapAttrs (n: v: if builtins.isAttrs v then builtins.attrNames v else "leaf") ms' > "$V/wired-nixos.json"
 nix eval --json --apply 'ms: builtins.mapAttrs (n: v: if builtins.isAttrs v then builtins.attrNames v else "leaf") ms' '.#homeManagerModules' > "$V/wired-home.json"
 diff <(jq -S . "$V/before-nixos.json") <(jq -S . "$V/wired-nixos.json")
 diff <(jq -S . "$V/before-home.json")  <(jq -S . "$V/wired-home.json")
@@ -351,7 +357,9 @@ to:
 ```bash
 cd /home/deadmade/nix-configuration
 export V="/tmp/claude-1000/-home-deadmade-nix-configuration/7bd72be7-131c-489d-9107-8196b43118c2/scratchpad/auto-registry"
-nix eval --json --apply 'ms: builtins.mapAttrs (n: v: if builtins.isAttrs v then builtins.attrNames v else "leaf") ms' '.#nixosModules' > "$V/after-nixos.json"
+nix eval --impure --json \
+  --expr '(import /home/deadmade/nix-configuration/flake/lib/registry.nix) /home/deadmade/nix-configuration/modules/nixos' \
+  --apply 'ms: builtins.mapAttrs (n: v: if builtins.isAttrs v then builtins.attrNames v else "leaf") ms' > "$V/after-nixos.json"
 nix eval --json --apply 'ms: builtins.mapAttrs (n: v: if builtins.isAttrs v then builtins.attrNames v else "leaf") ms' '.#homeManagerModules' > "$V/after-home.json"
 diff <(jq -S . "$V/before-nixos.json") <(jq -S . "$V/after-nixos.json")
 diff <(jq -S . "$V/before-home.json")  <(jq -S . "$V/after-home.json")
