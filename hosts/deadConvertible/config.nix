@@ -22,8 +22,7 @@
       outputs.nixosModules.desktop.jetbrains
       outputs.nixosModules.desktop.tailscale
       outputs.nixosModules.desktop.wayvnc
-      outputs.nixosModules.virtualization.vm
-      outputs.nixosModules.virtualization.docker
+      outputs.nixosProfiles.virtualization
     ]
     ++ (builtins.attrValues outputs.nixosModules.core);
 
