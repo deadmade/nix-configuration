@@ -1,7 +1,7 @@
 # Migrate deadConvertible and deadServer to rootless Podman, remove Docker
 
 **Date:** 2026-08-01
-**Status:** Approved, ready for planning
+**Status:** Implemented 2026-08-01 (evaluation-verified; per-host runtime verification pending rebuilds)
 **Scope:** `deadConvertible` and `deadServer`. Completes what
 `2026-07-29-podman-migration-design.md` started on `deadPc`; after this change
 no host uses Docker and the Docker module is deleted.
