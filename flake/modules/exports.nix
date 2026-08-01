@@ -1,7 +1,8 @@
 {inputs, ...}: let
+  registry = import ../lib/registry.nix;
   projectOutputs = {
     overlays = import ../../overlays {inherit inputs;};
-    nixosModules = import ../../modules/nixos;
+    nixosModules = registry ../../modules/nixos;
     homeManagerModules = import ../../modules/home-manager;
     nixosProfiles = import ../../profiles/nixos;
     homeManagerProfiles = import ../../profiles/home-manager;
