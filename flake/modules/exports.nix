@@ -3,7 +3,7 @@
   projectOutputs = {
     overlays = import ../../overlays {inherit inputs;};
     nixosModules = registry ../../modules/nixos;
-    homeManagerModules = import ../../modules/home-manager;
+    homeManagerModules = registry ../../modules/home-manager;
     nixosProfiles = import ../../profiles/nixos;
     homeManagerProfiles = import ../../profiles/home-manager;
   };
