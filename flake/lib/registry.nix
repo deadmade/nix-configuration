@@ -2,7 +2,7 @@
 #   foo.nix                  -> foo = import ./foo.nix
 #   bar/   (has default.nix) -> bar = import ./bar   (module or hand-written registry)
 #   baz/   (no default.nix)  -> baz = nested registry (omitted when empty)
-# Dotfiles, non-nix files, and empty directories are ignored.
+# Dotfiles, non-nix files, symlinks, and empty directories are ignored.
 # A file and a directory producing the same name is an eval-time error.
 let
   registry = dir: let
@@ -54,7 +54,7 @@ let
 
     addUnique = acc: pair:
       if builtins.hasAttr pair.name acc
-      then throw "registry: name collision for '${pair.name}' in ${toString dir}"
+      then throw "registry: name collision for '${pair.name}' in ${toString dir} ('${pair.name}.nix' file vs '${pair.name}/' directory)"
       else acc // {${pair.name} = pair.value;};
   in
     builtins.foldl' addUnique {} (filePairs ++ dirPairs);

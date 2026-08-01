@@ -83,7 +83,8 @@ Three attrs rename without any call-site impact (consumed only via
 ## Behavioral contract change
 
 With auto-discovery, any `.nix` file dropped into a domain directory is
-registered immediately; if a profile imports that domain via
+registered immediately (once `git add`ed — untracked files are invisible to
+flake evaluation); if a profile imports that domain via
 `builtins.attrValues`, the module is active on the next rebuild. Today this
 is a no-op (every existing file is already registered — verified by diffing
 directory listings against the hand-written registries), but it is the
