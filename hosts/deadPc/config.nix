@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  lib,
   outputs,
   inputs,
   ...
@@ -15,34 +14,9 @@
     inputs.hardware.nixosModules.common-gpu-nvidia-nonprime
     inputs.hardware.nixosModules.common-pc-ssd
 
-    inputs.nix-mineral.nixosModules.nix-mineral
-
     outputs.nixosProfiles.desktopAll
     outputs.nixosModules.virtualization.vmware
   ];
-
-  # Security hardening via nix-mineral (alpha software — see overrides below).
-  # Rebuild with `nixos-rebuild boot` + reboot so the previous generation stays
-  # available in the bootloader for rollback.
-  nix-mineral = {
-    enable = false;
-    preset = ["default"]; # balanced; "maximum" = stricter, "compatibility" = relax for gaming
-
-    # --- Likely-needed relaxations for a gaming desktop. Uncomment as needed. ---
-    settings = {
-      # 32-bit libraries for Steam / Proton / Wine:
-      # system.multilib = true;
-      # Relax process-tracing restriction (some anti-cheat / debuggers / Gamescope):
-      # system.yama = "relaxed";
-      # If lockdown or only-signed-modules blocks the NVIDIA stack / hibernation:
-      # kernel.lockdown = false;
-      # kernel.only-signed-modules = false;
-    };
-
-    # Allow executing binaries from home and /tmp (Steam shaders, launchers, installers):
-    # filesystems.normal."/home".options."noexec" = false;
-    # filesystems.normal."/tmp".options."noexec" = false;
-  };
 
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
@@ -96,9 +70,6 @@
   services.pipewire = {
     enable = true;
     alsa.enable = true;
-    # Hardened kernel disables 32-bit exec (ia32_emulation=0), so the i686
-    # pipewire/ffado stack can't build. Override desktop/base.nix here.
-    alsa.support32Bit = lib.mkForce false;
     pulse.enable = true;
   };
 
@@ -123,6 +94,7 @@
     tuigreet
     inputs.neovim-config.packages.${pkgs.stdenv.hostPlatform.system}.nvim
     inputs.chiplang-nix.packages.${pkgs.stdenv.hostPlatform.system}.depthfinder
+    inputs.chiplang-nix.packages.${pkgs.stdenv.hostPlatform.system}.dfn-mounter
     pkgs.unstable.vlc
     pkgs.unstable.telegram-desktop
   ];
@@ -132,8 +104,8 @@
     settings = {
       default_session = {
         user = "deadmade";
-        command = "${pkgs.tuigreet}/bin/tuigreet 
-        --issue 
+        command = "${pkgs.tuigreet}/bin/tuigreet
+        --issue
         --theme border=magenta;text=cyan;prompt=green;time=red;action=blue;button=yellow;container=black;input=red
         --cmd Hyprland"; # start Hyprland with a TUI login manager
       };

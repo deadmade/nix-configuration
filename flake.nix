@@ -141,11 +141,11 @@
       repo = "chiplang-nix";
     };
 
-    #    freetube-nix = {
-    #      url = "path:/home/deadmade/FreeTube-Nix";
-    #      inputs.nixpkgs.follows = "nixpkgs";
-    #      inputs.home-manager.follows = "home-manager";
-    #    };
+    freetube-nix = {
+      url = "path:/home/deadmade/FreeTube-Nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
 
     tuitr.url = "github:deadmade/tuitr";
 
@@ -154,11 +154,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-mineral = {
-      type = "github";
-      owner = "cynicsketch";
-      repo = "nix-mineral";
-      ref = "main";
+    nixsecauditor = {
+      url = "github:unnamed-systems/nixsecauditor";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
