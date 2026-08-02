@@ -158,6 +158,13 @@
       url = "github:unnamed-systems/nixsecauditor";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    deploy-rs = {
+      type = "github";
+      owner = "serokell";
+      repo = "deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {flake-parts, ...}:
