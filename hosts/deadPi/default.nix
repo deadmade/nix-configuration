@@ -136,6 +136,9 @@
   users.users.admin = {
     isNormalUser = true;
     extraGroups = ["wheel"]; # Enable ‘sudo’ for the user.
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBHA2a226b67E3wsCDfY7kgrZCCXju7E+4HNrfykglZ3 manuel.schuelein@proton.me"
+    ];
     hashedPassword = "$y$j9T$PLtMO97QQTuR0XDRy3SAz.$Wg2UvrJsJ4t0DcSTa1ATQgDI4G0PrYiWT3XFmUYtC1.";
   };
 
