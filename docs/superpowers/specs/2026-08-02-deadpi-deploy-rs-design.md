@@ -274,15 +274,35 @@ Each step is independently verifiable. Nothing before step 4 can affect the Pi.
   boot-path refactor on a headless machine and is strictly safer to attempt
   *after* rollback protection exists. Its only real payoff is reclaiming the
   space that pinned nixpkgs copy occupies on the SD card.
-- `deployChecks` integration with `nix flake check` — this is true of
-  `deploy-activate`, which would build the Pi's full closure on every check,
-  but not of `deploy-schema`, which only builds `check-jsonschema` plus a
-  `writeText` of `builtins.toJSON deploy` — no closure realisation. Adding it
-  would buy little regardless: neither `generic_settings` nor
-  `profile_settings` sets `additionalProperties: false` in deploy-rs's
-  `interface.json`, and its Rust structs have no `deny_unknown_fields`, so a
-  misspelled setting like `magicRollBack` is silently dropped by both layers
-  anyway.
+- `deployChecks` integration with `nix flake check` — i.e. the upstream
+  snippet `checks = builtins.mapAttrs (system: deployLib:
+  deployLib.deployChecks self.deploy) deploy-rs.lib;`. **Both** checks it
+  generates would build the Pi's full aarch64 activation package on every
+  `nix flake check`.
+
+  That `deploy-activate` does is obvious — it interpolates
+  `toString profile.path` into a shell script. That `deploy-schema` does too
+  is not, and reading the source suggests otherwise: it appears to build only
+  `check-jsonschema` and a `writeText` of `builtins.toJSON deploy`. But
+  `builtins.toJSON` of a derivation yields its `outPath` *carrying string
+  context*, and `writeText` turns string context into build dependencies. So
+  the generated `deploy.json` depends on the activation package.
+
+  Measured with `nix build --dry-run` on each check individually:
+  `deploy-schema` requires 5 derivations built — including
+  `deploy-rs-0.1.0` (aarch64) and
+  `activatable-nixos-system-deadpi-…` — and `deploy-activate` requires 4.
+  Inspecting `deploy.json.drv` confirms it embeds the activatable store path
+  directly.
+
+  Note also what the schema would and would not catch. `interface.json` sets
+  `additionalProperties: false` only on the `nodes` and `profiles` maps, not
+  on `generic_settings`/`node_settings`/`profile_settings`, and deploy-rs's
+  Rust structs have no `deny_unknown_fields` — so a misspelled optional
+  setting like `magicRollBack` is silently dropped by both layers. It *would*
+  catch a missing `hostname` or `path`, and wrong types (`magicRollback =
+  "yes"`), which Nix's own evaluation does not. That is real value, but it
+  costs a full aarch64 build on every check to get.
 - Unattended or scheduled deployment.
 
 ## Related finding: credentials in a public repo
