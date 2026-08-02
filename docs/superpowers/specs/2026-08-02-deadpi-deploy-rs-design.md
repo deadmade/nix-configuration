@@ -66,6 +66,41 @@ Pi. It is inferred from `profiles/installation-device.nix` setting
 `hosts/deadPi/default.nix` does not override. If it turns out false, the
 fallback is `interactiveSudo = true` on the node.
 
+## Build cost and the kernel
+
+All narinfo lookups below were made against `https://cache.nixos.org`.
+
+| Derivation | Result |
+| --- | --- |
+| `linux-rpi-6.18.34-stable_20260609` (the kernel `nixos-hardware` pins) | HTTP 404 |
+| aarch64 `deploy-rs` build | HTTP 404 |
+| `linux-rpi-6.12.75-1+rpt1` (nixpkgs 26.05's own `linux_rpi4`) | HTTP 404 |
+| `linux-rpi-6.12.47-stable_20250916` (what the Pi runs today) | HTTP 200 |
+| mainline `linuxPackages` 6.18.40 | HTTP 200 |
+| mainline `linuxPackages_6_12` 6.12.97 | HTTP 200 |
+| mainline `linuxPackages_latest` 7.1.5 | HTTP 200 |
+
+An attempt to build the closure ran 1h20m on 24 cores without finishing and
+was abandoned. This kernel cost is additive to the deploy-rs Rust build cost
+noted in the `flake.nix` section below.
+
+`nixos-hardware`'s `raspberry-pi/common/kernel.nix` calls nixpkgs' `buildLinux`
+with a pinned `tag`/`hash` of the `raspberrypi/linux` fork. A cache hit
+therefore depends on that pin matching a derivation Hydra happened to build —
+an alignment, not a guarantee, and one that is currently broken.
+
+Three options would make a deploy feasible, stated neutrally:
+
+1. `remoteBuild = true` on the deploy node (deploy-rs supports it) — the Pi
+   builds natively; slow but bounded, and needs no cross-compilation.
+2. Override the kernel to a cached mainline one. `nixos-hardware` sets
+   `boot.kernelPackages` with `lib.mkDefault`, so a plain assignment in
+   `hosts/deadPi/default.nix` overrides it with no `mkForce` needed.
+   `linuxPackages_6_12` (6.12.97) is the smallest jump from the Pi's current
+   6.12.47. Tradeoff: loses Raspberry Pi Foundation patches (camera/unicam,
+   hardware codecs, some device-tree overlays).
+3. A remote builder or binary cache serving aarch64.
+
 ## Architecture
 
 `deploy.nodes.*` is a **flake output**, evaluated on deadPc. It therefore
@@ -169,10 +204,17 @@ Each step is independently verifiable. Nothing before step 4 can affect the Pi.
    output, so `nix flake check` will emit an informational warning for it,
    exactly as it already does for `nixosProfiles` and `homeManagerModules`.
 4. `nix run .#deploy -- --dry-activate .#deadPi`, then the same without
-   `--dry-activate`. **This first deploy
-   is a no-op**: deadPc and the Pi evaluate the same flake at the same
-   revision, so the closure is byte-identical to what the Pi already runs.
-   This step tests the pipe, not the payload.
+   `--dry-activate`. **This first deploy is not a no-op**: the Pi runs NixOS
+   25.11 with kernel 6.12.47, while this repo targets 26.05 with kernel
+   6.18.34, so the first real deploy is a full release upgrade plus a
+   six-minor-version kernel jump — not a byte-identical closure. The
+   transport-only test is `--dry-activate` itself, which genuinely exercises
+   build, copy, SSH and sudo without changing the running system. Note also
+   that `magicRollback` only protects against losing SSH after activation; it
+   does not protect against a system that activates successfully and then
+   fails to boot, which matters here because a kernel change rewrites the
+   extlinux config, and selecting an older generation on a headless Pi
+   requires a screen or serial console.
 5. Commit the `authorizedKeys` change and deploy it. This is the first
    deployment that changes anything, and it runs with rollback already proven.
 
@@ -198,8 +240,15 @@ Each step is independently verifiable. Nothing before step 4 can affect the Pi.
   boot-path refactor on a headless machine and is strictly safer to attempt
   *after* rollback protection exists. Its only real payoff is reclaiming the
   space that pinned nixpkgs copy occupies on the SD card.
-- `deployChecks` integration with `nix flake check` — it would build the Pi's
-  full closure on every check.
+- `deployChecks` integration with `nix flake check` — this is true of
+  `deploy-activate`, which would build the Pi's full closure on every check,
+  but not of `deploy-schema`, which only builds `check-jsonschema` plus a
+  `writeText` of `builtins.toJSON deploy` — no closure realisation. Adding it
+  would buy little regardless: neither `generic_settings` nor
+  `profile_settings` sets `additionalProperties: false` in deploy-rs's
+  `interface.json`, and its Rust structs have no `deny_unknown_fields`, so a
+  misspelled setting like `magicRollBack` is silently dropped by both layers
+  anyway.
 - Unattended or scheduled deployment.
 
 ## Related finding: credentials in a public repo

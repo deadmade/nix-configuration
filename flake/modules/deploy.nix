@@ -25,6 +25,7 @@ in {
     apps.deploy = {
       type = "app";
       program = lib.getExe inputs.deploy-rs.packages.${system}.default;
+      meta.description = "Deploy NixOS hosts with deploy-rs";
     };
   };
 }
