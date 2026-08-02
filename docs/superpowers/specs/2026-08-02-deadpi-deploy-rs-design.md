@@ -101,6 +101,27 @@ Three options would make a deploy feasible, stated neutrally:
    hardware codecs, some device-tree overlays).
 3. A remote builder or binary cache serving aarch64.
 
+**Decision: option 2.** `hosts/deadPi/default.nix` sets
+`boot.kernelPackages = pkgs.linuxPackages_6_12;`. Measured effect on
+`nix build --dry-run .#deploy.nodes.deadPi.profiles.system.path`:
+
+| | Before | After |
+| --- | --- | --- |
+| Derivations to build | 68 | 67 |
+| Kernel *compiled* | yes — `linux-rpi-6.18.34` | no, substituted |
+
+The derivation count barely moves because the count was never the point: the
+one derivation that disappeared was the multi-hour one. What remains on the
+kernel side (`linux-6.12.97-modules`, `-modules-shrunk`, `initrd-*`,
+`dtbs-filtered`) is `aggregateModules` and friends — symlink joins and
+`depmod`, measured at **1.4 seconds** for the aggregate.
+
+The dominant remaining cost is the ~55 Rust crates that build the aarch64
+`deploy-rs` binary. That is unavoidable under any of the three options,
+because `activate.nixos` embeds the deploy-rs binary for the *target* system.
+Only dropping `inputs.nixpkgs.follows` (see the `flake.nix` section) could
+make it substitutable, at the cost of a second nixpkgs in the lock.
+
 ## Architecture
 
 `deploy.nodes.*` is a **flake output**, evaluated on deadPc. It therefore
