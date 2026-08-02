@@ -151,10 +151,23 @@ second nixpkgs in the lock.
   hostname = "10.10.10.137";
   sshUser = "admin";
   user = "root";
+  # SD-card-backed Pi doing a release upgrade can exceed deploy-rs's defaults;
+  # a timeout here would trigger a spurious rollback mid-activation.
+  activationTimeout = 1200;
+  confirmTimeout = 120;
   magicRollback = true;
   autoRollback = true;
 }
 ```
+
+The two timeouts override deploy-rs's defaults of 240s and 30s. Those defaults
+assume activation is quick; on this target the first deploy is a release
+upgrade with a kernel change, written to an SD card. If `switch-to-configuration
+switch` runs past `activationTimeout`, no confirmation reaches the deploying
+host inside `confirmTimeout` and magic-rollback reverts a system that was
+activating correctly — discarding the build and leaving a headless machine
+mid-switch. Raising them trades a longer worst-case hang for not throwing away
+a good deploy.
 
 ### `flake/modules/deploy.nix` — new, imported from `flake.nix`
 

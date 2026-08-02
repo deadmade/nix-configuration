@@ -50,7 +50,7 @@
 
 ## Global Constraints
 
-- **Formatter:** `alejandra`. Run `nix fmt` before every commit; the pre-commit hook enforces it and will reject unformatted `.nix` files.
+- **Formatter:** `alejandra`. Run `nix fmt .` (with the dot — bare `nix fmt` makes alejandra read stdin and fail) before every commit; the pre-commit hook enforces it and will reject unformatted `.nix` files.
 - **Commit messages:** Conventional Commits, enforced by `convco` in the pre-commit hook.
 - **Git visibility:** flake evaluation only sees **git-tracked** files. Every new `.nix` file must be `git add`ed before any `nix eval` / `nix build` that references it, or it will appear not to exist.
 - **Input style:** new flake inputs use the structured `type`/`owner`/`repo` attribute form, matching every existing input in `flake.nix`.
@@ -257,9 +257,20 @@ Expected: a 40-character git revision.
 nix flake metadata --json | python3 -c "import json,sys; print(json.load(sys.stdin)['locks']['nodes']['deploy-rs']['inputs']['nixpkgs'])"
 ```
 
-Expected: `nixpkgs` — a bare string naming the root node, which is how a
-resolved `follows` appears in the lock. If it were a list, deploy-rs would
-have brought its own nixpkgs.
+Expected: `['nixpkgs']` — a single-element list. That is how a resolved
+`follows` is encoded in `flake.lock`: an input path relative to the root node.
+Every existing `follows` input in this repo looks the same — `home-manager`,
+`nixcord`, `solaar`, and `git-hooks` all yield `['nixpkgs']`.
+
+For the stronger check that deploy-rs did not drag in its own nixpkgs, confirm
+the lock gained no new nixpkgs node for it:
+
+```bash
+nix flake metadata --json | python3 -c "import json,sys; n=json.load(sys.stdin)['locks']['nodes']; print(n['deploy-rs']['inputs'])"
+```
+
+Expected: `nixpkgs` maps to `['nixpkgs']`, not to a private node name like
+`nixpkgs_13`.
 
 This is the trade-off the spec records: deploy-rs now builds against the 26.05
 pin and will not hit deploy-rs's own cachix, costing one emulated aarch64 Rust
@@ -271,7 +282,7 @@ Task 4 Step 7, which fails loudly if it does not.
 - [ ] **Step 6: Format and commit**
 
 ```bash
-nix fmt
+nix fmt .
 git add flake.nix flake.lock
 git commit -m "build(flake): add deploy-rs input"
 ```
@@ -457,7 +468,7 @@ is expected and is not a failure.
 - [ ] **Step 11: Format and commit**
 
 ```bash
-nix fmt
+nix fmt .
 git add flake.nix hosts/deadPi/deploy.nix flake/modules/deploy.nix
 git commit -m "feat(deploy): add deploy-rs node for deadPi"
 ```
@@ -511,7 +522,7 @@ Expected: `nix run .#deploy -- .#deadPi`
 - [ ] **Step 4: Format and commit**
 
 ```bash
-nix fmt
+nix fmt .
 git add modules/home-manager/core/aliases.nix
 git commit -m "feat(aliases): add nospi for deploying deadPi"
 ```
@@ -549,12 +560,23 @@ nix eval --raw .#nixosConfigurations.deadPi.config.system.build.toplevel
 
 Compare with Step 1.
 
-**If they are identical**, the deployment is a true no-op and you are testing
-the transport only — the safest possible first deploy.
+**They will differ, and by a lot.** As of 2026-08-02 the Pi runs NixOS 25.11
+with kernel 6.12.47, while this repo targets 26.05 with kernel 6.18.34. The
+first deploy is therefore a full release upgrade plus a six-minor-version
+kernel jump — not the byte-identical no-op an earlier draft of this plan
+assumed. There is no flake state that makes those match.
 
-**If they differ** — which is likely, since the Pi may be several commits
-behind and the `flake.lock` state matters — do not proceed straight to
-deploying. Step 4 inspects the difference once both closures are on the Pi.
+The transport-only test you actually get is Step 3's `--dry-activate`, which
+exercises build, copy, SSH and sudo without changing the running system.
+
+Do not proceed straight to deploying. Step 4 inspects the difference once both
+closures are on the Pi.
+
+Note what rollback does *not* cover: `magicRollback` reverts if the Pi stops
+answering SSH after activation, but not if the Pi activates successfully and
+then fails to **boot**. A kernel change rewrites `extlinux.conf`, and choosing
+an older generation from the boot menu needs a screen or serial console. Treat
+physical access to the SD card as the real safety net for this step.
 
 - [ ] **Step 3: Dry-activate**
 
@@ -690,7 +712,7 @@ Expected: a single-element list containing the `ssh-ed25519 ...` string above.
 - [ ] **Step 4: Format and commit**
 
 ```bash
-nix fmt
+nix fmt .
 git add hosts/deadPi/default.nix
 git commit -m "feat(deadPi): declare deadmade's ssh key for admin"
 ```
