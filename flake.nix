@@ -175,6 +175,7 @@
         ./flake/modules/hosts.nix
         ./flake/modules/home.nix
         ./flake/modules/per-system.nix
+        ./flake/modules/deploy.nix
       ];
     };
 }
