@@ -162,6 +162,20 @@ Create `modules/nixos/hardening/nix-mineral.nix`:
         # the old alsa.support32Bit mkForce hack.
         multilib = true;
       };
+
+      debug = {
+        # Default false sets debugfs=off, unmounting /sys/kernel/debug.
+        # tracefs still mounts separately so bpftrace mostly survives, but
+        # bcc tools and some perf paths need debugfs. Profiling/eBPF tooling
+        # is a stated requirement for this host.
+        debugfs = true;
+
+        # Default true sets panic=-1, rebooting instantly on kernel panic.
+        # Combined with quiet-boot that turns a failed boot into a silent
+        # reboot loop with no readable message. A frozen screen is
+        # diagnosable; a silent loop is not.
+        panic-reboot = false;
+      };
     };
   };
 }
@@ -257,6 +271,10 @@ check "/home nosuid present"          1 "$(grep -c '"nosuid"' <<<"$homeopts")"
 # Debuggers/profilers must not be further restricted: ptrace_scope stays at 1
 # (the compatibility-preset default), never 2 or 3 (restricted/admin-only).
 check "ptrace_scope = 1 (unrestricted debuggers)" 1 "$ptrace_scope"
+# debugfs stays mounted: bcc tools and some perf paths need /sys/kernel/debug.
+check "debugfs=off absent"            0 "$(grep -cE '(^| )debugfs=off( |$)' <<<"$params")"
+# A kernel panic must freeze (diagnosable), not silently reboot-loop.
+check "panic=-1 absent"               0 "$(grep -cE '(^| )panic=-1( |$)' <<<"$params")"
 
 exit $fail
 ```

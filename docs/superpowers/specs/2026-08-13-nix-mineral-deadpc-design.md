@@ -135,6 +135,20 @@ becomes relevant again.
         # mkForce hack.
         multilib = true;
       };
+
+      debug = {
+        # Default false sets debugfs=off, unmounting /sys/kernel/debug.
+        # tracefs still mounts separately so bpftrace mostly survives, but
+        # bcc tools and some perf paths need debugfs. Profiling/eBPF tooling
+        # is a stated requirement for this host.
+        debugfs = true;
+
+        # Default true sets panic=-1, rebooting instantly on kernel panic.
+        # Combined with quiet-boot that turns a failed boot into a silent
+        # reboot loop with no readable message. A frozen screen is
+        # diagnosable; a silent loop is not.
+        panic-reboot = false;
+      };
     };
   };
 }
@@ -172,6 +186,17 @@ to an unrelated running process already requires `sudo` today and still will.
 this host and podman works, because netavark raises it at container start.
 
 **`io_uring` stays disabled**, per requirements — it is not used here.
+
+**`debugfs` stays on and `panic-reboot` is turned off.** Inspecting the built closure
+before the reboot in Task 4 turned up two `settings.debug` defaults that the
+`compatibility` preset does not touch: `debugfs = false` sets `debugfs=off`, unmounting
+`/sys/kernel/debug` — bcc tools and some `perf` paths need it even though tracefs at
+`/sys/kernel/tracing` mounts separately and keeps bpftrace mostly working. `panic-reboot
+= true` sets `panic=-1`, rebooting instantly on a kernel panic; combined with the
+untouched `quiet-boot` default, a failed boot becomes a silent reboot loop with no
+readable message. Profiling/eBPF tooling and a diagnosable failure mode are both stated
+requirements, so both are overridden; `quiet-boot` and `dmesg-restrict` stay at
+nix-mineral's defaults.
 
 ## Verified non-issues
 
