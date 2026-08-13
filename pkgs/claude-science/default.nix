@@ -151,11 +151,11 @@
 in
   stdenv.mkDerivation {
     pname = "claude-science";
-    version = "0.1.25";
+    version = "0.1.27";
 
     src = fetchurl {
       url = "https://downloads.claude.ai/claude-science/latest/linux-x64";
-      hash = "sha256-xmM2e7x+xU59HlqRAllKnnCATtUHD1180RF+Zl48N2w=";
+      hash = "sha256-LjGLL18NHVSwQizXPqR7zJTHP3GzV9NhRFSifd0tm6o=";
     };
 
     # `src` is a bare ELF executable, not an archive.

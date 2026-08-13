@@ -9,6 +9,7 @@
 
     extensions = [
       "catppuccin"
+      "catppuccin-icons"
       "nix"
       "python"
       "yaml"
@@ -19,11 +20,20 @@
       "dockerfile"
       "sql"
       "lua"
-      "c#"
       "xml"
       "latex"
       "csv"
       "docker-compose"
+      "csharp"
+      "log"
+      "make"
+      "zig"
+      "mcp-server-context7"
+      "graphql"
+      "codebook"
+      "ini"
+      "python-requirements"
+      "env"
     ];
 
     userSettings = {

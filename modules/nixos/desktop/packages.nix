@@ -18,7 +18,6 @@
     pkgs.unstable.vscode
     pkgs.unstable.obs-studio
     pkgs.unstable.legcord
-    pkgs.unstable.remnote
     home-manager
     nautilus
     inputs.tuitr.packages.${system}.default

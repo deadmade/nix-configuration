@@ -114,6 +114,9 @@
 
   hardware = {
     graphics.enable = true;
+    # Needed for 32-bit Wine to get GPU acceleration. Usually implied by
+    # programs.steam, which this host does not enable (no gaming profile).
+    graphics.enable32Bit = true;
     nvidia = {
       open = false;
       powerManagement.enable = true;
