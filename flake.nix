@@ -159,6 +159,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-mineral = {
+      type = "github";
+      owner = "cynicsketch";
+      repo = "nix-mineral";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     deploy-rs = {
       type = "github";
       owner = "serokell";
