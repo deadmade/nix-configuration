@@ -15,6 +15,7 @@ Rebuild uses `nh` (nix-helper), aliased in `modules/home-manager/core/aliases.ni
 Lower-level equivalents:
 - `sudo nixos-rebuild switch --flake .#<host>`
 - `home-manager switch --flake .#deadmade@<host>`
+- For `nix-mineral` (hardened) hosts like `deadPc`, prefer `nixos-rebuild boot` + reboot so the prior generation stays bootable for rollback.
 
 Checks & formatting:
 - `nix flake check` — custom outputs (`nixosProfiles`, `homeManagerModules`, etc.) emit informational warnings; these are expected.

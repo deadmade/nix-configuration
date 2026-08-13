@@ -16,6 +16,7 @@
 
     outputs.nixosProfiles.desktopAll
     outputs.nixosModules.virtualization.vmware
+    outputs.nixosModules.hardening.nix-mineral
   ];
 
   boot.binfmt.emulatedSystems = [
