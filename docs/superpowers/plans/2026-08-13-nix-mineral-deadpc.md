@@ -13,8 +13,8 @@
 ## Global Constraints
 
 - **Commit messages must be Conventional Commits.** The `convco` pre-commit hook rejects anything else.
-- **The working tree has substantial unrelated uncommitted changes** (`flake.lock`, `pkgs/helium`, `modules/home-manager/*`, and others). Every commit in this plan MUST stage explicit paths. Never run `git add -A`, `git add .`, or `git commit -a`.
-- **`hosts/deadPc/config.nix` and `CLAUDE.md` already have uncommitted edits.** Committing them stages those unrelated edits too. Task 3 handles this explicitly — read its steps before staging either file.
+- **Precondition: the working tree must be clean before Task 1.** Verify with `git status --short` and stop if it lists anything other than untracked files this plan creates. The plan previously had to work around 11 unrelated modified files; that is resolved outside this plan.
+- **Every commit MUST stage explicit paths.** Never run `git add -A`, `git add .`, `git add -p`, or `git commit -a`. Interactive git flags do not work in this environment.
 - **New files under `modules/` must be `git add`ed before they evaluate.** `flake/lib/registry.nix` reads the flake source tree, and untracked files are invisible to flake evaluation.
 - **Run `nix fmt` (alejandra) before committing any `.nix` file.** The pre-commit hook enforces it.
 - **`nix flake check` emits informational warnings** about the custom outputs (`nixosProfiles`, `homeManagerModules`, …). These are expected and are not failures.
@@ -85,8 +85,6 @@ Expected: `nixpkgs` (a bare string naming the root node), not a list pointing at
 
 - [ ] **Step 6: Format and commit**
 
-`flake.lock` already had unrelated uncommitted changes before this task. Staging it here folds those in; that is acceptable because a lockfile is regenerated wholesale and Task 1 has just rewritten it anyway.
-
 ```bash
 nix fmt flake.nix
 git add flake.nix flake.lock
@@ -154,11 +152,11 @@ Create `modules/nixos/hardening/nix-mineral.nix`:
 
       system = {
         # Default false sets ia32_emulation=0, killing 32-bit applications.
-        # This host needs them: hardware.graphics.enable32Bit is on for Wine,
-        # and desktop/base.nix sets services.pipewire.alsa.support32Bit.
-        # The compatibility preset sets this too; stated explicitly because
-        # this is the regression that forced the old alsa.support32Bit
-        # mkForce hack.
+        # This host needs them: desktop/base.nix sets
+        # services.pipewire.alsa.support32Bit, and 32-bit Wine needs
+        # hardware.graphics.enable32Bit. The compatibility preset sets this
+        # too; stated explicitly because this is the regression that forced
+        # the old alsa.support32Bit mkForce hack.
         multilib = true;
       };
     };
@@ -309,9 +307,15 @@ nix eval --raw .#nixosConfigurations.deadWsl.config.boot.kernelParams \
 
 Expected: neither output contains `mitigations=auto`.
 
-- [ ] **Step 6: Restore the reboot note in CLAUDE.md**
+- [ ] **Step 6: Ensure the reboot note is present in CLAUDE.md**
 
-The current working tree deleted this line; nix-mineral makes it relevant again. In `CLAUDE.md`, under `Lower-level equivalents:`, after the `home-manager switch` bullet, restore:
+This line was deleted at some point and nix-mineral makes it relevant again. First check whether it is already there:
+
+```bash
+grep -c 'nix-mineral.*hardened.*hosts' CLAUDE.md
+```
+
+If that prints `1`, the note survives — skip to Step 7 and note in your report that no CLAUDE.md change was needed. If it prints `0`, add it in `CLAUDE.md` under `Lower-level equivalents:`, directly after the `home-manager switch --flake .#deadmade@<host>` bullet:
 
 ```markdown
 - For `nix-mineral` (hardened) hosts like `deadPc`, prefer `nixos-rebuild boot` + reboot so the prior generation stays bootable for rollback.
@@ -327,25 +331,18 @@ Expected: succeeds. Informational warnings about `nixosProfiles` / `homeManagerM
 
 - [ ] **Step 8: Commit**
 
-Both files carry unrelated uncommitted edits. `hosts/deadPc/config.nix` also has a `graphics.enable32Bit = true` hunk, and `CLAUDE.md` has registry-documentation rewrites. Stage them interactively so only this task's hunks go in:
+Stage only the files this task touched. If Step 6 found the note already present, omit `CLAUDE.md` from the `git add`:
 
 ```bash
-git add -p hosts/deadPc/config.nix CLAUDE.md
-```
-
-Accept only the `outputs.nixosModules.hardening.nix-mineral` hunk and the restored reboot-note line; skip every other hunk. Then confirm before committing:
-
-```bash
+git add hosts/deadPc/config.nix CLAUDE.md
 git diff --cached
 ```
 
-Expected: exactly two additions and nothing else. Then:
+Expected: one added import line in `hosts/deadPc/config.nix`, plus at most one added line in `CLAUDE.md`. If the staged diff shows anything else, the working-tree precondition in Global Constraints was violated — stop and report rather than committing.
 
 ```bash
 git commit -m "feat(deadPc): enable nix-mineral hardening"
 ```
-
-If `git add -p` proves awkward, the fallback is to commit the unrelated working-tree changes separately first, then stage these two files whole.
 
 ---
 
