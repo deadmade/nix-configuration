@@ -106,13 +106,16 @@ The directory gets **no `default.nix`**. Per `flake/lib/registry.nix`, a subdire
 
 - [ ] **Step 1: Write the failing check**
 
+Query the registry directly. Do **not** use `nix eval .#nixosModules.hardening` — flake-parts coerces every `flake.nixosModules.<domain>` attrset into a module, so that returns `["_class" "_file" "imports"]` for *every* domain including long-working ones like `core`. Hosts consume `projectOutputs`, not the flake output.
+
 ```bash
-nix eval .#nixosModules.hardening --apply builtins.attrNames
+nix eval --impure --expr \
+  '(import /home/deadmade/nix-configuration/flake/lib/registry.nix /home/deadmade/nix-configuration/modules/nixos) ? hardening'
 ```
 
 - [ ] **Step 2: Run it to verify it fails**
 
-Expected: FAIL with `error: attribute 'hardening' missing`.
+Expected: `false`.
 
 - [ ] **Step 3: Create the module**
 
@@ -172,7 +175,9 @@ The `git add` is required for evaluation, not just for the commit:
 
 ```bash
 git add modules/nixos/hardening/nix-mineral.nix
-nix eval .#nixosModules.hardening --apply builtins.attrNames
+nix eval --impure --expr \
+  '(import /home/deadmade/nix-configuration/flake/lib/registry.nix /home/deadmade/nix-configuration/modules/nixos).hardening' \
+  --apply builtins.attrNames
 ```
 
 Expected: `[ "nix-mineral" ]`
