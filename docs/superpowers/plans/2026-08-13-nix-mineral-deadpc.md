@@ -231,6 +231,8 @@ sysctl=$(nix eval .#nixosConfigurations.deadPc.config.boot.kernel.sysctl \
   --apply 'builtins.attrNames' --json)
 homeopts=$(nix eval .#nixosConfigurations.deadPc.config.fileSystems --json \
   --apply 'fs: if fs ? "/home" then fs."/home".options else ["ABSENT"]')
+ptrace_scope=$(nix eval --raw .#nixosConfigurations.deadPc.config.boot.kernel.sysctl.\"kernel.yama.ptrace_scope\" \
+  --apply 'v: toString v' 2>/dev/null || echo "MISSING")
 
 # SMT stays enabled: mitigations=auto present, but never ",nosmt".
 check "mitigations=auto present"      1 "$(grep -c 'mitigations=auto' <<<"$params")"
@@ -252,6 +254,9 @@ check "kexec disabled"                1 "$(grep -c 'kernel.kexec_load_disabled' 
 check "/home mounted"                 0 "$(grep -c 'ABSENT' <<<"$homeopts")"
 check "/home noexec absent"           0 "$(grep -c '"noexec"' <<<"$homeopts")"
 check "/home nosuid present"          1 "$(grep -c '"nosuid"' <<<"$homeopts")"
+# Debuggers/profilers must not be further restricted: ptrace_scope stays at 1
+# (the compatibility-preset default), never 2 or 3 (restricted/admin-only).
+check "ptrace_scope = 1 (unrestricted debuggers)" 1 "$ptrace_scope"
 
 exit $fail
 ```
