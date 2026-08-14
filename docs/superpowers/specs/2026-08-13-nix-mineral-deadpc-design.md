@@ -107,6 +107,37 @@ becomes relevant again.
     preset = "compatibility";
 
     settings = {
+      debug = {
+        # Default false sets debugfs=off, unmounting /sys/kernel/debug.
+        # tracefs still mounts separately so bpftrace mostly survives, but
+        # bcc tools and some perf paths need debugfs. Profiling/eBPF tooling
+        # is a stated requirement for this host.
+        debugfs = true;
+
+        # Default true sets panic=-1, rebooting instantly on kernel panic.
+        # Combined with quiet-boot that turns a failed boot into a silent
+        # reboot loop with no readable message. A frozen screen is
+        # diagnosable; a silent loop is not.
+        panic-reboot = false;
+
+        # Default false sets kernel.core_pattern=|/bin/false, fs.suid_dumpable=0,
+        # a PAM *hard* `core 0` limit, and disables systemd-coredump storage.
+        # The hard PAM limit means `ulimit -c unlimited` can't recover it,
+        # making post-mortem `gdb ./prog core` impossible. Debuggers and
+        # profilers must not be further restricted on this host.
+        coredump = true;
+      };
+
+      etc = {
+        # Default true writes /etc/gitconfig with core.symlinks=false and
+        # transfer/fetch/receive.fsckobjects=true. nixpkgs' git reads that
+        # file and modules/home-manager/core/git.nix doesn't override it, so
+        # `git clone` of any repo containing symlinks would silently write
+        # them out as plain text files holding the target path, and cloning
+        # a repo with malformed historical objects would hard-fail.
+        kicksecure-gitconfig = false;
+      };
+
       kernel = {
         # boot.binfmt.emulatedSystems on this host is dead without it.
         binfmt-misc = true;
@@ -126,6 +157,14 @@ becomes relevant again.
         perf-subsystem.restrict-access = false;
       };
 
+      network = {
+        # Default true randomizes networking.networkmanager.ethernet.macAddress.
+        # This is a desktop on a fixed LAN, not a laptop roaming hostile
+        # networks: randomizing breaks the router's DHCP reservation/static
+        # lease on the next reconnect and stops Wake-on-LAN from working.
+        random-mac = false;
+      };
+
       system = {
         # Default false sets ia32_emulation=0, killing 32-bit applications.
         # This host needs them: hardware.graphics.enable32Bit is on for Wine,
@@ -134,20 +173,6 @@ becomes relevant again.
         # this is the regression that forced the old alsa.support32Bit
         # mkForce hack.
         multilib = true;
-      };
-
-      debug = {
-        # Default false sets debugfs=off, unmounting /sys/kernel/debug.
-        # tracefs still mounts separately so bpftrace mostly survives, but
-        # bcc tools and some perf paths need debugfs. Profiling/eBPF tooling
-        # is a stated requirement for this host.
-        debugfs = true;
-
-        # Default true sets panic=-1, rebooting instantly on kernel panic.
-        # Combined with quiet-boot that turns a failed boot into a silent
-        # reboot loop with no readable message. A frozen screen is
-        # diagnosable; a silent loop is not.
-        panic-reboot = false;
       };
     };
   };
@@ -174,9 +199,12 @@ entries and this decision should be revisited.
 **The `performance` preset is not used**, despite the requirement to keep full CPU
 speed. It bundles `pti = false` and `iommu-passthrough = true`, weakening
 Meltdown/KASLR and DMA-attack protection respectively for no gain on an x86_64
-desktop — `iommu.passthrough` is an ARM64 I/O optimisation, and AMD Zen does not use
-PTI anyway. Setting `cpu-mitigations` and `slab-debug` directly delivers the entire
-speed benefit without that cost.
+desktop — `iommu.passthrough` is an ARM64 I/O optimisation, and PTI is being kept on
+deliberately here as defence-in-depth against KASLR bypasses (`pti=on` forces it
+unconditionally; `pti=false` would drop to the kernel's own `pti=auto` detection,
+which skips it on CPUs the kernel doesn't consider Meltdown-vulnerable), at some
+syscall-path cost. Setting `cpu-mitigations` and `slab-debug` directly delivers the
+speed benefit that matters here without giving up that protection.
 
 **`yama` is left alone.** deadPc already runs `ptrace_scope=1`, and the compatibility
 preset's `relaxed` is the same value, so debugging behaviour is unchanged. Attaching

@@ -134,6 +134,37 @@ Create `modules/nixos/hardening/nix-mineral.nix`:
     preset = "compatibility";
 
     settings = {
+      debug = {
+        # Default false sets debugfs=off, unmounting /sys/kernel/debug.
+        # tracefs still mounts separately so bpftrace mostly survives, but
+        # bcc tools and some perf paths need debugfs. Profiling/eBPF tooling
+        # is a stated requirement for this host.
+        debugfs = true;
+
+        # Default true sets panic=-1, rebooting instantly on kernel panic.
+        # Combined with quiet-boot that turns a failed boot into a silent
+        # reboot loop with no readable message. A frozen screen is
+        # diagnosable; a silent loop is not.
+        panic-reboot = false;
+
+        # Default false sets kernel.core_pattern=|/bin/false, fs.suid_dumpable=0,
+        # a PAM *hard* `core 0` limit, and disables systemd-coredump storage.
+        # The hard PAM limit means `ulimit -c unlimited` can't recover it,
+        # making post-mortem `gdb ./prog core` impossible. Debuggers and
+        # profilers must not be further restricted on this host.
+        coredump = true;
+      };
+
+      etc = {
+        # Default true writes /etc/gitconfig with core.symlinks=false and
+        # transfer/fetch/receive.fsckobjects=true. nixpkgs' git reads that
+        # file and modules/home-manager/core/git.nix doesn't override it, so
+        # `git clone` of any repo containing symlinks would silently write
+        # them out as plain text files holding the target path, and cloning
+        # a repo with malformed historical objects would hard-fail.
+        kicksecure-gitconfig = false;
+      };
+
       kernel = {
         # boot.binfmt.emulatedSystems on this host is dead without it.
         binfmt-misc = true;
@@ -153,6 +184,14 @@ Create `modules/nixos/hardening/nix-mineral.nix`:
         perf-subsystem.restrict-access = false;
       };
 
+      network = {
+        # Default true randomizes networking.networkmanager.ethernet.macAddress.
+        # This is a desktop on a fixed LAN, not a laptop roaming hostile
+        # networks: randomizing breaks the router's DHCP reservation/static
+        # lease on the next reconnect and stops Wake-on-LAN from working.
+        random-mac = false;
+      };
+
       system = {
         # Default false sets ia32_emulation=0, killing 32-bit applications.
         # This host needs them: desktop/base.nix sets
@@ -161,20 +200,6 @@ Create `modules/nixos/hardening/nix-mineral.nix`:
         # too; stated explicitly because this is the regression that forced
         # the old alsa.support32Bit mkForce hack.
         multilib = true;
-      };
-
-      debug = {
-        # Default false sets debugfs=off, unmounting /sys/kernel/debug.
-        # tracefs still mounts separately so bpftrace mostly survives, but
-        # bcc tools and some perf paths need debugfs. Profiling/eBPF tooling
-        # is a stated requirement for this host.
-        debugfs = true;
-
-        # Default true sets panic=-1, rebooting instantly on kernel panic.
-        # Combined with quiet-boot that turns a failed boot into a silent
-        # reboot loop with no readable message. A frozen screen is
-        # diagnosable; a silent loop is not.
-        panic-reboot = false;
       };
     };
   };
@@ -247,6 +272,12 @@ homeopts=$(nix eval .#nixosConfigurations.deadPc.config.fileSystems --json \
   --apply 'fs: if fs ? "/home" then fs."/home".options else ["ABSENT"]')
 ptrace_scope=$(nix eval --raw .#nixosConfigurations.deadPc.config.boot.kernel.sysctl.\"kernel.yama.ptrace_scope\" \
   --apply 'v: toString v' 2>/dev/null || echo "MISSING")
+has_gitconfig=$(nix eval .#nixosConfigurations.deadPc.config.environment.etc --json \
+  --apply 'e: e ? "gitconfig"')
+core_pattern=$(nix eval --raw .#nixosConfigurations.deadPc.config.boot.kernel.sysctl.\"kernel.core_pattern\" \
+  --apply 'v: toString v' 2>/dev/null || echo "MISSING")
+mac_address=$(nix eval --raw .#nixosConfigurations.deadPc.config.networking.networkmanager.ethernet.macAddress \
+  --apply 'v: toString v' 2>/dev/null || echo "MISSING")
 
 # SMT stays enabled: mitigations=auto present, but never ",nosmt".
 check "mitigations=auto present"      1 "$(grep -c 'mitigations=auto' <<<"$params")"
@@ -275,6 +306,15 @@ check "ptrace_scope = 1 (unrestricted debuggers)" 1 "$ptrace_scope"
 check "debugfs=off absent"            0 "$(grep -cE '(^| )debugfs=off( |$)' <<<"$params")"
 # A kernel panic must freeze (diagnosable), not silently reboot-loop.
 check "panic=-1 absent"               0 "$(grep -cE '(^| )panic=-1( |$)' <<<"$params")"
+# /etc/gitconfig must not silently turn symlinks into text files or hard-fail
+# clones of repos with malformed historical objects.
+check "gitconfig absent from /etc"    "false" "$has_gitconfig"
+# core_pattern must not be the coredump-disabling "|/bin/false" (absent is
+# also fine — only the disabling value is a failure).
+check "core_pattern not disabled" "OK" "$([ "$core_pattern" = "|/bin/false" ] && echo "DISABLED" || echo "OK")"
+# Ethernet MAC must not be randomized (breaks DHCP reservations and WoL on a
+# fixed-LAN desktop; absent is also fine — only "random" is a failure).
+check "ethernet MAC not randomized" "OK" "$([ "$mac_address" = "random" ] && echo "RANDOM" || echo "OK")"
 
 exit $fail
 ```
