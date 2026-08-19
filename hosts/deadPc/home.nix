@@ -7,10 +7,10 @@
 }: {
   imports = [
     outputs.homeManagerProfiles.desktopGaming
-    outputs.homeManagerModules.browser.helium
   ];
 
   home.packages = with pkgs; [
+    pkgs.claude-science
   ];
 
   wayland.windowManager.hyprland = {

@@ -4,7 +4,7 @@
   ...
 }: {
   programs.vscodium = {
-    enable = true;
+    enable = false;
     package = pkgs.unstable.vscodium;
     profiles.default = {
       enableUpdateCheck = false;
