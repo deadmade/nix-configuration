@@ -39,8 +39,6 @@
       buildInputs = pre-commit-check.enabledPackages;
       packages = with pkgs; [
         lazygit
-        cachix
-        vulnix
         ripgrep
       ];
     };
@@ -67,6 +65,7 @@
                 pidgin
                 conky
                 vlc
+                firefox
               ];
 
               users.extraUsers.retro = {
@@ -75,11 +74,16 @@
               };
 
               virtualisation.memorySize = 4096;
-              virtualisation.qemu.options = ["-vga std"];
+              virtualisation.qemu.options = ["-vga std" "-smp 2"];
             })
           ];
         };
-      in "${retroVM.config.system.build.vm}/bin/run-nixos-vm";
+        wrapper = pkgs.writeShellScript "run-deadRetro" ''
+          export LC_ALL=C
+          unset LOCALE_ARCHIVE
+          exec ${retroVM.config.system.build.vm}/bin/run-nixos-vm "$@"
+        '';
+      in "${wrapper}";
     };
   };
 }
