@@ -172,6 +172,12 @@
       repo = "deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    multiverse = {
+      type = "github";
+      owner = "fzakaria";
+      repo = "nixpkgs-multiverse";
+    };
   };
 
   outputs = inputs @ {flake-parts, ...}:
