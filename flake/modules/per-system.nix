@@ -56,6 +56,17 @@
                 enable = true;
                 displayManager.kdm.enable = true;
                 desktopManager.kde4.enable = true;
+
+                # Set a specific resolution
+                resolutions = [
+                  {
+                    x = 1920;
+                    y = 1080;
+                  }
+                ];
+
+                # If you want to change the keyboard layout from US:
+                layout = "de";
               };
 
               environment.systemPackages = with pkgs; [
@@ -83,7 +94,7 @@
               };
 
               virtualisation.memorySize = 4096;
-              virtualisation.qemu.options = ["-vga std" "-smp 2"];
+              virtualisation.qemu.options = ["-vga qxl" "-smp 2"];
             })
           ];
         };
