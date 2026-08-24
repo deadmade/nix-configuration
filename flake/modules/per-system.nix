@@ -61,8 +61,17 @@
               environment.systemPackages = with pkgs; [
                 kde4.kdegraphics
                 kde4.kdemultimedia
+                kde4.kdenetwork # Includes Kopete
+                kde4.kdegames # Classic KDE games
+                kde4.kdetoys # AMOR, KTeaTime
+                kde4.yakuake # Iconic drop-down terminal
+                kde4.konversation # KDE IRC client
                 audacious
+                clementine # Amarok fork! peak 2014 music
                 pidgin
+                xchat # Classic GTK IRC
+                abiword # Lightweight word processor
+                gnumeric # Spreadsheet
                 conky
                 vlc
                 firefox
