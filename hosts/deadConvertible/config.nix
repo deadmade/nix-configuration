@@ -17,12 +17,7 @@
       outputs.nixosModules.desktop.bluetooth
       outputs.nixosModules.desktop.packages
       outputs.nixosModules.desktop.stylix
-      outputs.nixosModules.desktop.vpn
       outputs.nixosModules.desktop.ai
-      outputs.nixosModules.desktop.jetbrains
-      outputs.nixosModules.desktop.tailscale
-      outputs.nixosModules.desktop.wayvnc
-      outputs.nixosModules.virtualization.vm
       outputs.nixosModules.virtualization.container
     ]
     ++ (builtins.attrValues outputs.nixosModules.core);
@@ -93,12 +88,10 @@
     brightnessctl
     glab
     pkgs.unstable.vscode
-    pkgs.unstable.remnote
-    pkgs.unstable.ladybird
   ];
 
-  #network display
-  networking.firewall.allowedTCPPorts = [7236 7250];
+  #network display + ssh
+  networking.firewall.allowedTCPPorts = [7236 7250 22];
   networking.firewall.allowedUDPPorts = [7236 5353];
 
   services.greetd = {
@@ -132,11 +125,19 @@
 
   # List services that you want to enable:
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  # Enable the OpenSSH daemon (home network / LAN access).
+  services.openssh = {
+    enable = true;
+    settings = {
+      # Password auth is fine for a home LAN; switch to key-only
+      # (PasswordAuthentication = false) once you've added a key.
+      PasswordAuthentication = true;
+      PermitRootLogin = "no";
+    };
+  };
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedTCPPorts = [ ... ];  # ssh (22) added above
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;

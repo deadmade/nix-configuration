@@ -12,16 +12,12 @@
     pkgs.unstable.kdePackages.okular
     pkgs.unstable.spotify
     pkgs.unstable.libreoffice-fresh
-    pkgs.unstable.thunderbird
     pkgs.unstable.obsidian
     pkgs.unstable.signal-desktop
     pkgs.unstable.vscode
-    pkgs.unstable.obs-studio
     pkgs.unstable.legcord
-    pkgs.unstable.remnote
     home-manager
     nautilus
-    inputs.tuitr.packages.${system}.default
   ];
 
   services.xserver.excludePackages = with pkgs; [xterm];
