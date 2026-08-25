@@ -18,6 +18,10 @@
       outputs.nixosModules.desktop.packages
       outputs.nixosModules.desktop.stylix
       outputs.nixosModules.desktop.ai
+      outputs.nixosModules.desktop.jetbrains
+      outputs.nixosModules.desktop.tailscale
+      outputs.nixosModules.desktop.wayvnc
+      outputs.nixosProfiles.virtualization
       outputs.nixosModules.virtualization.container
     ]
     ++ (builtins.attrValues outputs.nixosModules.core);

@@ -14,8 +14,7 @@
     ]
     ++ (builtins.attrValues outputs.nixosModules.core)
     ++ [
-      outputs.nixosModules.virtualization.container
-      outputs.nixosModules.virtualization.vm
+      outputs.nixosProfiles.virtualization
     ];
 
   # Use the systemd-boot EFI boot loader.

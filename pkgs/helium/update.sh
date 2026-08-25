@@ -35,12 +35,12 @@ prefetch() {
 }
 
 base="https://github.com/${repo}/releases/download/${latest}"
-amd64_hash="$(prefetch "${base}/helium-bin_${latest}-1_amd64.deb")"
-arm64_hash="$(prefetch "${base}/helium-bin_${latest}-1_arm64.deb")"
+x86_64_hash="$(prefetch "${base}/helium-${latest}-x86_64.AppImage")"
+arm64_hash="$(prefetch "${base}/helium-${latest}-arm64.AppImage")"
 
 sed -i \
   -e "s|version = \"[^\"]*\";|version = \"${latest}\";|" \
-  -e "s|x86_64-linux = \"sha256-[^\"]*\";|x86_64-linux = \"${amd64_hash}\";|" \
+  -e "s|x86_64-linux = \"sha256-[^\"]*\";|x86_64-linux = \"${x86_64_hash}\";|" \
   -e "s|aarch64-linux = \"sha256-[^\"]*\";|aarch64-linux = \"${arm64_hash}\";|" \
   "${file}"
 

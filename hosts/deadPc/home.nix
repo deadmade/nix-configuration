@@ -10,6 +10,8 @@
   ];
 
   home.packages = with pkgs; [
+    pkgs.claude-science
+    pkgs.helium
   ];
 
   wayland.windowManager.hyprland = {

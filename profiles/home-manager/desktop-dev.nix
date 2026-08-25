@@ -1,7 +1,7 @@
 {outputs, ...}: {
   imports =
     [
-      outputs.homeManagerModules.hyprland
+      outputs.homeManagerModules.windowManager.hyprland
       outputs.homeManagerModules.browser.librewolf
     ]
     ++ (builtins.attrValues outputs.homeManagerModules.core)

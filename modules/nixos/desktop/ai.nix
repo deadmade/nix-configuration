@@ -11,6 +11,6 @@
     #coderabbit-cli
     #codex
     tuicr
-    #hermes-agent
+    grok
   ];
 }
