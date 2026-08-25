@@ -141,11 +141,11 @@
       repo = "chiplang-nix";
     };
 
-    freetube-nix = {
-      url = "path:/home/deadmade/FreeTube-Nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-    };
+    #    freetube-nix = {
+    #      url = "path:/home/deadmade/FreeTube-Nix";
+    #      inputs.nixpkgs.follows = "nixpkgs";
+    #      inputs.home-manager.follows = "home-manager";
+    #    };
 
     tuitr.url = "github:deadmade/tuitr";
 
@@ -154,29 +154,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixsecauditor = {
-      url = "github:unnamed-systems/nixsecauditor";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-mineral = {
       type = "github";
       owner = "cynicsketch";
       repo = "nix-mineral";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    deploy-rs = {
-      type = "github";
-      owner = "serokell";
-      repo = "deploy-rs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    multiverse = {
-      type = "github";
-      owner = "fzakaria";
-      repo = "nixpkgs-multiverse";
+      ref = "main";
     };
   };
 
@@ -188,7 +170,6 @@
         ./flake/modules/hosts.nix
         ./flake/modules/home.nix
         ./flake/modules/per-system.nix
-        ./flake/modules/deploy.nix
       ];
     };
 }

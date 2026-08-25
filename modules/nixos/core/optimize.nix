@@ -6,4 +6,6 @@
       warn-dirty = false;
     };
   };
+
+  documentation.nixos.enable = false;
 }
