@@ -1,5 +1,263 @@
 # Rice upgrade: Hyprland + Noctalia, wallpaper-driven
 
+> **Phases 1–5 are implemented and verified** (commits `c8a5b5e`…`f03a531`). See the Outcome
+> section at the end. A second round — **Phase 6: the opening, and feel** — is being planned now;
+> its brief is recorded directly below.
+
+## Round 2 brief (2026-09-10)
+
+The result of phases 1–5 was assessed as *"looks and feels really polished"* but lacking wow.
+That is a fair diagnosis of a real mistake: every individual choice was optimised for restraint
+(neutral shadows, `dim_inactive` off, a 45° gradient, accordion to avoid layout shift). Each was
+defensible; the sum is tasteful and completely quiet.
+
+**What "wow" means here, in the user's words:**
+
+- *"something that when I open and use it just feels like noice, but it does not need to be like a
+  show off here I can do that you cant"* — the payoff is in how it **feels to use**, not in effects
+  that announce themselves. Not a demo reel. Rules out spectacle: no weather effects on the desktop,
+  no gratuitous shaders, nothing whose purpose is to be pointed at.
+- *"its okay to show the boot and the greeter. The Opening should start when I press enter on
+  tuigreet"* — **Plymouth and the greeter restyle are both out of scope.** The "opening" is a much
+  narrower and more interesting target: the moment between pressing enter in tuigreet and having a
+  usable desktop. That transition is currently unchoreographed.
+- Hyprland plugins and GLSL screen shaders: **attempt them, verify they build and behave on the
+  NVIDIA proprietary driver, back out and report anything that does not.**
+
+Also in scope, unrelated: fix the `starship.toml` defects left over from an abandoned
+Gruvbox→Catppuccin migration.
+
+**Taste calls taken:** static glow with the window border still rotating (one moving element, one
+still — two rotating gradients is where ambient tips into gamer-RGB); a static screen shader, to be
+tried; no lock-screen desktop capture; no screen-time tracking; plugins only where they make
+something already built discoverable.
+
+---
+
+# Phase 6 — the opening, and feel
+
+## What the exploration ruled out
+
+Recording these so they are not re-proposed later:
+
+- **There is no workspace overview on Hyprland 0.56.2, with or without plugins.** `hyprexpo`,
+  `hyprtrails` and `hyprwinwrap` were *deleted upstream* on 2026-05-12 ("all: drop unmaintained
+  plugins (#663)"). `hyprspace`, the surviving exposé, returns **404** from the binary cache against
+  this exact `hyprland-0.56.2` store path and its upstream commits stop at "Fix Hyprland 0.55".
+  `hyprsplit`'s C++ plugin is pinned at 0.54.3 and also 404s — which is exactly why this repo
+  already vendors its Lua library instead.
+- **`cursor:zoom_factor` has `min = 1`** — it is a magnifier and cannot zoom out. No overview there.
+- **`misc:session_lock_xray` / `session_lock_blur`** would render the live desktop under the lock
+  screen. That is the same privacy trade already declined for Noctalia's `blurred_desktop`. Excluded.
+- **Animated screen shaders** are off the table: any shader referencing `time` or `pointer_*`
+  requires `debug:damage_tracking = 0`, i.e. a permanent full 5760×1080 repaint on all three outputs.
+- **`hyprfocus`** builds, but its flash-on-focus overlaps with glow's `color_inactive`. Glow wins.
+- Noctalia's `[backdrop]` and `niri_overview_type_to_launch_enabled` are niri-gated in source.
+  `pure_black_dark` is for OLED and would turn the 40%-alpha glass bar to grey mud on these IPS panels.
+
+## 6a — The opening
+
+> **The brief:** *"would it be possible to have like a animation on the start. Idk like ready player
+> one when booting into the virtual world?"*
+
+### The reveal already exists in Hyprland and has never been seen
+
+`monitorAdded` is a real animation leaf, currently inheriting `global` and never configured.
+Verified in `src/output/Monitor.cpp` at tag v0.56.2:
+
+- `CMonitor::CMonitor()` (line 94) binds **two** animations to the `monitorAdded` config —
+  `m_zoomAnimProgress` and `m_backgroundOpacity`.
+- `CMonitor::onConnect()` (line 112) resets `m_zoomAnimProgress` to `0` and the frame counter to `0`.
+  **`onConnect` runs for every monitor at compositor startup**, not just on hotplug.
+- The present handler (line 164-173) waits **5 presentation frames** — deliberately, past modesetting
+  — then fires `*m_zoomAnimProgress = 1.F`.
+- `src/render/Renderer.cpp:2133-2136` maps it: `mouseZoomFactor = 2.0 - value`, with
+  `mouseZoomUseMouse = false`.
+
+So: **a 2× → 1× zoom-out of the entire monitor, plus a background fade, on every session start.**
+That is precisely the "booting into the world" reveal, and it is native, free, and already firing.
+
+**Why it has never been visible:** it inherits `global` (~1 s) and starts at first scanout — roughly
+1.7–2.2 s *before* Noctalia paints the wallpaper at +3.2 s. It zooms out an empty screen and is over
+before there is anything to zoom.
+
+### Making it land
+
+The fix is not to speed anything up, it is to **hold the zoom through the dead gap and release it as
+the desktop arrives.** A dedicated bezier whose control points keep the value near 0 early and then
+ease out — roughly `{0.85, 0.0}, {0.15, 1.0}` over ~4 s — leaves the monitor still at ~1.7–1.8× when
+the wallpaper and bar first paint, then settles them into place over the following ~2 s.
+
+The zoom is applied at monitor-render level, so it scales **everything** including the bar layer.
+Combined with the wallpaper's own transition fading up from transparent at the same moment, and the
+bar's `slide top` layer rule, the desktop assembles *while* zooming into place.
+
+Two honest caveats:
+
+- The timing depends on boot speed, which varies. The curve and duration will need one or two
+  reboot-and-watch iterations to land; treat the numbers above as a starting point, not a result.
+- `onConnect` also fires on monitor **hotplug**, so a ~4 s reveal replays when a display is plugged
+  in. Rare here, and arguably desirable, but it is a real side effect.
+
+### The rest of the opening
+
+Measured from the journal: **3.23 s** of dead time from pressing enter to the first painted frame,
+then a 1.5 s transition on top (~4.7 s to settled). Two findings reshape this:
+
+- `transition_on_startup` fades up from **fully transparent** (`rgba(0,0,0,0.0F)`), *not* from black.
+  So `misc:background_color` is both the 3.2 s holding colour **and** the colour the wallpaper
+  emerges from. Noctalia's Hyprland template does not claim that key — it is unowned.
+- **The startup transition type is chosen uniformly at random** from all six. The login reveal is
+  currently a coin flip that can land on `honeycomb` or `stripes`, which are built to blend two
+  *images* and read as artifacts against a solid colour.
+
+Changes, in `config.nix` and `noctalia.nix`:
+
+1. **Own `misc:background_color`** — set it inside the existing `_G.noctalia_apply()` wrapper from
+   `noctalia.colors.surface`, so the holding colour tracks the wallpaper palette rather than sitting
+   at Hyprland's stock `#111111` (which does not match the desktop's `rgb(1b1c22)` surface).
+2. **`wallpaper.transition = ["fade"]`** — the only transition that is correct against a solid
+   colour, and the least showy of the six for the 30-minute rotation as well. It is also the right
+   partner for the monitor zoom above: the wallpaper fades *up* while the monitor zooms *out*, which
+   layers cleanly. Noctalia's own `zoom` transition would compound into a double zoom.
+
+   *Fallback if the native reveal cannot be made to land:* a fullscreen opaque "curtain" window
+   spawned at session start via `hl.exec_cmd(cmd, rules)` and closed by `hl.timer` once the bar's
+   `layer.opened` fires, with `windowsOut` styled as the reveal. More moving parts and an extra
+   dependency — only if 6a's tuning fails.
+3. **`shell.setup_wizard_enabled = false`** — currently only suppressed by a marker file in
+   non-declarative `~/.local/state`.
+4. **Stage librewolf.** It currently launches from `hyprland.start` and reaches the screen ~1.2 s
+   *before* the bar and wallpaper exist, so the first thing seen after login is a browser on a bare
+   field. Bind it to the **`layer.opened` event** matching namespace `noctalia-bar-default`, then
+   `:remove()` the subscription — the desktop lands first, then the browser. (`hl.timer(fn, {timeout,
+   type="oneshot"})` is the fallback. Noctalia's `hooks.started` is **not** usable: hook commands are
+   children of `noctalia.service`, so `KillMode=control-group` would kill the browser on every `nhs`.)
+
+## 6b — Depth and focus
+
+`config.nix`, all verified against `ConfigValues.cpp` at tag v0.56.2:
+
+- **`decoration:glow`** — the headline. An *inner* rim light (not an outer halo) that traces the
+  existing `rounding_power = 2.4` squircle. `enabled`, `range = 8`, `render_power = 4` (fast falloff
+  so it hugs the edge instead of washing window content), `color` as a static two-stop gradient built
+  from `noctalia.colors` in the same wrapper as the border, and **`color_inactive` at low alpha**.
+  That last is the real prize: a per-window focus cue that `dim_inactive` could not provide without
+  permanently dimming two of three monitors. `glowangle` stays **disabled** per the taste call.
+  `fadeGlow` gets an explicit curve so focus changes bloom rather than snap.
+  Note there is no per-window `no_glow` rule — glow is global.
+- **`decoration:motion_blur`** — `enabled`, `samples` (default 7, max 64). Windows smear along their
+  travel vector while animating, which is what makes the under-damped `snappy` spring read as weight.
+  ⚠️ The shader branches on `USE_ROUNDING && !USE_MOTION_BLUR`, strongly implying corners are not
+  rounded during a blurred frame. **Verify visually before committing**; drop it if corners pop.
+- **`decoration:blur:xray = true`** — floating windows blur the wallpaper rather than the tiled
+  windows behind them. Cleaner glass for the dialog/portal float rules added in Phase 4.
+- **`inactive_opacity = 0.98`** — a different mechanism from dim: lets blur show *through* unfocused
+  windows instead of darkening them. Pairs with the glow's inactive colour.
+- **`general:gaps_workspaces`** — a gutter between workspaces so the `slidefade 15%` transition reads
+  as two surfaces passing rather than one continuous strip.
+- **`group:groupbar:gradients`** plus matching `gradient_rounding` / `gradient_rounding_power` and
+  palette colours. `SUPER+G` was bound in Phase 5 and the resulting groupbar is entirely unstyled.
+
+## 6c — Screen shader
+
+New file `modules/home-manager/windowManager/hyprland/shaders/grade.frag`, wired via
+`decoration:screen_shader` (an **absolute** store path — the option resolves relative to the main
+config, which is a store symlink). No plugin required; `hyprshade` is only a scheduler and is not used.
+
+Static only — **no `time`, no `pointer_*` uniforms**. A gentle contrast/saturation lift plus a very
+weak vignette, with both strengths as named constants at the top of the file so they are trivial to
+tune or zero out. The vignette is deliberately weak: on a 5760 px triple-head, corner darkening
+affects the outer edges of the side panels permanently.
+
+⚠️ Landmine to record: Hyprland issue #14679 (closed *not planned*) — screen shaders silently no-op
+on monitors set to 10-bit or wide colour management. These three are `XRGB8888` / `cm=srgb`, the
+working configuration. Do not change monitor bitdepth without remembering this.
+
+## 6d — Shell feel
+
+`noctalia.nix`, all declarable and none blocked by the state file:
+
+- `shell.launcher.app_grid = true` (icon grid for pure app searches; falls back to a list the moment
+  a `/`-provider or calculator hit appears) and `shell.panel.list_item_background = true` (filled
+  rounded row backgrounds — plays into the glass panels).
+- `shell.animation.speed` — a global multiplier on every panel/OSD/notification transition. Tune
+  slightly below 1.0 so panels feel weighted rather than snappy.
+- `shell.session.grid = true` with `grid_columns = 3`, per-action `variant` (`destructive` on
+  shutdown/reboot) and `countdown_seconds` on the destructive pair.
+- `control_center.sidebar = "full"` and a wider `width`.
+- `weather.enabled = true`. `location.address = "Augsburg"` is already set and `weather.effects` is
+  already `true` — enabling weather unlocks an **animated, palette-tinted GLSL effect** (Rain / Snow /
+  Cloud / Fog / Sun / Stars, chosen by WMO code) inside the Control Center's conditions card, and
+  makes the lock screen's already-enabled weather row render something instead of nothing.
+
+## 6e — Plugins
+
+**Hyprland — `hypr-dynamic-cursors`** (narinfo **200** against this exact 0.56.2, so the ABI matches).
+Cursor physics plus **shake-to-find** magnification, which is genuinely useful on a 5760 px desktop
+where the pointer gets lost. Config namespace is `plugin:dynamic-cursors`.
+Load it with **`hl.plugin.load("<abs .so>")` inside `extraConfig`**, *not* the Home Manager `plugins`
+option: that option defers to `hl.on("hyprland.start", …)`, which fires after the whole Lua file is
+evaluated, so the plugin's namespace would be `nil` at config-parse time.
+
+**Noctalia — four plugins**, pinned reproducibly. They are sandboxed Luau scripts, so a
+`[[plugins.source]]` with `kind = "path"` pointing at a `fetchFromGitHub` of the community repo
+(rev `ea86850b8c21f9f8f3663021163b8f071040986d`) needs no build step. Also set
+`plugins.auto_update = "none"` — it is currently `"all"`, i.e. a git pull on startup and every 6 hours.
+
+Every one makes something built in phases 1–5 discoverable rather than adding decoration:
+
+| Plugin | Makes discoverable |
+|---|---|
+| `kenn/keybind-cheatsheet` | The 93 rewritten binds. Ships `hyprland.lua` fixtures, so it parses the Lua config format. |
+| `dunarand/tmux-provider` | `/tm` in the launcher; the terminal already autostarts tmux. |
+| `k4n4t4/hypr-submap` | The resize submap added in Phase 5 — shows only while in one. |
+| `jamesfeeder/special-workspaces` | The scratchpad added in Phase 5, which currently has no indicator. |
+
+Noctalia 5.0.1 is at plugin API 25; these declare 3–9 and the field is a *minimum*. All declared
+dependencies are present except `tmuxp`, which is optional (`use_tmuxp` defaults false).
+
+## 6f — Starship
+
+`modules/home-manager/terminal/starship/starship.toml`. Worse than first reported: **`purple` is a
+*built-in* starship colour name**, so it does not fail — it silently resolves to raw ANSI magenta.
+Proven by byte-dumping `starship explain`: the time segment emits `SGR 45` (8-colour) while every
+other segment emits truecolor. So the clock is painted in a colour that ignores the palette entirely.
+
+Fix all defects first, as they are wrong under any palette:
+
+| Line(s) | Defect |
+|---|---|
+| 24, 26, 178, 188, 189 | `purple` → silently ANSI magenta. `[time]`'s own dead `style = "bg:peach"` reveals the intent. |
+| 172 | `[docker_context]` uses Gruvbox `#83a598` and `color_bg3`; the latter resolves to nothing, tearing the powerline separators on both sides. |
+| 47 | `orange = "#cba6f7"` is *mauve*'s hex, and `orange` is referenced nowhere. `mauve` is absent from the palette. |
+| 187 | `fg:creen` — typo, resolves to nothing. |
+| 31–41 | Dead `[palettes.gruvbox_dark]`. |
+| 117, 121, 171, 177 | Four modules declare a `style` that can never render — an inner explicit style beats `$style`. |
+
+Then hand the palette to Noctalia so the prompt tracks the wallpaper like everything else. **Do not
+enable the builtin `starship` template id** — its `apply.sh` write-throughs `$STARSHIP_CONFIG`, which
+is a store symlink → EACCES. Use a `[theme.templates.user.starship]` entry rendering to a writable
+path instead. The seam is clean: Home Manager's starship module exports `STARSHIP_CONFIG`
+*unconditionally* but only writes the file when `settings != {}` — so dropping `settings` and setting
+`configPath` gives the env var without HM owning the file. No `mkForce`, no apply.sh in the loop.
+
+Trade-off, consistent with the one already accepted for GTK and Qt: the prompt layout moves to a
+`.tmpl` in this repo and the rendered output lives outside the store.
+
+## Verification (Phase 6)
+
+- `nix flake check`; all six host configs evaluate (deadConvertible's NixOS side remains blocked by
+  the pre-existing insecure `ladybird` pin).
+- `hyprctl configerrors` empty; `hyprctl getoption decoration:glow:enabled` → true;
+  `hyprctl -j getoption decoration.screen_shader` → the store path, not `[[EMPTY]]`.
+- `hyprctl plugin list` lists `dynamic-cursors`.
+- `noctalia config validate` clean, **and** `journalctl --user -u noctalia` free of unmatched-token
+  and "needs an action" style warnings — validate does not catch those.
+- **The opening is verified by rebooting and reading the journal**: the bar/wallpaper layer surfaces
+  must be created *before* librewolf's first window, inverting today's order.
+- `starship explain` byte-dumped again: no `SGR 4x` 8-colour escapes should remain.
+
 ## Context
 
 The desktop is built on strong components — Hyprland 0.56.2 (Lua config), Noctalia 5.0.1 (a native
@@ -36,7 +294,7 @@ real depth and blur, authored animation, and none of the dead config underneath.
 
 | Decision | Choice | Consequence |
 |---|---|---|
-| Colour authority | **Noctalia** (`theme.source = "wallpaper"`, `wallpaper_scheme = "vibrant"`) | Stylix demoted to fonts + cursor + apps Noctalia cannot reach. See the outcome note below: `m3-content` was the original pick and was wrong. |
+| Colour authority | **Noctalia** (`theme.source = "wallpaper"`, `wallpaper_scheme = "m3-content"`) | Stylix demoted to fonts + cursor + apps Noctalia cannot reach. |
 | Chrome shape | **Full-width bar, capsule widgets** | `margin_ends` stays `0`; widgets in pills, translucent, blurred by a Hyprland layerrule. |
 | Appetite | **Go all in**, one carve-out | New fonts, icon theme, packages in scope. |
 | Login manager | **Keep tuigreet** | Greeter swap declined. `noctalia-greeter` 1.3.1 was verified viable but is **not** being adopted. Not in this plan. |
@@ -403,62 +661,45 @@ snippets) is at
 — `pair-*.json` and `corrections.md`. **Copy these into `docs/` as the first implementation step**;
 the scratchpad is session-scoped and will be lost.
 
-
 ---
 
-# Outcome (implemented 2026-09-10)
+# Phase 6 outcome (implemented 2026-09-10, commit `6c11985`)
 
-All five phases are implemented, switched and verified on deadPc. Commits `c8a5b5e`
-(phase 1) through `e12ef5f` (phase 5).
+## Backed out, having been tried
 
-## Corrections to this plan, made during implementation
+Both were authorised as "try them, back out if they fail".
 
-**`m3-content` was the wrong scheme.** The plan reasoned about generator names; measuring
-actual output contradicted it. Both Material generators push this dark, low-chroma wallpaper
-set into a near-white pastel band, so the accent barely changed between wallpapers — which
-defeats the point of wallpaper-driven colour:
+- **`hypr-dynamic-cursors`** — builds, and `nix-store -q --references` confirms it links the *same*
+  `hyprland-0.56.2` store path the compositor runs from. It still throws at init:
+  `plugin crashed/threw in main: std::exception`. **A clean ABI match is not sufficient**; its
+  `PLUGIN_INIT` calls something 0.56.2 no longer provides. Shake-to-find is therefore unavailable.
+- **`k4n4t4/hypr-submap`** — loads, then every poll throws
+  `submap.luau:39: invalid argument #1 to 'trim' (string expected, got table)`. It calls
+  `noctalia.runAsync("hyprctl submap", cb)` expecting a string; this runtime hands the callback a
+  table. It declares `plugin_api = 6` against a shell at 25 — but that field is a **minimum**, so it
+  offers no protection against a changed callback signature.
 
-| scheme | Clearnight.jpg | dark-waves.jpg |
-|---|---|---|
-| m3-content | `#bec2ff` | `#bec6e0` |
-| m3-tonal-spot | `#bec2ff` | `#b0c6ff` |
-| **vibrant** | **`#65a8e7`** | **`#6781e4`** |
+Three plugins survive: `keybind-cheatsheet`, `tmux-provider`, `special-workspaces`.
 
-`vibrant` also emits all 72 roles including the full `surface_container_*` ramp, so the plan's
-stated reason for preferring a Material generator did not hold either.
+## Deliberate deviations from the plan
 
-**`hyprctl dispatch` is not a Lua eval channel.** It wraps its argument in
-`return hl.dispatch(...)`, so the multi-statement hook the plan proposed is a syntax error.
-`hyprctl eval` is the real channel and is what `hooks.colors_changed` uses.
+- **The screen shader's vignette ships at `0.0`.** Not timidity — the shader runs *per monitor*, so
+  `v_texcoord` is 0..1 on each output independently. Any vignette darkens the **inner** edges of the
+  side panels, drawing a seam down both monitor boundaries instead of framing one 5760px desktop.
+  The constant is present and documented for anyone going single-monitor.
+- **Starship keeps its layout in this repo.** Rather than moving the prompt into a template, the
+  template is *generated* by concatenating `starship.toml` with `noctalia-palette.tmpl`, so there is
+  exactly one copy of the layout to maintain and only the palette is substituted.
 
-**Gradient borders are a table, not a string.** The Lua setter rejects hyprlang's
-`"col1 col2 45deg"` form with `invalid color`. `HL.Gradient` is
-`string|{colors:string[], angle?:number}`.
+## Still unverified — needs a reboot
 
-**Idle behaviours need an explicit `action`.** Declaring an `[idle.behavior.<name>]` table
-replaces the built-in entry rather than merging into it. `enabled` + `timeout` alone yields
-`idle behavior 'lock' ignored: needs an action` at runtime, and `noctalia config validate`
-does not catch it — only the journal does.
+The reveal (`monitorAdded` on the `reveal` curve at speed 40) is confirmed **registered**
+(`hyprctl animations` shows `overridden: 1, bezier: reveal, enabled: 1, speed: 40.00`) but its
+*visual timing* cannot be tested without a cold session start. Expect one or two rounds of tuning:
 
-## Deferred, deliberately
+- If the desktop is already settled before the zoom is visible → **raise** `speed`.
+- If the zoom is still obviously running after everything has landed → **lower** it.
+- If it holds too long at full zoom → move the first control point down from `0.85`.
 
-- **ddcutil brightness on deadPc.** Needs `hardware.i2c.enable` plus i2c group membership,
-  and whether the HP V27e / Acer XB252Q panels answer DDC/CI is unverified. `noctalia msg
-  brightness-up` returns `brightness control unavailable` on this host; the binds are
-  harmless no-ops there and work on deadConvertible's real backlight.
-- **Noctalia Greeter.** Declined by the user. `noctalia-greeter` 1.3.1 is in nixpkgs and was
-  verified viable (self-contained greetd session binary, polkit action for appearance sync),
-  but it wants a dedicated system user and, below 1.5.0, cannot do passwordless sync.
-
-## Pre-existing breakage found, not fixed
-
-`hosts/deadConvertible/config.nix` pins `pkgs.unstable.ladybird`, which nixpkgs now marks
-insecure, so that host cannot evaluate. It fails identically on `main` and predates this work.
-deadConvertible's Home Manager config evaluates fine; only its NixOS side is blocked.
-
-## Unmanaged files moved aside
-
-`~/.config/rice-overhaul-backup-2026-09-10/` holds the v4 Noctalia colour orphan, the stale
-`hyprland.conf` stub and its pre-Lua backup, the pre-existing `qt6ct.conf`, the three
-hand-installed v4 QML plugins, and the Noctalia state file as it was before the `[theme]`
-override was stripped. Delete when you are happy.
+Both live in `modules/home-manager/windowManager/hyprland/config.nix` (`reveal` curve, `monitorAdded`
+leaf).
