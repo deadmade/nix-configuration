@@ -26,6 +26,16 @@ with lib; {
     mpvpaper
     mpv
     socat
+    # UNDECLARED dependency. The plugin manifest lists only mpvpaper and mpv,
+    # but mpvpaper_service.luau shells out to `ffmpeg` in both functions that
+    # turn the playing video into a still (:236 on stop, :268 on file change),
+    # and that still is what Noctalia's wallpaper -- and therefore the whole
+    # theme.source = "wallpaper" palette -- is generated from. Without it the
+    # palette silently keeps whatever it had: startMpvpaper:416 only adopts a
+    # cached frame `if fileExists`, so a video with no cached frame changes the
+    # screen and leaves the colours alone. Headless because nothing here needs
+    # ffmpeg's GUI/SDL outputs; mpv already brings the codec libraries.
+    ffmpeg-headless
   ];
 
   # Noctalia's own `network` bar widget already speaks to NetworkManager, so
