@@ -130,16 +130,20 @@
         };
 
         launcher = {
-          # Icon grid instead of a list when every result is an application.
-          # Falls back to the list the moment a /-provider or calculator hit
-          # appears, which is the sensible behaviour.
-          app_grid = true;
+          # List, not the icon grid. (false is the default; stated explicitly
+          # because phase 6 had set it true.)
+          app_grid = false;
         };
 
         session = {
-          # 3+2 tile block rather than a single strip of five.
-          grid = true;
-          grid_columns = 3;
+          # grid is deliberately NOT set. With it false (the default) and five
+          # actions, session_panel.cpp:109-125 fits them on ONE row -- ~810x112
+          # rather than the ~490x250 3+2 block, whose second row is half empty
+          # because the grid uses uniform cell sizes.
+          #
+          # Note placement/position do NOT affect the panel's size: it is
+          # computed purely from the button grid, so there is no separate
+          # "bigger dialog" knob.
           actions = [
             {
               action = "lock";
@@ -490,14 +494,22 @@
         # the wallpaper fades UP while the monitor zooms OUT. Noctalia's own
         # `zoom` transition would compound into a double zoom.
         transition = ["fade"];
-        # A full desktop recolour every 5 minutes reads as a flicker you fight.
-        # At 30 minutes it reads as an event, and the whole set still comes round
-        # over a working day.
-        automation = {
-          enabled = true;
-          interval_seconds = 1800;
-          order = "random";
-        };
+        # Rotation off. Nothing is removed: all 27 images stay in wallpapers/ and
+        # stay deployed to ~/.config/wallpapers, and `directory` above remains the
+        # browse root, so the wallpaper picker and the /wall launcher provider
+        # still work. Only the timer stops.
+        automation.enabled = false;
+
+        # REQUIRED, not optional. Wallpaper::applyStartupAutomation
+        # (wallpaper.cpp:904-908) returns early when automation is off, and that
+        # early return is the only thing that would otherwise scan `directory` at
+        # startup -- so without an explicit path there would be no wallpaper at
+        # all.
+        #
+        # This is a DEFAULT, not a lock: picking another wallpaper from the panel
+        # or /wall writes to ~/.local/state/noctalia/settings.toml, which loads
+        # last and wins. That is the intended manual override.
+        default.path = "/home/${vars.username}/.config/wallpapers/misty-boat.jpg";
       };
     };
   };
