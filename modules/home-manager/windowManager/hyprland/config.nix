@@ -1,4 +1,8 @@
-{vars, ...}: {
+{
+  vars,
+  pkgs,
+  ...
+}: {
   wayland.windowManager.hyprland = {
     # Declarative parts map to hl.<name>(...) calls in the generated
     # ~/.config/hypr/hyprland.lua. Attributes with `_var` become `local`s, so
@@ -32,6 +36,26 @@
           gaps_in = 4;
           gaps_out = 8;
           border_size = 2;
+
+          # A gutter between workspaces, so the slidefade transition reads as two
+          # distinct surfaces passing rather than one continuous strip.
+          gaps_workspaces = 24;
+        };
+
+        # SUPER+G groups windows, but the resulting groupbar was completely
+        # unstyled -- stock flat tabs against a rounded, blurred, gradient-bordered
+        # desktop. Match it to the window geometry so it looks like the same system.
+        group = {
+          groupbar = {
+            gradients = true;
+            gradient_rounding = 12;
+            gradient_rounding_power = 2.4;
+            gradient_round_only_edges = false;
+            height = 18;
+            indicator_height = 3;
+            font_weight_active = 600;
+            blur = true;
+          };
         };
 
         misc = {
@@ -79,6 +103,10 @@
             brightness = 0.85;
             vibrancy = 0.25;
             vibrancy_darkness = 0.3;
+
+            # Floating windows blur the WALLPAPER rather than the tiled windows
+            # behind them -- much cleaner glass for the dialog/portal float rules.
+            xray = true;
           };
 
           shadow = {
@@ -95,9 +123,54 @@
             color_inactive = "rgba(00000055)";
           };
 
+          # Inner glow: a rim light painted INWARD from the window edge, not an
+          # outer halo. It traces rounding_power, so it follows the same squircle
+          # as the border. Shipped disabled; entirely unused until now.
+          #
+          # This is what finally gives a focus cue on a three-monitor desktop.
+          # dim_inactive (below) was rejected because only one window can ever be
+          # focused, so it would permanently dim two thirds of the screens. A rim
+          # light marks the hot window instead of darkening everything else.
+          #
+          # `color` is set dynamically from the palette in extraConfig.
+          glow = {
+            enabled = true;
+            range = 8;
+            # 1-4; higher = faster falloff, so the light hugs the edge instead of
+            # washing into window content. 8px at power 4 is an edge, not a haze.
+            render_power = 4;
+            # Alpha dictates glow opacity, so a fully transparent inactive colour
+            # means unfocused windows simply do not glow. That IS the cue.
+            color_inactive = "rgba(00000000)";
+          };
+
+          # Windows smear along their travel vector while animating. This pairs
+          # specifically with the under-critically-damped `snappy` spring: the
+          # overshoot then reads as weight rather than as a wobble.
+          #
+          # NOTE: the shipped shader branches on USE_ROUNDING && !USE_MOTION_BLUR,
+          # which implies corners are not rounded during a blurred frame. Verify
+          # visually while dragging a window; drop this if corners visibly pop.
+          motion_blur = {
+            enabled = true;
+            samples = 8;
+          };
+
+          # One static pass over the whole composited desktop: a gentle grade so
+          # the wallpaper-derived palette reads a little richer. No plugin is
+          # involved -- screen_shader is a built-in option that takes a path to a
+          # fragment shader. The path must be absolute: the option resolves
+          # relative to the main config, which is a /nix/store symlink.
+          screen_shader = "${./shaders/grade.frag}";
+
           # dim_inactive is NOT enabled: on three monitors only one window can be
           # focused, so it would permanently dim two thirds of the desktop.
+          # glow.color_inactive above is the focus cue instead.
           dim_inactive = false;
+
+          # A different mechanism from dimming: lets the blur show THROUGH
+          # unfocused windows rather than darkening them.
+          inactive_opacity = 0.98;
           dim_special = 0.3;
           dim_around = 0.5;
         };
@@ -169,6 +242,29 @@
             {
               type = "bezier";
               points = [[0.0 0.0] [1.0 1.0]];
+            }
+          ];
+        }
+
+        # The session-start reveal. Hyprland's `monitorAdded` leaf drives a
+        # 2x -> 1x zoom-out of the WHOLE monitor (src/output/Monitor.cpp:94 binds
+        # m_zoomAnimProgress to it; onConnect:112 resets it; the present handler
+        # fires it on the 5th scanout frame; Renderer.cpp:2133 maps it to
+        # `2.0 - value`). onConnect runs for every monitor at compositor start,
+        # so this has always fired -- but at ~1s it finished during the ~3.2s
+        # gap before Noctalia paints anything, zooming out a blank screen.
+        #
+        # These control points hold the value near 0 (i.e. near 2x zoom) through
+        # that dead gap, then ease out. The wallpaper and bar therefore appear
+        # while the monitor is still zoomed, and settle into place.
+        # NOTE: tuned against measured boot timing; expect to adjust after a
+        # reboot-and-watch. See the plan's 6a section.
+        {
+          _args = [
+            "reveal"
+            {
+              type = "bezier";
+              points = [[0.85 0.0] [0.15 1.0]];
             }
           ];
         }
@@ -346,6 +442,15 @@
           speed = 7.0;
           bezier = "quick";
         }
+
+        # 4s so the tail is still running when the desktop arrives. Also replays
+        # on monitor hotplug, which is the same code path.
+        {
+          leaf = "monitorAdded";
+          enabled = true;
+          speed = 40.0;
+          bezier = "reveal";
+        }
       ];
 
       # The repo had ZERO layer rules, which is why the bar and every panel were
@@ -466,22 +571,85 @@
                 active_border = { colors = { c.primary, c.secondary }, angle = 45 },
               },
             },
+            decoration = {
+              glow = {
+                -- Static, deliberately: the border already rotates, and two
+                -- co-rotating gradients read as a synchronised spinner.
+                -- Offset 225deg from the border's 45 so the bright arcs sit
+                -- opposite each other rather than stacking.
+                color = { colors = { c.primary, c.secondary }, angle = 225 },
+              },
+            },
           })
+        end
+
+        -- Hyprland's stock misc:background_color is 0xFF111111, which is what
+        -- fills the ~3.2s between login and Noctalia's first paint -- and, since
+        -- wallpaper transition_on_startup fades up from ALPHA ZERO rather than
+        -- from black, it is also the colour the wallpaper emerges out of.
+        -- Noctalia's hyprland template never claims this key, so own it here and
+        -- let it track the palette instead of sitting at a foreign grey.
+        if c and c.surface then
+          hl.config({ misc = { background_color = c.surface } })
         end
       end
 
       _G.noctalia_apply()
 
+      -- NOT LOADED: hypr-dynamic-cursors.
+      -- It is the one Hyprland plugin that looked worth having (shake-to-find
+      -- magnification is genuinely useful on a 5760px desktop). It BUILDS
+      -- correctly and links against this exact compositor -- `nix-store -q
+      -- --references` on it lists the same hyprland-0.56.2 store path Hyprland
+      -- runs from -- but it throws at init:
+      --
+      --   $ hyprctl plugin load .../libhypr-dynamic-cursors.so
+      --   could not be loaded: plugin crashed/threw in main: std::exception
+      --
+      -- So a clean ABI match is NOT sufficient; the plugin's PLUGIN_INIT calls
+      -- something 0.56.2 no longer provides. Its own author describes it as
+      -- "more or less a joke" and does not guarantee updates. Left out.
+      --
+      -- For the record, the rest of the plugin ecosystem is worse: hyprexpo,
+      -- hyprtrails and hyprwinwrap were DELETED upstream on 2026-05-12 ("all:
+      -- drop unmaintained plugins (#663)"), and hyprspace -- the surviving
+      -- expose -- 404s from the binary cache. There is no workspace overview
+      -- available on 0.56.2 by any route.
+
       -- hyprsplit: awesome/dwm-like per-monitor workspaces (Lua library)
       local hs = require("hyprsplit")
       hs.config({ num_workspaces = 10 })
 
-      -- Autostart
+      -- Autostart.
       -- noctalia is started by its systemd user service (programs.noctalia.systemd.enable),
       -- bound to graphical-session.target, so it is not exec'd here.
-      hl.on("hyprland.start", function()
-        hl.exec_cmd("librewolf")
+      --
+      -- librewolf used to launch straight from hyprland.start, which put a
+      -- browser window on screen roughly 1.2s BEFORE the bar and wallpaper
+      -- existed -- so the first thing seen after login was a bare browser on an
+      -- empty field, with the desktop assembling behind it.
+      --
+      -- Wait for Noctalia's bar layer to map instead, then unsubscribe so a
+      -- later bar restart (every `nhs` touches noctalia.service) does not spawn
+      -- a second browser. hooks.started is NOT usable for this: Noctalia's hook
+      -- commands are children of noctalia.service, so KillMode=control-group
+      -- would take the browser down on every rebuild.
+      local autostartSub
+      autostartSub = hl.on("layer.opened", function(data)
+        local ns = data and (data.namespace or data.nameSpace)
+        if ns ~= "noctalia-bar-default" then return end
+        if autostartSub then autostartSub:remove() end
+        hl.exec_cmd(browser)
       end)
+
+      -- Belt and braces: if the bar never maps (noctalia failed to start), still
+      -- get a browser rather than an empty desktop.
+      hl.timer(function()
+        if autostartSub and autostartSub:is_active() then
+          autostartSub:remove()
+          hl.exec_cmd(browser)
+        end
+      end, { timeout = 15000, type = "oneshot" })
 
       -- Keybindings
       --
@@ -511,6 +679,8 @@
       hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("noctalia msg panel-toggle wallpaper"))
       hl.bind(mainMod .. " + comma", hl.dsp.exec_cmd("noctalia msg settings-toggle"))
       hl.bind("ALT + TAB",           hl.dsp.exec_cmd("noctalia msg window-switcher"))
+      -- Searchable cheatsheet of every bind, parsed from this very file.
+      hl.bind(mainMod .. " + F1",    hl.dsp.exec_cmd("noctalia msg panel-toggle kenn/keybind-cheatsheet:cheatsheet"))
 
       -- Screenshots: Noctalia's own stack, which also does annotation.
       hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("noctalia msg screenshot-region"))

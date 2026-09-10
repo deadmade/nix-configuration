@@ -4,6 +4,8 @@
   inputs,
   vars,
   lib,
+  starshipPromptTemplate,
+  starshipRenderedConfig,
   ...
 }: {
   # Import the noctalia home-manager module from flake
@@ -16,6 +18,17 @@
     recursive = true;
   };
 
+  # Noctalia plugins are sandboxed Luau scripts, not native code, so a `path`
+  # source out of the /nix/store works with no build step -- the docs call this
+  # kind "ideal for local development or Nix-managed plugins".
+  #
+  # Pinned to an exact rev so the plugin set is reproducible. This also lets
+  # auto_update be turned off: it currently defaults to "all", which means a git
+  # pull on startup and again every 6 hours -- the one genuinely non-reproducible
+  # thing left in this config.
+  #
+  # Note the four chosen plugins are not decoration. Each one surfaces something
+  # built in phases 1-5 that currently has no visible affordance at all.
   # Configure noctalia (v5 schema — see `noctalia config export full` for the
   # full set of keys/defaults; only deviations from the defaults are set here).
   programs.noctalia = {
@@ -28,6 +41,54 @@
     systemd.enable = true;
 
     settings = {
+      plugins = {
+        auto_update = "none";
+        enabled = [
+          # Searchable panel of every keybind. Parses the Lua config format --
+          # it ships hyprland.lua test fixtures -- which matters because the
+          # keymap was rewritten to 93 binds in phase 5.
+          "kenn/keybind-cheatsheet"
+          # `/tm` in the launcher lists and attaches tmux sessions. The terminal
+          # already autostarts `tmux new-session -A -s main`.
+          "dunarand/tmux-provider"
+          # NOT enabled: k4n4t4/hypr-submap. It loads, but every poll throws
+          #   submap.luau:39: invalid argument #1 to 'trim' (string expected,
+          #   got table)
+          # because it calls noctalia.runAsync("hyprctl submap", cb) expecting a
+          # plain string, while this runtime hands the callback a table. It
+          # declares plugin_api = 6 against a shell at 25 -- the declared value
+          # is only a MINIMUM, so it does not protect against a changed callback
+          # signature. Nothing to fix on our side.
+          # Indicator for populated scratchpads. SUPER+S got a scratchpad in
+          # phase 5 with no way to tell whether anything was in it.
+          "jamesfeeder/special-workspaces"
+        ];
+
+        source = [
+          {
+            name = "community-pinned";
+            kind = "path";
+            location = "${pkgs.fetchFromGitHub {
+              owner = "noctalia-dev";
+              repo = "community-plugins";
+              rev = "ea86850b8c21f9f8f3663021163b8f071040986d";
+              hash = "sha256-7I7A4EuxiRTRZycDOErPP8oSdtAcv7zhJEpQU+S2mq0=";
+            }}";
+            enabled = true;
+          }
+          # The two built-in git sources are protected from removal but can be
+          # switched off by name. Without this they keep pulling over the network.
+          {
+            name = "community";
+            enabled = false;
+          }
+          {
+            name = "official";
+            enabled = false;
+          }
+        ];
+      };
+
       shell = {
         # ~/.face never existed. Point at the avatar committed in this repo so the
         # lock screen and control-center user card actually render one.
@@ -40,6 +101,11 @@
         # security.polkit.enable is on but no agent was running, so GUI privilege
         # prompts failed silently. Noctalia ships one and it follows the theme.
         polkit_agent = true;
+
+        # Only suppressed today by a marker file in ~/.local/state, which is not
+        # declarative -- any state wipe or new machine and a first-run wizard
+        # panel appears over the opening.
+        setup_wizard_enabled = false;
 
         # Was the literal string "sans-serif". Stylix's noctalia-shell target is a
         # v4 no-op (it writes programs.noctalia-shell.*, which does not exist in
@@ -56,7 +122,62 @@
           save_to_file = true;
         };
 
+        # Slightly under 1.0 so panels and OSDs feel weighted rather than
+        # snapping. Global multiplier over every shell transition.
+        animation = {
+          enabled = true;
+          speed = 0.9;
+        };
+
+        launcher = {
+          # Icon grid instead of a list when every result is an application.
+          # Falls back to the list the moment a /-provider or calculator hit
+          # appears, which is the sensible behaviour.
+          app_grid = true;
+        };
+
+        session = {
+          # 3+2 tile block rather than a single strip of five.
+          grid = true;
+          grid_columns = 3;
+          actions = [
+            {
+              action = "lock";
+              shortcut = "1";
+              enabled = true;
+            }
+            {
+              action = "logout";
+              shortcut = "2";
+              enabled = true;
+            }
+            {
+              action = "lock_and_suspend";
+              shortcut = "3";
+              enabled = true;
+            }
+            {
+              action = "reboot";
+              shortcut = "4";
+              enabled = true;
+              variant = "destructive";
+              countdown_seconds = 5.0;
+            }
+            {
+              action = "shutdown";
+              shortcut = "5";
+              enabled = true;
+              variant = "destructive";
+              countdown_seconds = 5.0;
+            }
+          ];
+        };
+
         panel = {
+          # Filled rounded backgrounds behind launcher and clipboard rows -- a
+          # card treatment that plays into the glass panels.
+          list_item_background = true;
+
           # "solid" ignores the palette's translucency entirely; "glass" lets the
           # blurred desktop through the launcher/control-centre/session panels.
           transparency_mode = "glass";
@@ -122,6 +243,20 @@
             "ghostty"
             "btop"
           ];
+
+          # The builtin `starship` id is deliberately NOT in the list above: its
+          # apply.sh does `cat "$tmp" > "$STARSHIP_CONFIG"`, and home-manager
+          # points that at a read-only /nix/store symlink -> EACCES, killing the
+          # hook. A user template sidesteps apply.sh entirely by rendering to a
+          # path we choose.
+          #
+          # The prompt LAYOUT stays in this repo (terminal/starship/starship.toml);
+          # only the palette block is substituted, so the prompt is generated from
+          # the same wallpaper as the terminal it sits in.
+          user.starship = {
+            input_path = "${starshipPromptTemplate}";
+            output_path = starshipRenderedConfig;
+          };
         };
       };
 
@@ -161,7 +296,10 @@
           padding = 12;
           widget_spacing = 8;
 
-          start = ["workspaces" "group:sys"];
+          # Both plugin widgets are conditional -- Noctalia hides a capsule
+          # automatically when its widget reports no visible ink -- so they cost
+          # nothing when there is no scratchpad and no active submap.
+          start = ["workspaces" "scratchpads" "group:sys"];
           center = ["active_window"];
           end = [
             "group:media"
@@ -243,6 +381,11 @@
         color_2 = "secondary";
       };
 
+      # Plugin widgets take type = "<author>/<plugin>:<entry>".
+      widget.scratchpads = {
+        type = "jamesfeeder/special-workspaces:special-workspaces";
+      };
+
       widget.media = {
         type = "media";
         max_length = 200.0;
@@ -255,7 +398,22 @@
         title_scroll = "on_hover";
       };
 
+      # location.address is already set and weather.effects already defaults to
+      # true, so enabling weather unlocks an animated, palette-tinted GLSL effect
+      # (Rain/Snow/Cloud/Fog/Sun/Stars, chosen by WMO code) inside the Control
+      # Center's conditions card -- and makes the lock screen's already-enabled
+      # weather row render something instead of nothing.
+      weather = {
+        enabled = true;
+        unit = "metric";
+      };
+
       control_center = {
+        # "full" shows icons AND labels in the sidebar; the extra width stops the
+        # weather card and its effect from being cramped.
+        sidebar = "full";
+        width = 900;
+
         shortcuts = [
           {type = "wifi";}
           {type = "bluetooth";}
@@ -316,16 +474,22 @@
         address = "Augsburg";
       };
 
-      weather = {
-        enabled = false;
-        unit = "metric";
-      };
-
       wallpaper = {
         directory = "/home/${vars.username}/.config/wallpapers";
         fill_mode = "crop";
         # Fade the first wallpaper in at login instead of snapping to it.
         transition_on_startup = true;
+
+        # The startup transition type is picked UNIFORMLY AT RANDOM from this
+        # pool -- there is no startup-specific key -- so leaving all six in meant
+        # the login reveal was a coin flip that could land on honeycomb or
+        # stripes. Those are built to blend two IMAGES and read as artifacts
+        # against a solid colour, which is what transition_on_startup fades from.
+        #
+        # fade is also the right partner for the monitor zoom-out in config.nix:
+        # the wallpaper fades UP while the monitor zooms OUT. Noctalia's own
+        # `zoom` transition would compound into a double zoom.
+        transition = ["fade"];
         # A full desktop recolour every 5 minutes reads as a flicker you fight.
         # At 30 minutes it reads as an event, and the whole set still comes round
         # over a working day.
