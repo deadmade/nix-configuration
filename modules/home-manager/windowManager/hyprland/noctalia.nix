@@ -521,47 +521,224 @@
         fingerprint = false;
       };
 
-      # The login box renders even though lockscreen_widgets.enabled stays false:
-      # LockSurface reads this config directly via findForOutput
-      # (lock_surface.cpp:1573-1595) and never consults the widgets gate. Leaving
-      # `enabled` unset keeps the widget host/editor overlay off while still
-      # styling the box.
+      # The lock screen widget set.
       #
-      # NOTE: `widget_order` is deliberately absent. When present it acts as an
-      # allowlist and silently drops any id not named in it.
+      # This MUST be a fixed point of what normalizeSnapshot converges to, or
+      # Noctalia rewrites ~/.local/state/noctalia/settings.toml on every startup
+      # and that sidecar -- which deep-merges LAST -- shadows everything here.
+      # That is exactly what happened on the first attempt: every value below was
+      # silently replaced by defaults.
+      #
+      # Three rules keep it stable:
+      #   1. Declare a login_box for EVERY output. ensureWidgets() walks the
+      #      Wayland outputs and manufactures one for any that lacks it -- it does
+      #      NOT consult lockscreen.monitors -- and the resulting size increase
+      #      triggers a full state write (lockscreen_widgets_controller.cpp:316).
+      #   2. Set placement_width/height on everything. Left at the 0.0 default,
+      #      remapForOutputChange adopts the output size and reports changed=true.
+      #   3. login_box box_height is IGNORED and recomputed from the layout, so it
+      #      must already equal defaultPanelHeight or it round-trips as a diff.
+      #      regular + session buttons + no info row = 128.
+      #
+      # widget_order is deliberately absent: when present it is an allowlist and
+      # silently drops any id not named in it.
+      #
+      # NOTE: never open the widgets editor (`noctalia msg lockscreen-widgets-edit`,
+      # or Settings -> Security -> Lock screen -> Toggle Editor). enterEdit()
+      # force-flips `enabled` and persists a full snapshot over this.
+      #
+      # NOTE: no `button` widgets here. The widget layer receives pointer events
+      # while the session is LOCKED (lock_surface.cpp:535, :792-826), so a button's
+      # shell command would be runnable from the lock screen.
       lockscreen_widgets = {
-        widget."lockscreen-login-box@DP-3" = {
-          type = "login_box";
-          output = "DP-3";
-          enabled = true;
-          box_width = 760.0;
+        # Required. With this false the host calls hide() and clears every widget
+        # instance -- only the login box would render, because LockSurface draws
+        # that directly and never consults this gate.
+        enabled = true;
 
-          settings = {
-            layout = "regular";
+        widget = {
+          # --- the composition, all on DP-3 -----------------------------------
+          # cx/cy are the widget CENTRE in logical pixels, origin top-left, on a
+          # canvas that is the monitor (1920x1080). Widgets on the blacked-out
+          # side monitors are hidden regardless, so everything lives on DP-3.
+          #
+          # Setting BOTH box_width and box_height makes the footprint exactly that
+          # rectangle, which is what allows the positions to be computed by hand --
+          # and it is also what enables content scaling at all.
 
-            # A palette role, so it tracks the wallpaper. `surface` is a step
-            # darker than the default surface_variant and reads as a panel
-            # rather than a chip. Note the surface_container* roles exist in the
-            # palette but are NOT accepted here -- the config token set is
-            # narrower than the role set, and the build-time validator rejects
-            # them (verified against `noctalia config validate`).
-            background_color = "surface";
-            background_opacity = 0.72;
-            background_radius = 20.0;
-            input_opacity = 1.0;
-            input_radius = 12.0;
-            center_password_text = true;
+          # Time. background=false drops the padding term, so box_height becomes
+          # the font-size dial: contentScaleForBox fits content to the box
+          # preserving aspect, and for a wide box height is the binding
+          # constraint. Natural digital size is 56px; 190 of box gives ~150.
+          lock-clock = {
+            type = "clock";
+            output = "DP-3";
+            enabled = true;
+            cx = 400.0;
+            cy = 205.0;
+            box_width = 640.0;
+            box_height = 190.0;
+            placement_width = 1920.0;
+            placement_height = 1080.0;
+            settings = {
+              clock_style = "digital";
+              format = "{:%H:%M}";
+              center_text = false;
+              background = false;
+              color = "on_surface";
+              shadow = true;
+            };
+          };
 
-            show_session_buttons = true;
-            show_login_button = true;
-            show_unlock_hint = true;
-            show_caps_lock = true;
-            show_media = true;
-            # Has real data now that weather is enabled; renders once the first
-            # fetch lands after a cold start.
-            show_weather = true;
-            # Single layout on this machine, so the row is permanent noise.
-            show_keyboard_layout = false;
+          # Date. A `label` cannot do this -- its text is static -- so it is a
+          # second clock widget with a date format.
+          lock-date = {
+            type = "clock";
+            output = "DP-3";
+            enabled = true;
+            cx = 400.0;
+            cy = 340.0;
+            box_width = 640.0;
+            box_height = 46.0;
+            placement_width = 1920.0;
+            placement_height = 1080.0;
+            settings = {
+              clock_style = "digital";
+              format = "{:%A, %d %B}";
+              center_text = false;
+              background = false;
+              color = "on_surface_variant";
+              shadow = true;
+            };
+          };
+
+          # Weather, mirrored top-right. Has real data since weather was enabled.
+          # (The animated Rain/Snow/Stars GLSL effect is Control-Center only --
+          # EffectType has exactly one consumer in the tree and it is not here.)
+          lock-weather = {
+            type = "weather";
+            output = "DP-3";
+            enabled = true;
+            cx = 1650.0;
+            cy = 195.0;
+            box_width = 380.0;
+            box_height = 170.0;
+            placement_width = 1920.0;
+            placement_height = 1080.0;
+            settings = {
+              background = false;
+              color = "on_surface";
+              shadow = true;
+              show_forecast = true;
+              forecast_days = 3;
+            };
+          };
+
+          # Now playing, bottom-left. A standalone media_player renders 120px
+          # album art against the login-box strip's 40px, which is why media was
+          # taken off the login box rather than duplicated.
+          # hide_when_no_media keeps the composition from carrying an empty box.
+          lock-media = {
+            type = "media_player";
+            output = "DP-3";
+            enabled = true;
+            cx = 300.0;
+            cy = 690.0;
+            box_width = 440.0;
+            box_height = 160.0;
+            placement_width = 1920.0;
+            placement_height = 1080.0;
+            settings = {
+              layout = "horizontal";
+              background = true;
+              background_color = "surface";
+              background_opacity = 0.55;
+              background_radius = 18.0;
+              color = "on_surface";
+              shadow = true;
+              hide_when_no_media = true;
+            };
+          };
+
+          # --- login boxes ----------------------------------------------------
+          # One per output, or ensureWidgets manufactures the missing ones and
+          # triggers a state write. The two side monitors are blacked out by
+          # lockscreen.monitors anyway; disabling them here is belt and braces.
+          "lockscreen-login-box@DP-3" = {
+            type = "login_box";
+            output = "DP-3";
+            enabled = true;
+            cx = 960.0;
+            cy = 898.0;
+            box_width = 810.0;
+            # Ignored and recomputed -- set to what defaultPanelHeight produces
+            # for regular + session buttons + no info row, so it round-trips.
+            box_height = 128.0;
+            placement_width = 1920.0;
+            placement_height = 1080.0;
+
+            settings = {
+              layout = "regular";
+
+              # A palette role, so it tracks the wallpaper. `surface` is a step
+              # darker than the default surface_variant and reads as a panel
+              # rather than a chip. The surface_container* roles exist in the
+              # palette but are NOT valid tokens here -- the build-time validator
+              # rejects them.
+              background_color = "surface";
+              background_opacity = 0.72;
+              background_radius = 20.0;
+              input_opacity = 1.0;
+              input_radius = 12.0;
+              center_password_text = true;
+
+              show_session_buttons = true;
+              show_login_button = true;
+              show_unlock_hint = true;
+              show_caps_lock = true;
+              # Both moved to their own widgets above. Turning the info row off is
+              # also what takes the panel from 196 to 128.
+              show_media = false;
+              show_weather = false;
+              # Single layout on this machine, so the row is permanent noise.
+              show_keyboard_layout = false;
+            };
+          };
+
+          "lockscreen-login-box@DP-2" = {
+            type = "login_box";
+            output = "DP-2";
+            enabled = false;
+            cx = 960.0;
+            cy = 898.0;
+            box_width = 810.0;
+            box_height = 128.0;
+            placement_width = 1920.0;
+            placement_height = 1080.0;
+            settings = {
+              layout = "regular";
+              show_media = false;
+              show_weather = false;
+              show_keyboard_layout = false;
+            };
+          };
+
+          "lockscreen-login-box@HDMI-A-1" = {
+            type = "login_box";
+            output = "HDMI-A-1";
+            enabled = false;
+            cx = 960.0;
+            cy = 898.0;
+            box_width = 810.0;
+            box_height = 128.0;
+            placement_width = 1920.0;
+            placement_height = 1080.0;
+            settings = {
+              layout = "regular";
+              show_media = false;
+              show_weather = false;
+              show_keyboard_layout = false;
+            };
           };
         };
       };
