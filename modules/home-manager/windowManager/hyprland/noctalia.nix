@@ -547,11 +547,18 @@ in {
         # output, the restriction is dropped rather than blacking out everything.
         monitors = ["DP-3"];
 
-        # Defaults are 0.5/0.3. This wallpaper is low-contrast and misty, so the
-        # login box needs the background pushed further back to read as
-        # foreground, and the tint is what buys legible text on top of it.
-        blur_intensity = 0.7;
-        tint_intensity = 0.5;
+        # Defaults are 0.5/0.3. These were once 0.7/0.5, tuned for BARE text
+        # floating on the video, where the background had to be pushed right back
+        # to keep anything legible. The glass panel below now carries legibility
+        # on its own, so the video can come forward again -- which is the point of
+        # having a video at all.
+        #
+        # blur_intensity is a 3-round Gaussian at blurIntensity*40 px
+        # (lock_surface.cpp:1698-1700); tint_intensity is a flat Surface overlay
+        # at that alpha (:1004-1018), skipped entirely at 0. These two plus the
+        # panel's own background_opacity are the three dials -- move them together.
+        blur_intensity = 0.5;
+        tint_intensity = 0.35;
 
         # Inert on this host -- the shell logs "no fprintd device available" on
         # every start. Off, so it stops trying.
@@ -576,7 +583,10 @@ in {
       #   3. login_box box_height is IGNORED and recomputed from the layout, so it
       #      must already equal defaultPanelHeight or it round-trips as a diff.
       #      compact = 70; regular + session buttons + no info row = 128.
-      #      box_WIDTH, by contrast, is kept as declared and only clamped.
+      #      box_WIDTH, by contrast, is kept as declared and only clamped -- and
+      #      so are cx/cy. The login box is NOT pinned above the bottom edge the
+      #      way lock_surface.cpp:965-966 makes it look; :971-977 reads cx/cy and
+      #      overwrites that default. Placement here is real.
       #
       # widget_order is deliberately absent: when present it is an allowlist and
       # silently drops any id not named in it.
@@ -604,50 +614,122 @@ in {
           # rectangle, which is what allows the positions to be computed by hand --
           # and it is also what enables content scaling at all.
           #
-          # Three elements, not five. The video wallpaper is the subject now; the
-          # widgets are a caption on it. A weather card and a media card were
-          # tried here and read as clutter.
+          # ONE CENTRED MONOLITH: a single glass panel holding time, date and the
+          # password field on one axis. Three earlier attempts kept re-tuning the
+          # SAME arrangement -- text in the upper-left third, a login strip alone
+          # near the bottom edge, 900px of nothing between them -- and only ever
+          # changed the sizes and the element count. The arrangement was the
+          # problem.
+          #
+          # Vertical layout on the 1080-tall canvas, every number derived from the
+          # panel's top edge at y=316:
+          #
+          #   316  panel top
+          #   364  clock top       (48 padding)
+          #   509  clock bottom    (145 box -> ~120px glyphs)
+          #   515  date top        (6 gap)
+          #   539  date bottom     (24 box -> ~20px)
+          #   559  auth card top   (20 gap; RESERVED -- see the login box below)
+          #   597  auth card bottom
+          #   605  login top       (8 gap, the hard-coded authGap)
+          #   675  login bottom    (70, recomputed and unsettable)
+          #   724  panel bottom    (49 padding)
 
-          # Time, upper left. background=false drops the padding term, so
-          # box_height becomes the font-size dial: contentScaleForBox fits content
-          # to the box preserving aspect, and for a wide box height is the binding
-          # constraint. Natural digital size is 56px, so 88 of box gives ~73.
+          # The glass panel. Noctalia has no container or rectangle widget, so
+          # this is an empty label: DesktopWidget::applyBackground
+          # (desktop_widget.cpp:226-241) paints the BOX, not the content, whenever
+          # box_width and box_height are both > 0 --
+          #     boxW = boxed ? m_boxWidth : contentW + 2*pad
+          # -- so an empty label with a background is a pure rectangle.
+          #
+          # It paints BELOW the login box, which is the whole reason this
+          # composition is possible. Stacking is explicit z-index, not insertion
+          # order: m_backgroundLayer z 0 (lock_surface.cpp:155), m_widgetLayer z 2
+          # (:180), m_loginPanel z 2 (:194), m_authPanel z 7 (:428). Paint order is
+          # an ascending STABLE sort (render_context.cpp:607), so the z-2 tie
+          # resolves to insertion order -- and m_widgetLayer was added first (:181
+          # before :184). Hit-testing walks children in REVERSE (node.cpp:469-491),
+          # so this cannot steal clicks from the password field either.
+          #
+          # The id must sort FIRST alphabetically. With widget_order absent the
+          # snapshot order comes from toml++'s key-sorted table, and that order is
+          # the widget layer's insertion order, which is its z-order -- every
+          # widget node gets the default z 0 (lockscreen_widgets_host.cpp:289-292).
+          # lock-backdrop < lock-clock < lock-date. There is no per-widget z key in
+          # the schema (config_validate.cpp:624-627 is the whole 14-key whitelist).
+          lock-backdrop = {
+            type = "label";
+            output = "DP-3";
+            enabled = true;
+            cx = 960.0;
+            cy = 520.0;
+            box_width = 640.0;
+            box_height = 408.0;
+            placement_width = 1920.0;
+            placement_height = 1080.0;
+            settings = {
+              # Both MUST be present and empty. An ABSENT title falls back to the
+              # literal "Title" (desktop_widget_factory.cpp:30-42, :325); an
+              # explicit "" does not. Empty text measures to 0x0 and the box is
+              # painted regardless, so nothing renders but the rectangle.
+              title = "";
+              description = "";
+
+              background = true;
+              background_color = "surface";
+              # The main dial for how much video shows through. Raise it if the
+              # hero clock loses contrast on a bright frame.
+              background_opacity = 0.55;
+              # Clamped 0..32 by the registry, so this is the maximum.
+              background_radius = 32.0;
+              shadow = false;
+            };
+          };
+
+          # Time. background=false drops the padding term, so box_height is the
+          # font-size dial: contentScaleForBox fits content to the box preserving
+          # aspect, and for a wide box height is the binding constraint.
+          # Calibrated from the previous 88 -> ~73px, i.e. glyphs ~= 0.83 *
+          # box_height, so 145 gives ~120. Width does not bind: "09:41" is ~140px
+          # natural at 56px, and 560/140 is far above 145/68.
           lock-clock = {
             type = "clock";
             output = "DP-3";
             enabled = true;
-            cx = 280.0;
-            cy = 128.0;
-            box_width = 400.0;
-            box_height = 88.0;
+            cx = 960.0;
+            cy = 436.0;
+            box_width = 560.0;
+            box_height = 145.0;
             placement_width = 1920.0;
             placement_height = 1080.0;
             settings = {
               clock_style = "digital";
               format = "{:%H:%M}";
-              center_text = false;
+              center_text = true;
               background = false;
               color = "on_surface";
+              # Kept even though the panel now carries contrast: at 0.55 opacity a
+              # bright video frame still shows through behind the glyphs.
               shadow = true;
             };
           };
 
-          # Date, tucked under it. A `label` cannot do this -- its text is static
-          # -- so it is a second clock widget with a date format.
+          # Date. A `label` cannot do this -- its text is static -- so it is a
+          # second clock widget with a date format.
           lock-date = {
             type = "clock";
             output = "DP-3";
             enabled = true;
-            cx = 280.0;
-            cy = 196.0;
-            box_width = 400.0;
-            box_height = 26.0;
+            cx = 960.0;
+            cy = 527.0;
+            box_width = 560.0;
+            box_height = 24.0;
             placement_width = 1920.0;
             placement_height = 1080.0;
             settings = {
               clock_style = "digital";
               format = "{:%A, %d %B}";
-              center_text = false;
+              center_text = true;
               background = false;
               color = "on_surface_variant";
               shadow = true;
@@ -662,51 +744,83 @@ in {
             type = "login_box";
             output = "DP-3";
             enabled = true;
+            # cx/cy ARE honoured, contrary to how lock_surface.cpp reads at first
+            # glance. :965-966 only SEEDS a default (centred, 84px above the bottom
+            # edge); :971-977 then reads loginBox->cx/cy and overwrites both with
+            # panelX = cx - w/2, panelY = cy - h/2. The on-screen clamp at :981-982
+            # has range [16, 994] for a 70px panel here, so a mid-screen value
+            # passes through untouched.
             cx = 960.0;
-            cy = 898.0;
+            cy = 640.0;
             # Kept from us verbatim -- ensureWidgets only clamps width, to
-            # [kCompactMinPanelWidth, screen - 32] = [240, 1888] here. The compact
-            # DEFAULT cap is 400; 480 is a deliberate step above it so the field
-            # is comfortable to type in.
-            box_width = 480.0;
-            # Ignored and recomputed, so it must already equal defaultPanelHeight
-            # or ensureWidgets rewrites it and the state sidecar shadows this
-            # whole block again. For compact that is minPanelHeight with no
-            # +spaceMd term: spaceLg*2 + controlHeight = 16*2 + 38 = 70
-            # (lockscreen_login_box.cpp:186-190, :218-222).
+            # [kCompactMinPanelWidth, screen - 32] = [240, 1888] here. 560 insets
+            # the field 40px from each edge of the 640-wide panel above.
+            box_width = 560.0;
+            # Ignored and recomputed EVERY FRAME from defaultPanelHeight
+            # (lock_surface.cpp:974), so it must already equal that or ensureWidgets
+            # rewrites it and the state sidecar shadows this whole block again. For
+            # compact that is minPanelHeight with no +spaceMd term:
+            # spaceLg*2 + controlHeight = 16*2 + 38 = 70
+            # (lockscreen_login_box.cpp:191-193, :219-220).
             box_height = 70.0;
             placement_width = 1920.0;
             placement_height = 1080.0;
 
             settings = {
               # Just the password row, centred. Compact is not a narrower regular:
-              # lock_surface.cpp:956-962 gates the session-button row AND the
-              # info row on `regular`, so show_session_buttons / show_media /
+              # lock_surface.cpp:956-962 gates the session-button row AND the info
+              # row on `regular`, so show_session_buttons / show_media /
               # show_weather below are inert here. Trade accepted -- shutdown and
               # reboot live on SUPER+X, not on the lock screen.
+              #
+              # Compact also centres the panel's main axis (:1028), which is what a
+              # centred composition needs, and regular would force a 720px minimum
+              # width -- wider than the panel it has to sit inside.
               layout = "compact";
 
-              # A palette role, so it tracks the wallpaper. `surface` is a step
-              # darker than the default surface_variant and reads as a panel
-              # rather than a chip. The surface_container* roles exist in the
-              # palette but are NOT valid tokens here -- the build-time validator
-              # rejects them.
+              # THE trick that makes one unified panel possible. resolveStyle
+              # multiplies the fill's alpha by this (lockscreen_login_box.cpp
+              # :311-316) and layoutScene passes the same value into the border
+              # (lock_surface.cpp:1020-1024), so panel fill AND border both go fully
+              # transparent. There is no drop shadow to survive it -- outerShadow
+              # defaults false and is never set on m_loginPanel. input_opacity is a
+              # separate key applied via setSurfaceOpacity (:1207), so the password
+              # field and login button stay at full strength.
+              #
+              # The cost: the auth status card reuses panelFill/panelOpacity
+              # (:1244-1245), so an auth error renders as bare text on the glass
+              # rather than in its own chip. It is absolutely placed at
+              # panelY - authGap - authH = 605 - 8 - 38 = 559 (:1237-1240,
+              # :1254-1258) and never flips below (that needs panelY < 62), which is
+              # why 559..597 is left clear above. If bare text reads badly,
+              # 0.10-0.15 here brings the card back -- at the price of a faint seam
+              # around the password row.
+              background_opacity = 0.0;
+
+              # Inert while the opacity is 0, but kept declared so the block stays a
+              # fixed point and so raising that opacity gives a sane result.
               background_color = "surface";
-              background_opacity = 0.72;
               background_radius = 20.0;
+
               input_opacity = 1.0;
               input_radius = 12.0;
               center_password_text = true;
 
               show_login_button = true;
+              # Renders nothing at rest -- it only appears in the reserved auth band
+              # when caps lock is actually on.
               show_caps_lock = true;
-              # Off: it renders a permanent "Ready" line under the field. Errors
-              # and the caps-lock warning are NOT gated by it and still show
-              # (lock_surface.cpp:1597-1615).
+              # Off: it renders a permanent "Ready" line, and with it off
+              # resolveStatusText returns {} so the auth card is hidden entirely at
+              # rest. Errors and the caps-lock warning are NOT gated by it and still
+              # show (lock_surface.cpp:1601-1615).
               show_unlock_hint = false;
               show_session_buttons = false;
               show_media = false;
               show_weather = false;
+              # MUST stay false. Unlike the rows above, this chip lives INSIDE the
+              # password row and is NOT layout-gated (lock_surface.cpp:957,
+              # :1043-1044), so compact does not suppress it.
               show_keyboard_layout = false;
             };
           };
@@ -716,8 +830,8 @@ in {
             output = "DP-2";
             enabled = false;
             cx = 960.0;
-            cy = 898.0;
-            box_width = 480.0;
+            cy = 640.0;
+            box_width = 560.0;
             box_height = 70.0;
             placement_width = 1920.0;
             placement_height = 1080.0;
@@ -734,8 +848,8 @@ in {
             output = "HDMI-A-1";
             enabled = false;
             cx = 960.0;
-            cy = 898.0;
-            box_width = 480.0;
+            cy = 640.0;
+            box_width = 560.0;
             box_height = 70.0;
             placement_width = 1920.0;
             placement_height = 1080.0;
