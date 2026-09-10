@@ -85,14 +85,19 @@
   # Video wallpaper on battery. Different leaves from the shared module's
   # video_directory, so these merge rather than conflict -- no mkForce needed.
   programs.noctalia.settings.plugin_settings."noctalia/mpvpaper" = {
-    # "full" (the default, kept on the desktop) only pauses behind fullscreen
-    # windows. On a laptop a maximised browser covers the wallpaper just as
-    # completely, and decoding a loop nobody can see is pure battery.
+    # A maximised browser hides the wallpaper as completely as a fullscreen one
+    # does, and decoding a loop nobody can see is pure battery.
+    #
+    # NO-OP AS OF TODAY, kept deliberately: the mode is passed as
+    # `--auto-mode MAX`, which mpvpaper only gained after 1.8, and
+    # mpvpaper_service.luau:186-187 falls back to plain `--auto-pause` on 1.8 --
+    # which is what pkgs.mpvpaper currently is. Verified against the live
+    # process, whose argv carries no --auto-mode. This starts working on its own
+    # the moment nixpkgs ships a newer mpvpaper; nothing else has to change.
     auto_pause = "max";
-    # The loops are 1920x1080 and this panel is 1920x1200, so mpv's default
-    # aspect-preserving fit would letterbox. panscan fills by scaling 1.11x and
-    # cropping the sides instead.
-    mpv_options = "--panscan=1.0";
+    # NOT set: mpv_options = "--panscan=1.0". The plugin hardcodes panscan=1.0
+    # into every launch (mpvpaper_service.luau:150), so the 1080p loops already
+    # fill this 1200p panel by cropping rather than letterboxing.
   };
 
   home.shellAliases = {

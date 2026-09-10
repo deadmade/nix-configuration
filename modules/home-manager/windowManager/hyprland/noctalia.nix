@@ -660,7 +660,7 @@
     if [ ! -e "$target" ]; then
       run install -Dm644 ${
       (pkgs.formats.json {}).generate "noctalia-mpvpaper-assignments.json" {
-        assignments."*" = "/home/${vars.username}/.config/wallpapers/video/kaneki-abyss.mp4";
+        assignments."*" = "/home/${vars.username}/.config/wallpapers/video/anime-girl-near-car.mp4";
         # The plugin tracks which outputs it wrapped in a systemd scope here.
         # run_as_systemd is off, so it starts empty rather than absent -- the
         # loader reads decoded.launchedAsSystemd and expects a table.
