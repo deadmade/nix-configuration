@@ -1,6 +1,5 @@
 {
   pkgs,
-  lib,
   inputs,
   ...
 }: {
@@ -8,38 +7,22 @@
     inputs.stylix.nixosModules.stylix
   ];
 
-  stylix = lib.mkDefault {
-    enable = true;
-    image = ../../../wallpapers/dark-waves.jpg;
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+  # Shared with modules/home-manager/core/stylix.nix. homeConfigurations are
+  # standalone, so homeManagerIntegration.followSystem never fires and the theme
+  # genuinely has to exist on both sides -- but from one definition, not two.
+  #
+  # Note: this is deliberately NOT wrapped in a blanket lib.mkDefault. Applying
+  # mkDefault to the whole attrset means any host that sets stylix.<anything>
+  # replaces the entire set rather than merging into it.
+  stylix =
+    (import ../../../flake/lib/theme.nix {inherit pkgs;})
+    // {
+      enable = true;
+      image = ../../../wallpapers/dark-waves.jpg;
+      autoEnable = true;
 
-    homeManagerIntegration.followSystem = true;
-    homeManagerIntegration.autoImport = true;
-
-    autoEnable = true;
-    targets.grub.enable = false;
-
-    polarity = "dark";
-    opacity = {
-      terminal = 0.8;
-      desktop = 0.0;
+      # Re-pins the boot menu to a static Catppuccin palette at exactly the moment
+      # the desktop stops being Catppuccin. Left off deliberately.
+      targets.grub.enable = false;
     };
-    cursor.package = pkgs.unstable.bibata-cursors;
-    cursor.name = "Bibata-Modern-Ice";
-    cursor.size = 25;
-    fonts = {
-      monospace = {
-        package = pkgs.unstable.nerd-fonts.jetbrains-mono;
-        name = "JetBrainsMono Nerd Font Mono";
-      };
-      sansSerif = {
-        package = pkgs.unstable.montserrat;
-        name = "Montserrat";
-      };
-      serif = {
-        package = pkgs.unstable.montserrat;
-        name = "Montserrat";
-      };
-    };
-  };
 }

@@ -7,50 +7,24 @@
     inputs.stylix.homeModules.stylix
   ];
 
-  # Home-manager is used standalone here (flake.homeConfigurations), so the
-  # NixOS stylix module's homeManagerIntegration.followSystem does NOT apply.
-  # The full theme must therefore be defined here as well; keep base16Scheme,
-  # fonts, cursor, opacity and wallpaper in sync with
-  # modules/nixos/desktop/stylix.nix.
-  stylix = {
-    enable = true;
-    image = ../../../wallpapers/dark-waves.jpg;
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+  # Fonts, cursor, opacity and the base16 fallback come from the shared base so
+  # this and modules/nixos/desktop/stylix.nix cannot drift apart again.
+  stylix =
+    (import ../../../flake/lib/theme.nix {inherit pkgs;})
+    // {
+      enable = true;
+      image = ../../../wallpapers/dark-waves.jpg;
+      autoEnable = true;
 
-    autoEnable = true;
+      targets = {
+        # Stylix auto-enables hyprpaper whenever stylix.image is set, and it then
+        # paints a second wallpaper layer underneath Noctalia's own on every
+        # monitor (verified with `hyprctl layers`). Noctalia owns the wallpaper.
+        hyprland.hyprpaper.enable = false;
 
-    polarity = "dark";
-    opacity = {
-      terminal = 0.8;
-      desktop = 0.0;
-    };
-    cursor.package = pkgs.unstable.bibata-cursors;
-    cursor.name = "Bibata-Modern-Ice";
-    cursor.size = 25;
-    fonts = {
-      monospace = {
-        package = pkgs.unstable.nerd-fonts.jetbrains-mono;
-        name = "JetBrainsMono Nerd Font Mono";
-      };
-      sansSerif = {
-        package = pkgs.unstable.montserrat;
-        name = "Montserrat";
-      };
-      serif = {
-        package = pkgs.unstable.montserrat;
-        name = "Montserrat";
+        # Starship is themed by its own custom starship.toml palette, not Stylix.
+        starship.enable = false;
+        librewolf.profileNames = ["Default"];
       };
     };
-
-    targets = {
-      # Stylix auto-enables hyprpaper whenever stylix.image is set, and it then
-      # paints a second wallpaper layer underneath Noctalia's own on every
-      # monitor (verified with `hyprctl layers`). Noctalia owns the wallpaper.
-      hyprland.hyprpaper.enable = false;
-
-      # Starship is themed by its own custom starship.toml palette, not Stylix.
-      starship.enable = false;
-      librewolf.profileNames = ["Default"];
-    };
-  };
 }
