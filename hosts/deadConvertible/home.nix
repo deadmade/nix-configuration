@@ -82,6 +82,19 @@
     };
   };
 
+  # Video wallpaper on battery. Different leaves from the shared module's
+  # video_directory, so these merge rather than conflict -- no mkForce needed.
+  programs.noctalia.settings.plugin_settings."noctalia/mpvpaper" = {
+    # "full" (the default, kept on the desktop) only pauses behind fullscreen
+    # windows. On a laptop a maximised browser covers the wallpaper just as
+    # completely, and decoding a loop nobody can see is pure battery.
+    auto_pause = "max";
+    # The loops are 1920x1080 and this panel is 1920x1200, so mpv's default
+    # aspect-preserving fit would letterbox. panscan fills by scaling 1.11x and
+    # cropping the sides instead.
+    mpv_options = "--panscan=1.0";
+  };
+
   home.shellAliases = {
     updateNix = "nix flake update && sudo nixos-rebuild switch --flake .#deadConvertible && home-manager switch --flake .#deadmade@deadConvertible";
   };

@@ -11,7 +11,14 @@
         flake-checker.enable = false;
         check-merge-conflicts.enable = true;
         convco.enable = true;
-        check-added-large-files.enable = true;
+        check-added-large-files = {
+          enable = true;
+          # 500kB, the upstream default, rejects most of wallpapers/ -- and the
+          # kaneki-abyss video loop in wallpapers/video/ is 13MB. Raised rather
+          # than bypassed with --no-verify so adding a wallpaper stays a normal
+          # commit.
+          args = ["--maxkb=20000"];
+        };
         end-of-file-fixer.enable = true;
         trufflehog.enable = true;
       };

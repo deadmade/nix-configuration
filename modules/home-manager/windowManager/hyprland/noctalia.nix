@@ -51,6 +51,14 @@
           # `/tm` in the launcher lists and attaches tmux sessions. The terminal
           # already autostarts `tmux new-session -A -s main`.
           "dunarand/tmux-provider"
+          # Animated wallpapers (wallpapers/video/). It supervises one mpvpaper
+          # per output AND tells Noctalia to drop its own wallpaper on just the
+          # outputs a video is assigned to, which is the whole reason to use the
+          # plugin instead of running mpvpaper directly -- a bare mpvpaper would
+          # draw a second layer-shell surface fighting the one configured under
+          # `wallpaper` below. mpvpaper/mpv/socat are in default.nix and are
+          # required, not optional: without mpv there are no thumbnails.
+          "noctalia/mpvpaper"
           # NOT enabled: k4n4t4/hypr-submap. It loads, but every poll throws
           #   submap.luau:39: invalid argument #1 to 'trim' (string expected,
           #   got table)
@@ -73,6 +81,20 @@
               repo = "community-plugins";
               rev = "ea86850b8c21f9f8f3663021163b8f071040986d";
               hash = "sha256-7I7A4EuxiRTRZycDOErPP8oSdtAcv7zhJEpQU+S2mq0=";
+            }}";
+            enabled = true;
+          }
+          # Same treatment for the official set, which ships noctalia/mpvpaper.
+          # Pinned as a path source rather than re-enabling the built-in
+          # `official` git source below, so nothing is fetched at startup.
+          {
+            name = "official-pinned";
+            kind = "path";
+            location = "${pkgs.fetchFromGitHub {
+              owner = "noctalia-dev";
+              repo = "official-plugins";
+              rev = "f5d7f8049da8b7e830b6d3d57761bb869e46cede";
+              hash = "sha256-mYUomM1N+7eD65g6Mdfntn5rMrUBcH6T1BZuDBj3OmI=";
             }}";
             enabled = true;
           }
@@ -614,6 +636,22 @@
         # last and wins. That is the intended manual override.
         default.path = "/home/${vars.username}/.config/wallpapers/misty-boat.jpg";
       };
+    };
+  };
+
+  # Plugin settings are a TOML table of their own -- top-level
+  # [plugin_settings."author/plugin"], NOT nested under [plugins] -- keyed by the
+  # `key` fields in each plugin's plugin.toml. Only deviations from the manifest
+  # defaults are set, same rule as the rest of this file.
+  programs.noctalia.settings.plugin_settings = {
+    # Points the picker at the video half of the wallpaper set. Everything else
+    # the plugin defaults to is already right: mute = true (the loops have no
+    # audio track anyway), hardware_decode = true, auto_pause = "full" (pauses
+    # behind fullscreen windows), extract_last_frame = true (leaves a still
+    # behind when playback stops, which is what keeps a wallpaper on screen and
+    # is presumably what the palette generator reads).
+    "noctalia/mpvpaper" = {
+      video_directory = "/home/${vars.username}/.config/wallpapers/video";
     };
   };
 }

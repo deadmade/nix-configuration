@@ -19,6 +19,13 @@ with lib; {
   # hyprpicker was previously only reachable inside the hyprshot wrapper.
   home.packages = with pkgs; [
     hyprpicker
+    # Hard runtime deps of the noctalia/mpvpaper plugin, which shells out to all
+    # three: mpvpaper draws the wlr-layer-shell wallpaper surface, mpv renders
+    # the picker thumbnails, and socat carries slideshow state so the picker's
+    # tile highlighting tracks what is actually playing.
+    mpvpaper
+    mpv
+    socat
   ];
 
   # Noctalia's own `network` bar widget already speaks to NetworkManager, so
