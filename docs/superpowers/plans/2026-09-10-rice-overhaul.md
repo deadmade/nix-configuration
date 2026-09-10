@@ -36,7 +36,7 @@ real depth and blur, authored animation, and none of the dead config underneath.
 
 | Decision | Choice | Consequence |
 |---|---|---|
-| Colour authority | **Noctalia** (`theme.source = "wallpaper"`, `wallpaper_scheme = "m3-content"`) | Stylix demoted to fonts + cursor + apps Noctalia cannot reach. |
+| Colour authority | **Noctalia** (`theme.source = "wallpaper"`, `wallpaper_scheme = "vibrant"`) | Stylix demoted to fonts + cursor + apps Noctalia cannot reach. See the outcome note below: `m3-content` was the original pick and was wrong. |
 | Chrome shape | **Full-width bar, capsule widgets** | `margin_ends` stays `0`; widgets in pills, translucent, blurred by a Hyprland layerrule. |
 | Appetite | **Go all in**, one carve-out | New fonts, icon theme, packages in scope. |
 | Login manager | **Keep tuigreet** | Greeter swap declined. `noctalia-greeter` 1.3.1 was verified viable but is **not** being adopted. Not in this plan. |
@@ -402,3 +402,63 @@ snippets) is at
 `/tmp/claude-1000/-home-deadmade-nix-configuration/d8ca1b02-1a8d-481c-9020-c3c5c2c3156f/scratchpad/`
 — `pair-*.json` and `corrections.md`. **Copy these into `docs/` as the first implementation step**;
 the scratchpad is session-scoped and will be lost.
+
+
+---
+
+# Outcome (implemented 2026-09-10)
+
+All five phases are implemented, switched and verified on deadPc. Commits `c8a5b5e`
+(phase 1) through `e12ef5f` (phase 5).
+
+## Corrections to this plan, made during implementation
+
+**`m3-content` was the wrong scheme.** The plan reasoned about generator names; measuring
+actual output contradicted it. Both Material generators push this dark, low-chroma wallpaper
+set into a near-white pastel band, so the accent barely changed between wallpapers — which
+defeats the point of wallpaper-driven colour:
+
+| scheme | Clearnight.jpg | dark-waves.jpg |
+|---|---|---|
+| m3-content | `#bec2ff` | `#bec6e0` |
+| m3-tonal-spot | `#bec2ff` | `#b0c6ff` |
+| **vibrant** | **`#65a8e7`** | **`#6781e4`** |
+
+`vibrant` also emits all 72 roles including the full `surface_container_*` ramp, so the plan's
+stated reason for preferring a Material generator did not hold either.
+
+**`hyprctl dispatch` is not a Lua eval channel.** It wraps its argument in
+`return hl.dispatch(...)`, so the multi-statement hook the plan proposed is a syntax error.
+`hyprctl eval` is the real channel and is what `hooks.colors_changed` uses.
+
+**Gradient borders are a table, not a string.** The Lua setter rejects hyprlang's
+`"col1 col2 45deg"` form with `invalid color`. `HL.Gradient` is
+`string|{colors:string[], angle?:number}`.
+
+**Idle behaviours need an explicit `action`.** Declaring an `[idle.behavior.<name>]` table
+replaces the built-in entry rather than merging into it. `enabled` + `timeout` alone yields
+`idle behavior 'lock' ignored: needs an action` at runtime, and `noctalia config validate`
+does not catch it — only the journal does.
+
+## Deferred, deliberately
+
+- **ddcutil brightness on deadPc.** Needs `hardware.i2c.enable` plus i2c group membership,
+  and whether the HP V27e / Acer XB252Q panels answer DDC/CI is unverified. `noctalia msg
+  brightness-up` returns `brightness control unavailable` on this host; the binds are
+  harmless no-ops there and work on deadConvertible's real backlight.
+- **Noctalia Greeter.** Declined by the user. `noctalia-greeter` 1.3.1 is in nixpkgs and was
+  verified viable (self-contained greetd session binary, polkit action for appearance sync),
+  but it wants a dedicated system user and, below 1.5.0, cannot do passwordless sync.
+
+## Pre-existing breakage found, not fixed
+
+`hosts/deadConvertible/config.nix` pins `pkgs.unstable.ladybird`, which nixpkgs now marks
+insecure, so that host cannot evaluate. It fails identically on `main` and predates this work.
+deadConvertible's Home Manager config evaluates fine; only its NixOS side is blocked.
+
+## Unmanaged files moved aside
+
+`~/.config/rice-overhaul-backup-2026-09-10/` holds the v4 Noctalia colour orphan, the stale
+`hyprland.conf` stub and its pre-Lua backup, the pre-existing `qt6ct.conf`, the three
+hand-installed v4 QML plugins, and the Noctalia state file as it was before the `[theme]`
+override was stripped. Delete when you are happy.
