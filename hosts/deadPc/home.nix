@@ -6,7 +6,34 @@
   ...
 }: {
   imports = [
-    outputs.homeManagerProfiles.desktopGaming
+    outputs.homeManagerModules.windowManager.hyprland
+    outputs.homeManagerModules.browser.librewolf
+    outputs.homeManagerModules.desktop.gtk
+    outputs.homeManagerModules.desktop.qt
+
+    outputs.homeManagerModules.core.aliases
+    outputs.homeManagerModules.core.btop
+    outputs.homeManagerModules.core.git
+    outputs.homeManagerModules.core.homeConfig
+    outputs.homeManagerModules.core.nixConfig
+    outputs.homeManagerModules.core.stylix
+
+    outputs.homeManagerModules.terminal.fastfetch
+    outputs.homeManagerModules.terminal.ghostty
+    outputs.homeManagerModules.terminal.kitty
+    outputs.homeManagerModules.terminal.nix-index
+    outputs.homeManagerModules.terminal.starship
+    outputs.homeManagerModules.terminal.tmux
+    outputs.homeManagerModules.terminal.yazi
+    outputs.homeManagerModules.terminal.zsh
+
+    outputs.homeManagerModules.coding.direnv
+    outputs.homeManagerModules.coding.vscodium
+    outputs.homeManagerModules.coding.zed
+
+    outputs.homeManagerModules.socialMedia.vencord
+    outputs.homeManagerModules.socialMedia.freetube
+    outputs.homeManagerModules.gaming
   ];
 
   home.packages = with pkgs; [

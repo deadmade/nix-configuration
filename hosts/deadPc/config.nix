@@ -14,7 +14,29 @@
     inputs.hardware.nixosModules.common-gpu-nvidia-nonprime
     inputs.hardware.nixosModules.common-pc-ssd
 
-    outputs.nixosProfiles.desktopAll
+    outputs.nixosModules.core.defaults
+    outputs.nixosModules.core.grub2-bootloader
+    outputs.nixosModules.core.localization
+    outputs.nixosModules.core.network
+    outputs.nixosModules.core.nixsecauditor
+    outputs.nixosModules.core.optimize
+    outputs.nixosModules.core.packages
+    outputs.nixosModules.core.security
+    outputs.nixosModules.core.user
+
+    outputs.nixosModules.desktop.ai
+    outputs.nixosModules.desktop.base
+    outputs.nixosModules.desktop.bluetooth
+    outputs.nixosModules.desktop.jetbrains
+    outputs.nixosModules.desktop.logitech
+    outputs.nixosModules.desktop.packages
+    outputs.nixosModules.desktop.stylix
+    outputs.nixosModules.desktop.tailscale
+    outputs.nixosModules.desktop.vpn
+    outputs.nixosModules.desktop.wayvnc
+
+    outputs.nixosModules.virtualization.podman
+    outputs.nixosModules.virtualization.vm
     outputs.nixosModules.virtualization.vmware
     outputs.nixosModules.hardening.nix-mineral
   ];

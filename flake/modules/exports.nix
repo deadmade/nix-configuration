@@ -4,8 +4,6 @@
     overlays = import ../../overlays {inherit inputs;};
     nixosModules = registry ../../modules/nixos;
     homeManagerModules = registry ../../modules/home-manager;
-    nixosProfiles = import ../../profiles/nixos;
-    homeManagerProfiles = import ../../profiles/home-manager;
   };
 in {
   _module.args.projectOutputs = projectOutputs;

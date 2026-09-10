@@ -5,17 +5,25 @@
   lib,
   ...
 }: {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
 
-      inputs.hardware.nixosModules.common-pc-ssd
-    ]
-    ++ (builtins.attrValues outputs.nixosModules.core)
-    ++ [
-      outputs.nixosProfiles.virtualization
-    ];
+    inputs.hardware.nixosModules.common-pc-ssd
+
+    outputs.nixosModules.core.defaults
+    outputs.nixosModules.core.grub2-bootloader
+    outputs.nixosModules.core.localization
+    outputs.nixosModules.core.network
+    outputs.nixosModules.core.nixsecauditor
+    outputs.nixosModules.core.optimize
+    outputs.nixosModules.core.packages
+    outputs.nixosModules.core.security
+    outputs.nixosModules.core.user
+
+    outputs.nixosModules.virtualization.podman
+    outputs.nixosModules.virtualization.vm
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.grub.device = lib.mkForce "/dev/sda";

@@ -15,7 +15,12 @@
     ./hardware-configuration.nix
 
     inputs.nixos-wsl.nixosModules.default
-    outputs.nixosProfiles.wsl
+    outputs.nixosModules.core.defaults
+    outputs.nixosModules.core.packages
+    outputs.nixosModules.core.user
+    outputs.nixosModules.core.localization
+    outputs.nixosModules.core.optimize
+    outputs.nixosModules.desktop.ai
     #outputs.nixosModules.core.network
   ];
 

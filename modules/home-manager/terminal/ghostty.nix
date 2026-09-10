@@ -15,7 +15,7 @@
 
       # font-family, font-size and background-opacity all come from the Stylix
       # ghostty target. Do NOT restate them here: this module is also imported by
-      # profiles/home-manager/wsl.nix, and deadWsl has no stylix module at all,
+      # hosts/deadWsl/home.nix, and deadWsl has no stylix module at all,
       # so any config.stylix.* reference would break `nix flake check`.
       #
       # The theme name is forced instead. Noctalia's ghostty template renders the
