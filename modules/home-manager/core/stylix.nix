@@ -43,7 +43,11 @@
     };
 
     targets = {
-      hyprlock.enable = false;
+      # Stylix auto-enables hyprpaper whenever stylix.image is set, and it then
+      # paints a second wallpaper layer underneath Noctalia's own on every
+      # monitor (verified with `hyprctl layers`). Noctalia owns the wallpaper.
+      hyprland.hyprpaper.enable = false;
+
       # Starship is themed by its own custom starship.toml palette, not Stylix.
       starship.enable = false;
       librewolf.profileNames = ["Default"];

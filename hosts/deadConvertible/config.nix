@@ -14,6 +14,7 @@
       inputs.hardware.nixosModules.common-pc-laptop
       inputs.hardware.nixosModules.common-pc-ssd
 
+      outputs.nixosModules.desktop.base
       outputs.nixosModules.desktop.bluetooth
       outputs.nixosModules.desktop.packages
       outputs.nixosModules.desktop.stylix
@@ -25,8 +26,6 @@
       outputs.nixosProfiles.virtualization
     ]
     ++ (builtins.attrValues outputs.nixosModules.core);
-
-  environment.pathsToLink = ["/share/zsh"];
 
   networking.hostName = "deadConvertible"; # Define your hostname.
   networking.networkmanager.enable = true;
@@ -42,38 +41,11 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = ["evdi" "wacom"];
 
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-hyprland
-    ];
-    config = {
-      common.default = "hyprland";
-    };
-  };
-
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.amd.updateMicrocode = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = false;
-
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = false;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
 
   services.upower.enable = true;
   services.power-profiles-daemon.enable = true;

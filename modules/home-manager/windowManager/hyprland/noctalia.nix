@@ -81,9 +81,24 @@
 
     settings = {
       shell = {
-        avatar_path = "/home/${vars.username}/.face";
+        # ~/.face never existed. Point at the avatar committed in this repo so the
+        # lock screen and control-center user card actually render one.
+        avatar_path = "${../../assets/avatar.jpg}";
+
+        # Apps launched from the launcher become children of noctalia.service
+        # otherwise, so every `nhs` that restarts the unit kills them.
+        launch_apps_as_systemd_services = true;
+
+        # security.polkit.enable is on but no agent was running, so GUI privilege
+        # prompts failed silently. Noctalia ships one and it follows the theme.
+        polkit_agent = true;
+
         panel = {
-          launcher_placement = "centered";
+          # v5 enum is attached | floating; "centered" was discarded with a
+          # warning. floating + launcher_position = "center" is the real pair,
+          # and is already the effective default -- this just makes it honest.
+          launcher_placement = "floating";
+          launcher_position = "center";
         };
       };
 
@@ -116,12 +131,17 @@
             "session"
             "clock"
             "notifications"
-            {
-              id = "control-center";
-              useDistroLogo = true;
-            }
+            "control-center"
           ];
         };
+      };
+
+      # v5 moved per-widget options out of the lane lists into [widget.<id>].
+      # `useDistroLogo` does not exist; a custom image plus colorize is how the
+      # NixOS logo gets there, and colorize makes it track the wallpaper palette.
+      widget."control-center" = {
+        custom_image = "${pkgs.nixos-icons}/share/icons/hicolor/96x96/apps/nix-snowflake-white.png";
+        custom_image_colorize = true;
       };
 
       control_center = {
@@ -134,6 +154,13 @@
           {type = "caffeine";}
           {type = "nightlight";}
         ];
+
+        # v5 has no [[calendar.cards]]. Top-level [calendar] is the CalDAV sync
+        # service; the clock-popup calendar is configured here instead.
+        calendar = {
+          show_events_card = false;
+          show_week_numbers = true;
+        };
       };
 
       # The dock (running-apps menu) is disabled.
@@ -148,26 +175,6 @@
       weather = {
         enabled = false;
         unit = "metric";
-      };
-
-      # Clock popup (click the bar clock) renders these cards. Disable the two
-      # calendar cards so the popup shows no calendar; the weather card is also
-      # gated by weather.enabled above.
-      calendar = {
-        cards = [
-          {
-            id = "calendar-header-card";
-            enabled = false;
-          }
-          {
-            id = "calendar-month-card";
-            enabled = false;
-          }
-          {
-            id = "weather-card";
-            enabled = false;
-          }
-        ];
       };
 
       wallpaper = {

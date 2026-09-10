@@ -9,8 +9,9 @@
       gitUsername = "deadmade";
       gitEmail = "manuel.schuelein@proton.me";
       username = "deadmade";
-      browser = "helium";
-      terminal = "kitty";
+      # Consumed by modules/home-manager/windowManager/hyprland/config.nix.
+      browser = "librewolf";
+      terminal = "ghostty";
       keyboardLayout = "de";
       consoleKeyMap = "de";
     };

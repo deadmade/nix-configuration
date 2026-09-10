@@ -1,7 +1,6 @@
 {
   outputs,
   pkgs,
-  config,
   ...
 }: {
   imports = [
@@ -39,15 +38,6 @@
       hl.bind("SUPER + F5", hl.dsp.exec_cmd("brightnessctl set 10%-"))
       hl.bind("SUPER + F6", hl.dsp.exec_cmd("brightnessctl set 10%+"))
     '';
-  };
-
-  services.wpaperd = {
-    settings = {
-      eDP-1 = {
-        path = "${config.xdg.configHome}/wallpapers";
-        apply-shadow = true;
-      };
-    };
   };
 
   home.shellAliases = {
