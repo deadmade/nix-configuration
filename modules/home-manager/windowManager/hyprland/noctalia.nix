@@ -121,9 +121,9 @@
       # palette rather than `hyprctl reload`, which would re-run the whole config
       # including hyprsplit's setup and every keybind registration.
       hooks = {
-        colors_changed = [
-          "hyprctl eval 'package.loaded[\"noctalia\"] = nil; local ok, m = pcall(function() return require(\"noctalia\") end); if ok and m.apply_theme then m.apply_theme() end'"
-        ];
+        # _G.noctalia_apply is defined in config.nix's extraConfig. It busts the
+        # module cache, re-applies the palette AND rebuilds the gradient border.
+        colors_changed = ["hyprctl eval '_G.noctalia_apply()'"];
       };
 
       # Bar layout. Lanes take widget instance ids; per-widget options live in
