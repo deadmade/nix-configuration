@@ -47,6 +47,10 @@
         font_family = "Adwaita Sans";
 
         panel = {
+          # "solid" ignores the palette's translucency entirely; "glass" lets the
+          # blurred desktop through the launcher/control-centre/session panels.
+          transparency_mode = "glass";
+
           # v5 enum is attached | floating; "centered" was discarded with a
           # warning. floating + launcher_position = "center" is the real pair,
           # and is already the effective default -- this just makes it honest.
@@ -122,28 +126,92 @@
         ];
       };
 
-      # Bar layout. start/center/end take widget ids (or the predefined sysmon
-      # widget instances cpu/temp/ram/network_rx/network_tx, and active_window).
+      # Bar layout. Lanes take widget instance ids; per-widget options live in
+      # [widget.<id>] and shared-pill grouping in [[bar.default.capsule_group]].
       bar = {
         order = ["default"];
         default = {
           position = "top";
           margin_ends = 0; # span the full screen width (default 180 leaves end gaps)
-          start = ["workspaces" "cpu" "temp" "ram" "network_rx" "network_tx"];
+
+          # PRECONDITION for the compositor blur in the Hyprland layer rules: the
+          # bar was fully opaque, so any amount of blur behind it was invisible.
+          # 0.40 sits well above the layer rule's ignore_alpha threshold (0.25),
+          # which is what decides whether Hyprland bothers blurring the surface.
+          background_opacity = 0.4;
+
+          # Widgets sit in pills rather than floating loose on the rail. Related
+          # ones share a single pill via capsule_group below.
+          capsule = true;
+          capsule_fill = "surface_variant";
+          capsule_opacity = 0.55;
+          capsule_padding = 8;
+          capsule_thickness = 0.78;
+
+          padding = 12;
+          widget_spacing = 8;
+
+          start = ["workspaces" "group:sys"];
           center = ["active_window"];
-          # control-center is the rightmost button; useDistroLogo makes it show
-          # the detected OS logo (NixOS here) instead of the default noctalia icon.
           end = [
+            "group:media"
             "tray"
-            "battery"
-            "volume"
-            "network"
+            "group:status"
+            "group:time"
             "session"
-            "clock"
-            "notifications"
             "control-center"
           ];
+
+          capsule_group = [
+            {
+              id = "sys";
+              members = ["cpu" "temp" "ram" "network_rx" "network_tx"];
+              padding = 8.0;
+              opacity = 0.55;
+            }
+            {
+              id = "media";
+              members = ["audio_vis" "media"];
+              padding = 8.0;
+              opacity = 0.55;
+              # Collapse to just the spectrum until hovered, so a long track
+              # title does not shove the centred window title off-centre.
+              accordion = true;
+              accordion_direction = "end";
+            }
+            {
+              id = "status";
+              members = ["privacy" "caffeine" "nightlight" "network" "volume"];
+              padding = 8.0;
+              opacity = 0.55;
+            }
+            {
+              id = "time";
+              members = ["clock" "notifications"];
+              padding = 8.0;
+              opacity = 0.55;
+            }
+          ];
         };
+      };
+
+      # Notifications and the OSD default to monitors = [], which puts them on
+      # every output. On three screens that means the same toast three times.
+      # DP-3 is the centre 240Hz panel and the one actually being looked at.
+      notification = {
+        monitors = ["DP-3"];
+        position = "top_right";
+        background_opacity = 0.92;
+        # 0 means unlimited, which lets a burst of notifications cover the screen.
+        max_visible = 5;
+        # 0 means keep forever; the history file was already 52 KB.
+        history_retention_hours = 168;
+      };
+
+      osd = {
+        monitors = ["DP-3"];
+        position = "bottom_center";
+        background_opacity = 0.92;
       };
 
       # v5 moved per-widget options out of the lane lists into [widget.<id>].
@@ -152,6 +220,29 @@
       widget."control-center" = {
         custom_image = "${pkgs.nixos-icons}/share/icons/hicolor/96x96/apps/nix-snowflake-white.png";
         custom_image_colorize = true;
+      };
+
+      # Reads the PipeWire monitor stream directly -- no cava needed. The two
+      # gradient roles track the wallpaper palette, so the spectrum recolours
+      # along with everything else.
+      widget.audio_vis = {
+        type = "audio_visualizer";
+        width = 64;
+        bands = 20;
+        color_1 = "primary";
+        color_2 = "secondary";
+      };
+
+      widget.media = {
+        type = "media";
+        max_length = 200.0;
+        title_scroll = "on_hover";
+      };
+
+      widget.active_window = {
+        type = "active_window";
+        max_length = 320.0;
+        title_scroll = "on_hover";
       };
 
       control_center = {
