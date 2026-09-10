@@ -639,6 +639,37 @@
     };
   };
 
+  # The mpvpaper picker's per-output assignments are RUNTIME STATE, not a config
+  # setting -- the plugin's manifest declares no key for them. The service reads
+  # this file at startup and REWRITES it on every change (mpvpaper_service.luau
+  # persist/loadAssignments, STATE_FILE), so a home.file store symlink is not an
+  # option: the plugin's writeFile would die with EACCES the first time a video
+  # is picked, the same failure core/stylix.nix documents for Noctalia's apply.sh
+  # scripts. Seeding a real writable file is the only way to get a video
+  # wallpaper on a fresh install without opening the picker by hand.
+  #
+  # "*" means every output, resolved at runtime against noctalia.outputs(), so
+  # this is correct for deadPc's three monitors and deadConvertible's one alike.
+  #
+  # Seeded only when ABSENT, which makes it a DEFAULT and not a lock -- the same
+  # posture as wallpaper.default.path above. Picking a different video in the
+  # picker rewrites the file and that choice then survives every later rebuild.
+  # To force the repo's choice back, delete the file and re-run `nhs`.
+  home.activation.noctaliaMpvpaperAssignment = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    target="${config.xdg.stateHome}/noctalia/mpvpaper/assignments.json"
+    if [ ! -e "$target" ]; then
+      run install -Dm644 ${
+      (pkgs.formats.json {}).generate "noctalia-mpvpaper-assignments.json" {
+        assignments."*" = "/home/${vars.username}/.config/wallpapers/video/kaneki-abyss.mp4";
+        # The plugin tracks which outputs it wrapped in a systemd scope here.
+        # run_as_systemd is off, so it starts empty rather than absent -- the
+        # loader reads decoded.launchedAsSystemd and expects a table.
+        launchedAsSystemd = {};
+      }
+    } "$target"
+    fi
+  '';
+
   # Plugin settings are a TOML table of their own -- top-level
   # [plugin_settings."author/plugin"], NOT nested under [plugins] -- keyed by the
   # `key` fields in each plugin's plugin.toml. Only deviations from the manifest
