@@ -18,6 +18,7 @@
     outputs.nixosModules.core.grub2-bootloader
     outputs.nixosModules.core.localization
     outputs.nixosModules.core.network
+    outputs.nixosModules.core.nix-mineral
     outputs.nixosModules.core.nixsecauditor
     outputs.nixosModules.core.optimize
     outputs.nixosModules.core.packages
@@ -38,7 +39,6 @@
     outputs.nixosModules.virtualization.podman
     outputs.nixosModules.virtualization.vm
     outputs.nixosModules.virtualization.vmware
-    outputs.nixosModules.hardening.nix-mineral
   ];
 
   boot.binfmt.emulatedSystems = [
