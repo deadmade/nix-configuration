@@ -18,7 +18,6 @@
     (import ../../../flake/lib/theme.nix {inherit pkgs;})
     // {
       enable = true;
-      image = ../../../wallpapers/dark-waves.jpg;
       autoEnable = true;
 
       targets = {

@@ -10,7 +10,28 @@
 # Noctalia cannot template. Fonts and cursor remain genuinely Stylix's job.
 {pkgs}: {
   polarity = "dark";
+
+  # Catppuccin Mocha, deliberately, for the ~8 apps Noctalia cannot template.
+  #
+  # Deriving this from the wallpaper instead was TRIED and rejected on evidence.
+  # stylix/palette.nix:125-131 does make base16Scheme default to a palette
+  # generated from stylix.image, so the mechanism works -- but Stylix's generator
+  # picks dominant image colours and assigns them to base16 slots without regard
+  # for what those slots MEAN. Measured on this wallpaper set:
+  #
+  #   misty-boat.jpg   red #968da2  green #968e9d  -> RGB distance 5.1
+  #   Cloudsnight.jpg  closest accent pair          -> RGB distance 15.9,
+  #                    and it put blue in the red slot and red in the blue slot
+  #
+  # Under ~40 is effectively indistinguishable, so git diff +/- lines, syntax
+  # highlighting and error-vs-success text would all collapse to one wash.
+  # Noctalia's `vibrant` generator boosts chroma and keeps its roles semantic;
+  # Stylix's does neither. A hand-tuned scheme is the right tool here.
   base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+
+  # Still set (the wallpaper Noctalia pins), because several Stylix targets use
+  # the image itself rather than the palette.
+  image = ../../wallpapers/misty-boat.jpg;
 
   opacity = {
     terminal = 0.8;

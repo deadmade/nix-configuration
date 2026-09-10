@@ -248,6 +248,33 @@
             "btop"
           ];
 
+          # Community templates. NOTE the first apply of any new id needs
+          # NETWORK: the cached dirs hold only template.toml, and payloads are
+          # fetched from api.noctalia.dev. A failing id is contained -- the
+          # apply service warns per id and carries on.
+          #
+          # Only ids that something actually READS are here. Deliberately absent:
+          #   neovim    -- writes ~/.config/nvim/lua/matugen.lua, but nvim comes
+          #                from an opaque external flake and never puts that path
+          #                on runtimepath. Unfixable from this repo.
+          #   vscode    -- writes into a version-pinned marketplace extension dir
+          #                (noctaliatheme-0.0.5) that is not installed.
+          #   fastfetch -- EACCES on the HM-owned config.jsonc, AND fastfetch has
+          #                no include directive, so the theme file is unreadable
+          #                by any config line.
+          enable_community_templates = true;
+          community_ids = [
+            "zed"
+            "tmux"
+            "fzf"
+            "bat"
+            # Lands safely but Vencord only injects themes named in
+            # enabledThemes, which nixcord never writes (it is disabled). Tick
+            # "noctalia" once in Vesktop -> Settings -> Themes; it persists and
+            # re-renders on every palette change.
+            "discord"
+          ];
+
           # The builtin `starship` id is deliberately NOT in the list above: its
           # apply.sh does `cat "$tmp" > "$STARSHIP_CONFIG"`, and home-manager
           # points that at a read-only /nix/store symlink -> EACCES, killing the
@@ -272,7 +299,13 @@
       hooks = {
         # _G.noctalia_apply is defined in config.nix's extraConfig. It busts the
         # module cache, re-applies the palette AND rebuilds the gradient border.
-        colors_changed = ["hyprctl eval '_G.noctalia_apply()'"];
+        colors_changed = [
+          "hyprctl eval '_G.noctalia_apply()'"
+          # bat only sees a .tmTheme after its cache is rebuilt, and the bat
+          # template's own apply.sh never gets that far (it dies EACCES on the
+          # HM-owned bat/config first). This fires after templates render.
+          "bat cache --build"
+        ];
       };
 
       # Bar layout. Lanes take widget instance ids; per-widget options live in
@@ -439,6 +472,76 @@
       # The dock (running-apps menu) is disabled.
       dock = {
         enabled = false;
+      };
+
+      lockscreen = {
+        # NOT which screens lock -- ext-session-lock locks all of them by
+        # protocol. This is which are INTERACTIVE (lock_screen.cpp:633-655 ->
+        # setBlackout(!interactive)). The centre 240Hz panel gets wallpaper,
+        # blur and the login box; the two sides go solid black. One composed
+        # screen instead of three copies of the same widget.
+        #
+        # It also collapses the config: only DP-3's login-box entry is ever
+        # consulted, so one widget table is needed instead of three.
+        #
+        # Safety valve at :648-651 -- if no configured selector matches a present
+        # output, the restriction is dropped rather than blacking out everything.
+        monitors = ["DP-3"];
+
+        # Defaults are 0.5/0.3. This wallpaper is low-contrast and misty, so the
+        # login box needs the background pushed further back to read as
+        # foreground, and the tint is what buys legible text on top of it.
+        blur_intensity = 0.7;
+        tint_intensity = 0.5;
+
+        # Inert on this host -- the shell logs "no fprintd device available" on
+        # every start. Off, so it stops trying.
+        fingerprint = false;
+      };
+
+      # The login box renders even though lockscreen_widgets.enabled stays false:
+      # LockSurface reads this config directly via findForOutput
+      # (lock_surface.cpp:1573-1595) and never consults the widgets gate. Leaving
+      # `enabled` unset keeps the widget host/editor overlay off while still
+      # styling the box.
+      #
+      # NOTE: `widget_order` is deliberately absent. When present it acts as an
+      # allowlist and silently drops any id not named in it.
+      lockscreen_widgets = {
+        widget."lockscreen-login-box@DP-3" = {
+          type = "login_box";
+          output = "DP-3";
+          enabled = true;
+          box_width = 760.0;
+
+          settings = {
+            layout = "regular";
+
+            # A palette role, so it tracks the wallpaper. `surface` is a step
+            # darker than the default surface_variant and reads as a panel
+            # rather than a chip. Note the surface_container* roles exist in the
+            # palette but are NOT accepted here -- the config token set is
+            # narrower than the role set, and the build-time validator rejects
+            # them (verified against `noctalia config validate`).
+            background_color = "surface";
+            background_opacity = 0.72;
+            background_radius = 20.0;
+            input_opacity = 1.0;
+            input_radius = 12.0;
+            center_password_text = true;
+
+            show_session_buttons = true;
+            show_login_button = true;
+            show_unlock_hint = true;
+            show_caps_lock = true;
+            show_media = true;
+            # Has real data now that weather is enabled; renders once the first
+            # fetch lands after a cold start.
+            show_weather = true;
+            # Single layout on this machine, so the row is permanent noise.
+            show_keyboard_layout = false;
+          };
+        };
       };
 
       # The machine never locked, never blanked and never suspended: all three

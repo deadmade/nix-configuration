@@ -9,14 +9,6 @@
     terminal = "tmux-256color"; # Enable true color support
     plugins = with pkgs; [
       {
-        # Catppuccin Mocha status bar — matches the global Stylix scheme.
-        plugin = tmuxPlugins.catppuccin;
-        extraConfig = ''
-          set -g @catppuccin_flavor 'mocha'
-          set -g @catppuccin_window_status_style 'none'
-        '';
-      }
-      {
         plugin = tmuxPlugins.resurrect;
         extraConfig = ''
           unbind s
@@ -36,6 +28,16 @@
 
     extraConfig = ''
       set -g status-position top
+
+      # Noctalia's tmux template renders themes/noctalia.conf from the wallpaper
+      # palette. Its apply.sh deletes any existing noctalia source-file line,
+      # re-appends it at EOF, then `cmp -s` -- so if this identical line is
+      # already last, no write is attempted and the script proceeds to
+      # live-reload running servers instead of dying EACCES on this store symlink.
+      #
+      # Must be byte-exact and LAST. XDG_CONFIG_HOME is unset in this session, so
+      # apply.sh takes its $HOME branch and emits exactly this string.
+      source-file -q "$HOME/.config/tmux/themes/noctalia.conf"
     '';
   };
   programs.zsh.prezto.tmux.autoStartLocal = true;
