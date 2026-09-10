@@ -6,3 +6,6 @@ result-*
 
 .direnv
 .pre-commit-config.yaml
+
+# Disk image left behind by `nixos-rebuild build-vm` and friends
+nixos.qcow2

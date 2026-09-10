@@ -43,67 +43,12 @@
       ];
     };
 
+    # deadRetro is a NixOS 14.12 KDE 4 VM rather than a nixosConfiguration, so
+    # it lives in hosts/deadRetro/ but is exposed as an app instead of via
+    # hosts/hosts.nix. Run it with `nix run .#deadRetro`.
     apps.deadRetro = {
       type = "app";
-      program = let
-        pkgs14 = inputs.multiverse.multiverse.${system}.at "14.12";
-        retroVM = import "${pkgs14.path}/nixos/lib/eval-config.nix" {
-          inherit system;
-          modules = [
-            "${pkgs14.path}/nixos/modules/virtualisation/qemu-vm.nix"
-            ({pkgs, ...}: {
-              services.xserver = {
-                enable = true;
-                displayManager.kdm.enable = true;
-                desktopManager.kde4.enable = true;
-
-                # Set a specific resolution
-                resolutions = [
-                  {
-                    x = 1920;
-                    y = 1080;
-                  }
-                ];
-
-                # If you want to change the keyboard layout from US:
-                layout = "de";
-              };
-
-              environment.systemPackages = with pkgs; [
-                kde4.kdegraphics
-                kde4.kdemultimedia
-                kde4.kdenetwork # Includes Kopete
-                kde4.kdegames # Classic KDE games
-                kde4.kdetoys # AMOR, KTeaTime
-                kde4.yakuake # Iconic drop-down terminal
-                kde4.konversation # KDE IRC client
-                audacious
-                clementine # Amarok fork! peak 2014 music
-                pidgin
-                xchat # Classic GTK IRC
-                abiword # Lightweight word processor
-                gnumeric # Spreadsheet
-                conky
-                vlc
-                firefox
-              ];
-
-              users.extraUsers.retro = {
-                isNormalUser = true;
-                password = "retro";
-              };
-
-              virtualisation.memorySize = 4096;
-              virtualisation.qemu.options = ["-vga qxl" "-smp 2"];
-            })
-          ];
-        };
-        wrapper = pkgs.writeShellScript "run-deadRetro" ''
-          export LC_ALL=C
-          unset LOCALE_ARCHIVE
-          exec ${retroVM.config.system.build.vm}/bin/run-nixos-vm "$@"
-        '';
-      in "${wrapper}";
+      program = "${import ../../hosts/deadRetro {inherit inputs system pkgs;}}";
     };
   };
 }

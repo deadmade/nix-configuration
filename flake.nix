@@ -147,6 +147,8 @@
       inputs.home-manager.follows = "home-manager";
     };
 
+    gitluxe.url = "git+file:///home/deadmade/gitluxe";
+
     tuitr.url = "github:deadmade/tuitr";
 
     nix-index-database = {

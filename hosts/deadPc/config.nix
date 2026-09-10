@@ -41,7 +41,7 @@
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
-  boot.kernelPackages = pkgs.linuxPackages_7_1;
+  boot.kernelPackages = pkgs.linuxPackages_7_2;
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = false;
@@ -93,9 +93,10 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     tuigreet
-    inputs.neovim-config.packages.${pkgs.stdenv.hostPlatform.system}.nvim
+    #inputs.neovim-config.packages.${pkgs.stdenv.hostPlatform.system}.nvim
     inputs.chiplang-nix.packages.${pkgs.stdenv.hostPlatform.system}.depthfinder
     inputs.chiplang-nix.packages.${pkgs.stdenv.hostPlatform.system}.dfn-mounter
+    inputs.gitluxe.packages.${pkgs.stdenv.hostPlatform.system}.default
     pkgs.unstable.vlc
     pkgs.unstable.telegram-desktop
   ];
@@ -121,6 +122,17 @@
     nvidia = {
       open = false;
       powerManagement.enable = true;
+      # nixpkgs 26.05 still ships 595.71.05, whose nvidia/os-interface.c calls
+      # strncpy() — removed from the kernel API in Linux 7.2. NVIDIA switched it
+      # to strscpy() in 595.99.02. Drop this override once nixpkgs catches up.
+      package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+        version = "595.99.02";
+        sha256_64bit = "sha256-6HR3lYv3YwcFSTJL1a1slI66btIQ5EAFs+/4SUD24ew=";
+        sha256_aarch64 = "sha256-CCqHZTN2KNOZ4yZp2rDcuRJp9pHfRw47k4m4dWnS/2w=";
+        openSha256 = "sha256-T36x/jx8yQ8l3LFp1rZIrTfcSwbGy8YSAvXOUSptpb4=";
+        settingsSha256 = "sha256-GYCcnxfKPrTCrsmd25sMyzfC5cqJQJx0c31haooyTYM=";
+        persistencedSha256 = "sha256-VyKtF/HdHPQrHHK6opSO69M72LmnGZtauuchj9uuje8=";
+      };
     };
     logitech.wireless = {
       enable = true;

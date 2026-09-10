@@ -11,7 +11,7 @@
     pkgs.unstable.protonmail-desktop
     pkgs.unstable.kdePackages.okular
     pkgs.unstable.spotify
-    pkgs.unstable.libreoffice-fresh
+    pkgs.unstable.libreoffice-stable
     pkgs.unstable.thunderbird
     pkgs.unstable.obsidian
     pkgs.unstable.signal-desktop
