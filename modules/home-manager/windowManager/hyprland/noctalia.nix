@@ -7,7 +7,20 @@
   starshipPromptTemplate,
   starshipRenderedConfig,
   ...
-}: {
+}: let
+  # The video wallpaper, named once. Three things derive from this path: the
+  # per-output assignment seeded below, the picker thumbnail's cache filename,
+  # and (via that thumbnail) the palette every other app is themed from.
+  videoWallpaper = "/home/${vars.username}/.config/wallpapers/video/anime-girl-near-car.mp4";
+
+  # mpvpaper_service.luau:251-253 -- cachePath() is `path:gsub("[^%w]", "_")`
+  # with a .jpg suffix, i.e. every non-alphanumeric byte becomes an underscore.
+  # Lua's %w is ASCII alphanumeric here.
+  mangleCacheName = lib.stringAsChars (c:
+    if builtins.match "[A-Za-z0-9]" c != null
+    then c
+    else "_");
+in {
   # Import the noctalia home-manager module from flake
   imports = [
     inputs.noctalia.homeModules.default
@@ -51,13 +64,18 @@
           # `/tm` in the launcher lists and attaches tmux sessions. The terminal
           # already autostarts `tmux new-session -A -s main`.
           "dunarand/tmux-provider"
-          # Animated wallpapers (wallpapers/video/). It supervises one mpvpaper
-          # per output AND tells Noctalia to drop its own wallpaper on just the
-          # outputs a video is assigned to, which is the whole reason to use the
-          # plugin instead of running mpvpaper directly -- a bare mpvpaper would
-          # draw a second layer-shell surface fighting the one configured under
-          # `wallpaper` below. mpvpaper/mpv/socat are in default.nix and are
-          # required, not optional: without mpv there are no thumbnails.
+          # Animated wallpapers (wallpapers/video/). It supervises mpvpaper AND
+          # tells Noctalia to drop its own wallpaper on just the outputs a video
+          # is assigned to, which is the whole reason to use the plugin instead
+          # of running mpvpaper directly -- a bare mpvpaper would draw a second
+          # layer-shell surface fighting the one configured under `wallpaper`
+          # below. mpvpaper/mpv/socat are in default.nix and are required, not
+          # optional: without mpv there are no thumbnails.
+          #
+          # The plugin.toml header says "one mpvpaper instance per output"; that
+          # is only true of per-connector assignments. This host assigns the
+          # wildcard "*", which mpvpaper itself expands, so it is ONE process
+          # painting all three monitors (~528MB RSS, ~5% of a core).
           "noctalia/mpvpaper"
           # NOT enabled: k4n4t4/hypr-submap. It loads, but every poll throws
           #   submap.luau:39: invalid argument #1 to 'trim' (string expected,
@@ -328,6 +346,25 @@
           # HM-owned bat/config first). This fires after templates render.
           "bat cache --build"
         ];
+
+        # The mpvpaper plugin has NO lock, DPMS, idle or power handling of its
+        # own -- grepped across every file in it. Left alone it keeps decoding
+        # 1080p behind the lock screen at ~5% of a core for as long as the
+        # session is locked. These are the only hooks that can reach it.
+        #
+        # `plugin <author/plugin:entry> <target> <event> [payload]`
+        # (plugin_ipc.cpp:15, :44-52). `service` is a singleton entry bound to no
+        # output, so the target MUST be `all` -- an output selector never names
+        # it (:113-121). The payload is deliberately EMPTY: mpvpaper_service.luau
+        # :643-657 freezes every assignment when the payload is not a non-empty
+        # string, which is what we want, whereas a literal "all" would be read as
+        # a connector name and match nothing.
+        #
+        # With run_as_systemd = false this is pkill -STOP / -CONT, so the CPU
+        # stops but the ~500MB of decoder buffers stay resident. SIGSTOP also
+        # freezes the last frame on screen, which is what the lock screen blurs.
+        session_locked = ["noctalia msg plugin noctalia/mpvpaper:service all pause"];
+        session_unlocked = ["noctalia msg plugin noctalia/mpvpaper:service all resume"];
       };
 
       # Bar layout. Lanes take widget instance ids; per-widget options live in
@@ -538,7 +575,8 @@
       #      remapForOutputChange adopts the output size and reports changed=true.
       #   3. login_box box_height is IGNORED and recomputed from the layout, so it
       #      must already equal defaultPanelHeight or it round-trips as a diff.
-      #      regular + session buttons + no info row = 128.
+      #      compact = 70; regular + session buttons + no info row = 128.
+      #      box_WIDTH, by contrast, is kept as declared and only clamped.
       #
       # widget_order is deliberately absent: when present it is an allowlist and
       # silently drops any id not named in it.
@@ -565,19 +603,23 @@
           # Setting BOTH box_width and box_height makes the footprint exactly that
           # rectangle, which is what allows the positions to be computed by hand --
           # and it is also what enables content scaling at all.
+          #
+          # Three elements, not five. The video wallpaper is the subject now; the
+          # widgets are a caption on it. A weather card and a media card were
+          # tried here and read as clutter.
 
-          # Time. background=false drops the padding term, so box_height becomes
-          # the font-size dial: contentScaleForBox fits content to the box
-          # preserving aspect, and for a wide box height is the binding
-          # constraint. Natural digital size is 56px; 190 of box gives ~150.
+          # Time, upper left. background=false drops the padding term, so
+          # box_height becomes the font-size dial: contentScaleForBox fits content
+          # to the box preserving aspect, and for a wide box height is the binding
+          # constraint. Natural digital size is 56px, so 88 of box gives ~73.
           lock-clock = {
             type = "clock";
             output = "DP-3";
             enabled = true;
-            cx = 400.0;
-            cy = 205.0;
-            box_width = 640.0;
-            box_height = 190.0;
+            cx = 280.0;
+            cy = 128.0;
+            box_width = 400.0;
+            box_height = 88.0;
             placement_width = 1920.0;
             placement_height = 1080.0;
             settings = {
@@ -590,16 +632,16 @@
             };
           };
 
-          # Date. A `label` cannot do this -- its text is static -- so it is a
-          # second clock widget with a date format.
+          # Date, tucked under it. A `label` cannot do this -- its text is static
+          # -- so it is a second clock widget with a date format.
           lock-date = {
             type = "clock";
             output = "DP-3";
             enabled = true;
-            cx = 400.0;
-            cy = 340.0;
-            box_width = 640.0;
-            box_height = 46.0;
+            cx = 280.0;
+            cy = 196.0;
+            box_width = 400.0;
+            box_height = 26.0;
             placement_width = 1920.0;
             placement_height = 1080.0;
             settings = {
@@ -609,54 +651,6 @@
               background = false;
               color = "on_surface_variant";
               shadow = true;
-            };
-          };
-
-          # Weather, mirrored top-right. Has real data since weather was enabled.
-          # (The animated Rain/Snow/Stars GLSL effect is Control-Center only --
-          # EffectType has exactly one consumer in the tree and it is not here.)
-          lock-weather = {
-            type = "weather";
-            output = "DP-3";
-            enabled = true;
-            cx = 1650.0;
-            cy = 195.0;
-            box_width = 380.0;
-            box_height = 170.0;
-            placement_width = 1920.0;
-            placement_height = 1080.0;
-            settings = {
-              background = false;
-              color = "on_surface";
-              shadow = true;
-              show_forecast = true;
-              forecast_days = 3;
-            };
-          };
-
-          # Now playing, bottom-left. A standalone media_player renders 120px
-          # album art against the login-box strip's 40px, which is why media was
-          # taken off the login box rather than duplicated.
-          # hide_when_no_media keeps the composition from carrying an empty box.
-          lock-media = {
-            type = "media_player";
-            output = "DP-3";
-            enabled = true;
-            cx = 300.0;
-            cy = 690.0;
-            box_width = 440.0;
-            box_height = 160.0;
-            placement_width = 1920.0;
-            placement_height = 1080.0;
-            settings = {
-              layout = "horizontal";
-              background = true;
-              background_color = "surface";
-              background_opacity = 0.55;
-              background_radius = 18.0;
-              color = "on_surface";
-              shadow = true;
-              hide_when_no_media = true;
             };
           };
 
@@ -670,15 +664,27 @@
             enabled = true;
             cx = 960.0;
             cy = 898.0;
-            box_width = 810.0;
-            # Ignored and recomputed -- set to what defaultPanelHeight produces
-            # for regular + session buttons + no info row, so it round-trips.
-            box_height = 128.0;
+            # Kept from us verbatim -- ensureWidgets only clamps width, to
+            # [kCompactMinPanelWidth, screen - 32] = [240, 1888] here. The compact
+            # DEFAULT cap is 400; 480 is a deliberate step above it so the field
+            # is comfortable to type in.
+            box_width = 480.0;
+            # Ignored and recomputed, so it must already equal defaultPanelHeight
+            # or ensureWidgets rewrites it and the state sidecar shadows this
+            # whole block again. For compact that is minPanelHeight with no
+            # +spaceMd term: spaceLg*2 + controlHeight = 16*2 + 38 = 70
+            # (lockscreen_login_box.cpp:186-190, :218-222).
+            box_height = 70.0;
             placement_width = 1920.0;
             placement_height = 1080.0;
 
             settings = {
-              layout = "regular";
+              # Just the password row, centred. Compact is not a narrower regular:
+              # lock_surface.cpp:956-962 gates the session-button row AND the
+              # info row on `regular`, so show_session_buttons / show_media /
+              # show_weather below are inert here. Trade accepted -- shutdown and
+              # reboot live on SUPER+X, not on the lock screen.
+              layout = "compact";
 
               # A palette role, so it tracks the wallpaper. `surface` is a step
               # darker than the default surface_variant and reads as a panel
@@ -692,15 +698,15 @@
               input_radius = 12.0;
               center_password_text = true;
 
-              show_session_buttons = true;
               show_login_button = true;
-              show_unlock_hint = true;
               show_caps_lock = true;
-              # Both moved to their own widgets above. Turning the info row off is
-              # also what takes the panel from 196 to 128.
+              # Off: it renders a permanent "Ready" line under the field. Errors
+              # and the caps-lock warning are NOT gated by it and still show
+              # (lock_surface.cpp:1597-1615).
+              show_unlock_hint = false;
+              show_session_buttons = false;
               show_media = false;
               show_weather = false;
-              # Single layout on this machine, so the row is permanent noise.
               show_keyboard_layout = false;
             };
           };
@@ -711,12 +717,12 @@
             enabled = false;
             cx = 960.0;
             cy = 898.0;
-            box_width = 810.0;
-            box_height = 128.0;
+            box_width = 480.0;
+            box_height = 70.0;
             placement_width = 1920.0;
             placement_height = 1080.0;
             settings = {
-              layout = "regular";
+              layout = "compact";
               show_media = false;
               show_weather = false;
               show_keyboard_layout = false;
@@ -729,12 +735,12 @@
             enabled = false;
             cx = 960.0;
             cy = 898.0;
-            box_width = 810.0;
-            box_height = 128.0;
+            box_width = 480.0;
+            box_height = 70.0;
             placement_width = 1920.0;
             placement_height = 1080.0;
             settings = {
-              layout = "regular";
+              layout = "compact";
               show_media = false;
               show_weather = false;
               show_keyboard_layout = false;
@@ -837,13 +843,40 @@
     if [ ! -e "$target" ]; then
       run install -Dm644 ${
       (pkgs.formats.json {}).generate "noctalia-mpvpaper-assignments.json" {
-        assignments."*" = "/home/${vars.username}/.config/wallpapers/video/anime-girl-near-car.mp4";
+        assignments."*" = videoWallpaper;
         # The plugin tracks which outputs it wrapped in a systemd scope here.
         # run_as_systemd is off, so it starts empty rather than absent -- the
         # loader reads decoded.launchedAsSystemd and expects a table.
         launchedAsSystemd = {};
       }
     } "$target"
+    fi
+  '';
+
+  # The whole palette hangs off a file in ~/.cache, and the failure is silent
+  # and does not self-heal.
+  #
+  # startMpvpaper (mpvpaper_service.luau:413-420) points Noctalia's wallpaper at
+  # the PICKER THUMBNAIL for this video, and that still is what the colour
+  # generator reads -- so it, not misty-boat.jpg, is the source of every accent
+  # in the bar, the window borders and every templated app. Clear ~/.cache and:
+  #
+  #   * resolveWallpaperGenerated fails to load it, resolveAndSet falls back to
+  #     resolveBuiltin, and the palette snaps to Noctalia's builtin scheme;
+  #   * on the NEXT start, startMpvpaper's fileExists(thumb) is false, so it
+  #     never calls setWallpaper at all and [wallpaper.last] is never corrected.
+  #
+  # Nothing but opening the picker panel by hand regenerates it. Since the cache
+  # filename is a pure function of the video's path, the still can just be
+  # committed and restored here, which makes the palette reproducible from the
+  # repo instead of an artefact of whatever the picker last did.
+  #
+  # Seeded only when ABSENT, like the assignment above -- regenerating a
+  # thumbnail from the picker stays authoritative once it exists.
+  home.activation.noctaliaMpvpaperThumbnail = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    thumb="${config.xdg.cacheHome}/noctalia/mpvpaper/${mangleCacheName videoWallpaper}.jpg"
+    if [ ! -e "$thumb" ]; then
+      run install -Dm644 ${../../assets/mpvpaper-anime-girl-near-car.jpg} "$thumb"
     fi
   '';
 
@@ -854,10 +887,18 @@
   programs.noctalia.settings.plugin_settings = {
     # Points the picker at the video half of the wallpaper set. Everything else
     # the plugin defaults to is already right: mute = true (the loops have no
-    # audio track anyway), hardware_decode = true, auto_pause = "full" (pauses
-    # behind fullscreen windows), extract_last_frame = true (leaves a still
-    # behind when playback stops, which is what keeps a wallpaper on screen and
-    # is presumably what the palette generator reads).
+    # audio track anyway) and hardware_decode = true.
+    #
+    # Two manifest defaults that are NOT what their names suggest, left alone
+    # because neither is worth a deviation:
+    #   * auto_pause = "full" -- mpvpaper 1.8 has no --auto-mode flag, so the
+    #     plugin falls back to a plain --auto-pause (mpvpaper_service.luau
+    #     :180-187). "full" and "max" are therefore identical here, and both
+    #     mean fullscreen-only. Locking the session is covered by the
+    #     session_locked hook above instead.
+    #   * extract_last_frame = true -- this gates ONLY the stop/clear still
+    #     (<connector>_static.jpg). It is not what the palette generator reads;
+    #     that is the ungated picker thumbnail restored above.
     "noctalia/mpvpaper" = {
       video_directory = "/home/${vars.username}/.config/wallpapers/video";
     };

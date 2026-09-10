@@ -29,8 +29,16 @@
   # Stylix's does neither. A hand-tuned scheme is the right tool here.
   base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
 
-  # Still set (the wallpaper Noctalia pins), because several Stylix targets use
-  # the image itself rather than the palette.
+  # NOT a wallpaper setting -- Noctalia owns the desktop background, and since
+  # the mpvpaper plugin was enabled that background is a video. Every Stylix
+  # target that consumes the image itself is either disabled here (hyprpaper,
+  # hyprland, grub) or not installed (hyprlock, swaylock, KDE, GNOME, lightdm,
+  # regreet, wpaperd, feh, sway, wayfire), so nothing on this host reads it.
+  #
+  # Kept set anyway because it is load-bearing in a way that is easy to miss:
+  # stylix/palette.nix:126 THROWS when image and base16Scheme are both null, so
+  # dropping this turns any future removal of base16Scheme into an eval error
+  # rather than the palette-generation fallback it looks like.
   image = ../../wallpapers/misty-boat.jpg;
 
   opacity = {

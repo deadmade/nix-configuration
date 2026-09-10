@@ -1,2 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Tracked video wallpapers. `* text=auto` above would otherwise leave the
+# decision to a content heuristic on an 11MB and a 13MB binary file.
+*.mp4 binary
+*.jpg binary
