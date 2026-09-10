@@ -46,6 +46,16 @@
         # the v5 module), so this has to be set explicitly.
         font_family = "Adwaita Sans";
 
+        # Noctalia's screenshot subsystem replaces hyprshot. Without a directory
+        # it saves next to wherever it was launched from.
+        screenshot = {
+          directory = "/home/${vars.username}/Pictures/Screenshots";
+          annotate = true;
+          freeze_screen = true;
+          copy_to_clipboard = true;
+          save_to_file = true;
+        };
+
         panel = {
           # "solid" ignores the palette's translucency entirely; "glass" lets the
           # blurred desktop through the launcher/control-centre/session panels.
@@ -267,6 +277,39 @@
       # The dock (running-apps menu) is disabled.
       dock = {
         enabled = false;
+      };
+
+      # The machine never locked, never blanked and never suspended: all three
+      # Noctalia idle behaviours default to enabled = false and nothing set them.
+      # This is the desktop ladder; deadConvertible overrides it with mkForce.
+      #
+      # behavior_order is deliberately NOT set here. It is a list, and lists
+      # merge by CONCATENATION with no error, so defining it in both a module
+      # and a host would silently produce a nonsense order.
+      idle = {
+        pre_action_fade_seconds = 3.0;
+        # `action` MUST be set explicitly. Declaring an [idle.behavior.<name>]
+        # table replaces the built-in entry rather than merging into it, so
+        # enabled+timeout alone gets you `idle behavior 'lock' ignored: needs an
+        # action` at runtime -- and `noctalia config validate` does NOT catch it.
+        behavior = {
+          lock = {
+            action = "lock";
+            enabled = true;
+            timeout = 900.0; # 15 min
+          };
+          screen-off = {
+            action = "screen_off";
+            enabled = true;
+            timeout = 1200.0; # 20 min
+          };
+          # A desktop that suspends is a desktop that drops SSH sessions and
+          # long builds. deadConvertible turns this on.
+          lock-and-suspend = {
+            action = "lock_and_suspend";
+            enabled = false;
+          };
+        };
       };
 
       location = {

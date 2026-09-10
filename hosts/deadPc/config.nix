@@ -66,6 +66,18 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  # Noctalia's battery and power-profile surfaces had no data source at all:
+  # the shell logs `[upower] GetDisplayDevice failed` and `[power] power
+  # profiles refresh failed` on every start, and the control-centre
+  # power_profile tile was inert.
+  #
+  # The noctalia flake ships a NixOS module with a recommendedServices option
+  # that enables exactly these, but importing it alongside the home-manager
+  # module would define a SECOND systemd user service for the shell, so the
+  # two services are enabled directly instead.
+  services.upower.enable = true;
+  services.power-profiles-daemon.enable = true;
+
   # Enable Pipewire (required for Wayland screen sharing)
   security.rtkit.enable = true;
   services.pipewire = {
