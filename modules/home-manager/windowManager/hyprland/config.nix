@@ -279,9 +279,19 @@
             "snappy"
             {
               type = "spring";
+              # NOTE: the `speed` field on a spring-driven animation leaf is DEAD
+              # CONFIG. hyprutils/src/animation/Spring.cpp computes duration only
+              # from these three:
+              #   OMEGA0 = sqrt(STIFFNESS / MASS);  GAMMA = DAMPING / (2 * MASS)
+              # There is no speed/duration multiplier anywhere in the spring path.
+              #
+              # Duration scales as 1/sqrt(stiffness), so 330 -> 195 (i.e. / 1.69)
+              # is 30% slower. Damping is rescaled with it to hold the damping
+              # ratio zeta = c / (2*sqrt(m*k)) at 0.771 -- otherwise slowing it
+              # down would also change how much it overshoots.
               mass = 1.0;
-              stiffness = 330.0;
-              dampening = 28.0;
+              stiffness = 195.0;
+              dampening = 21.5;
             }
           ];
         }
@@ -292,9 +302,15 @@
             "gentle"
             {
               type = "spring";
+              # Same 30% rescale, holding zeta at 1.001 (critically damped, no
+              # overshoot). Rescaled alongside `snappy` rather than left alone
+              # because this also drives workspaces/workspacesIn -- and since
+              # speed is ignored on springs, workspace switching currently runs at
+              # exactly the same rate as a window move. Slowing only one would
+              # make workspace switches faster than window moves.
               mass = 1.0;
-              stiffness = 210.0;
-              dampening = 29.0;
+              stiffness = 124.0;
+              dampening = 22.3;
             }
           ];
         }
@@ -309,6 +325,9 @@
           bezier = "default";
         }
 
+        # The `speed` on these three spring-driven leaves is inert -- see the
+        # note on the `snappy` curve above. To retime them, change the spring
+        # constants, not these numbers.
         {
           leaf = "windows";
           enabled = true;
@@ -325,7 +344,9 @@
         {
           leaf = "windowsOut";
           enabled = true;
-          speed = 1.8;
+          # Bezier-driven, so speed is real here (unlike the spring leaves above).
+          # x1.3 to stay proportional to the slowed windowsIn.
+          speed = 2.3;
           bezier = "emphasisIn";
           style = "popin 92%";
         }
