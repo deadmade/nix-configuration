@@ -21,8 +21,14 @@
       image = ../../../wallpapers/dark-waves.jpg;
       autoEnable = true;
 
-      # Re-pins the boot menu to a static Catppuccin palette at exactly the moment
-      # the desktop stops being Catppuccin. Left off deliberately.
-      targets.grub.enable = false;
+      targets = {
+        # Re-pins the boot menu to a static Catppuccin palette at exactly the
+        # moment the desktop stops being Catppuccin. Left off deliberately.
+        grub.enable = false;
+
+        # Exports QT_QPA_PLATFORMTHEME system-wide; modules/home-manager/desktop/qt.nix
+        # is the single writer now.
+        qt.enable = false;
+      };
     };
 }

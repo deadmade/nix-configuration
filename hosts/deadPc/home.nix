@@ -48,10 +48,6 @@
     };
   };
 
-  gtk = {
-    enable = true;
-  };
-
   home.shellAliases = {
   };
 }

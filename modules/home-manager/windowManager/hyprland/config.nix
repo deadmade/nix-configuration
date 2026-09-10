@@ -70,6 +70,21 @@
     # appended after the settings above, so the `mainMod`/`terminal`/`fileManager`
     # locals are in scope here.
     extraConfig = ''
+      -- Noctalia colour handoff. Noctalia's theme template renders
+      -- ~/.config/hypr/noctalia.lua from the current wallpaper and then runs an
+      -- apply.sh that wants to append an include line to THIS file -- which is a
+      -- read-only /nix/store symlink, so that append would fail EACCES and kill
+      -- the whole post-hook.
+      --
+      -- Its guard is `grep -qF 'require("noctalia")'`, a FIXED-STRING match, so
+      -- the literal require("noctalia") below is what makes apply.sh a no-op.
+      -- Do not rewrite it as pcall(require, "noctalia"): that form does not
+      -- contain the literal substring and the guard would miss.
+      --
+      -- pcall because noctalia.lua does not exist until the first palette render.
+      local ok, noctalia = pcall(function() return require("noctalia") end)
+      if ok and noctalia.apply_theme then noctalia.apply_theme() end
+
       -- hyprsplit: awesome/dwm-like per-monitor workspaces (Lua library)
       local hs = require("hyprsplit")
       hs.config({ num_workspaces = 10 })
