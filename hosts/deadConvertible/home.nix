@@ -56,14 +56,23 @@
       ];
     };
 
-    # Lua config: hl.bind() takes (keys, dispatcher), so the legacy comma-string
-    # bind form is expressed as raw Lua here (merged via types.lines).
+    # Lua config: hl.bind() takes (keys, dispatcher, opts), so the legacy
+    # comma-string bind form is expressed as raw Lua here (merged via
+    # types.lines into the same hyprland.lua as the shared module's binds).
     extraConfig = ''
+      -- 14. Laptop keys
+      -- Its own numbered heading so these do not inherit whatever section
+      -- happens to precede them once home-manager concatenates the two blocks;
+      -- see the keybinding preamble in the shared hyprland module for why the
+      -- `-- N. Title` form and the descriptions matter.
+      --
       -- Routed through noctalia rather than brightnessctl directly, so the
       -- Noctalia OSD actually appears and the shell's brightness state stays
-      -- in sync. The XF86 keys are bound in the shared module.
-      hl.bind("SUPER + F5", hl.dsp.exec_cmd("noctalia msg brightness-down"), { repeating = true })
-      hl.bind("SUPER + F6", hl.dsp.exec_cmd("noctalia msg brightness-up"), { repeating = true })
+      -- in sync. The XF86 keys are bound in the shared module -- these are the
+      -- Fn-row duplicates, labelled distinctly because the cheatsheet maps a
+      -- description string to exactly one category.
+      hl.bind("SUPER + F5", hl.dsp.exec_cmd("noctalia msg brightness-down"), { repeating = true, description = "Brightness down (F5)" })
+      hl.bind("SUPER + F6", hl.dsp.exec_cmd("noctalia msg brightness-up"), { repeating = true, description = "Brightness up (F6)" })
     '';
   };
 

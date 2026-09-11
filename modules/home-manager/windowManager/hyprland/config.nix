@@ -674,130 +674,156 @@
 
       -- Keybindings
       --
+      -- Every bind carries a `description`. That is not decoration: with
+      -- configType = "lua" Hyprland reports each bind to `hyprctl binds -j`
+      -- with dispatcher "__lua" and an opaque numeric arg, so the description
+      -- is the ONLY thing that can say what a key actually does. It is what
+      -- SUPER+F1 (kenn/keybind-cheatsheet) renders.
+      --
+      -- The numbered `-- N. Title` section headings below are also load-bearing:
+      -- the plugin re-scans this file and only recognises that exact form when
+      -- grouping binds into categories. Plain `-- Title` is ignored. It keys
+      -- categories off the description TEXT, so a given description string must
+      -- stay unique to its section.
+      --
       -- NOTE: Hyprland keysyms are case-insensitive and it fires EVERY matching
       -- bind. The previous map had `SUPER + L` (lock) alongside `SUPER + l`
       -- (focus right) and `SUPER + J` (togglesplit) alongside `SUPER + j`
       -- (focus down), so both of those keys ran two dispatchers at once.
       -- Anything sharing a letter with the hjkl block now lives elsewhere.
 
-      -- Applications
-      hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
-      hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(browser))
-      hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
-      hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd("nautilus"))
-      hl.bind(mainMod .. " + C", hl.dsp.window.close())
+      -- 1. Applications
+      hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal), { description = "Open terminal" })
+      hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(browser), { description = "Open browser" })
+      hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager), { description = "Open file manager" })
+      hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd("nautilus"), { description = "Open Nautilus" })
+      hl.bind(mainMod .. " + C", hl.dsp.window.close(), { description = "Close window" })
 
-      -- Noctalia surfaces. Every one of these was running but unbound.
+      -- 2. Noctalia surfaces
+      -- Every one of these was running but unbound.
       -- Panel ids are: clipboard, control-center, launcher, polkit, session,
       -- setup-wizard, test, tray-drawer, wallpaper. "notifications" is NOT a
       -- panel -- it is a control-center tab, which is why the old
       -- `panel-toggle notifications` bind did nothing at all.
-      hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("noctalia msg panel-toggle launcher"))
-      hl.bind(mainMod .. " + X",     hl.dsp.exec_cmd("noctalia msg panel-toggle launcher /emo"))
-      hl.bind(mainMod .. " + A",     hl.dsp.exec_cmd("noctalia msg panel-toggle control-center"))
-      hl.bind(mainMod .. " + N",     hl.dsp.exec_cmd("noctalia msg panel-toggle control-center notifications"))
-      hl.bind(mainMod .. " + B",     hl.dsp.exec_cmd("noctalia msg panel-toggle clipboard"))
-      hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("noctalia msg panel-toggle wallpaper"))
-      hl.bind(mainMod .. " + comma", hl.dsp.exec_cmd("noctalia msg settings-toggle"))
-      hl.bind("ALT + TAB",           hl.dsp.exec_cmd("noctalia msg window-switcher"))
+      hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("noctalia msg panel-toggle launcher"), { description = "App launcher" })
+      hl.bind(mainMod .. " + X",     hl.dsp.exec_cmd("noctalia msg panel-toggle launcher /emo"), { description = "Emoji picker" })
+      hl.bind(mainMod .. " + A",     hl.dsp.exec_cmd("noctalia msg panel-toggle control-center"), { description = "Control center" })
+      hl.bind(mainMod .. " + N",     hl.dsp.exec_cmd("noctalia msg panel-toggle control-center notifications"), { description = "Notifications" })
+      hl.bind(mainMod .. " + B",     hl.dsp.exec_cmd("noctalia msg panel-toggle clipboard"), { description = "Clipboard history" })
+      hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("noctalia msg panel-toggle wallpaper"), { description = "Wallpaper picker" })
+      hl.bind(mainMod .. " + comma", hl.dsp.exec_cmd("noctalia msg settings-toggle"), { description = "Noctalia settings" })
+      hl.bind("ALT + TAB",           hl.dsp.exec_cmd("noctalia msg window-switcher"), { description = "Window switcher" })
       -- Searchable cheatsheet of every bind, parsed from this very file.
-      hl.bind(mainMod .. " + F1",    hl.dsp.exec_cmd("noctalia msg panel-toggle kenn/keybind-cheatsheet:cheatsheet"))
+      hl.bind(mainMod .. " + F1",    hl.dsp.exec_cmd("noctalia msg panel-toggle kenn/keybind-cheatsheet:cheatsheet"), { description = "Keybind cheatsheet" })
 
-      -- Screenshots: Noctalia's own stack, which also does annotation.
-      hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("noctalia msg screenshot-region"))
-      hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd("noctalia msg screenshot-annotate"))
-      hl.bind("Print",                   hl.dsp.exec_cmd("noctalia msg screenshot-fullscreen"))
-      hl.bind(mainMod .. " + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"))
+      -- 3. Screenshots
+      -- Noctalia's own stack, which also does annotation.
+      hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("noctalia msg screenshot-region"), { description = "Screenshot region" })
+      hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd("noctalia msg screenshot-annotate"), { description = "Screenshot and annotate" })
+      hl.bind("Print",                   hl.dsp.exec_cmd("noctalia msg screenshot-fullscreen"), { description = "Screenshot full screen" })
+      hl.bind(mainMod .. " + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"), { description = "Pick colour" })
 
-      -- Session. Moved off L, which collided with focus-right.
-      hl.bind(mainMod .. " + ESCAPE",         hl.dsp.exec_cmd("noctalia msg session lock || loginctl lock-session"))
-      hl.bind(mainMod .. " + SHIFT + ESCAPE", hl.dsp.exec_cmd("noctalia msg panel-toggle session"))
-      hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exit())
+      -- 4. Session
+      -- Moved off L, which collided with focus-right.
+      hl.bind(mainMod .. " + ESCAPE",         hl.dsp.exec_cmd("noctalia msg session lock || loginctl lock-session"), { description = "Lock session" })
+      hl.bind(mainMod .. " + SHIFT + ESCAPE", hl.dsp.exec_cmd("noctalia msg panel-toggle session"), { description = "Session menu" })
+      hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exit(), { description = "Exit Hyprland" })
 
-      -- Window state. togglesplit moved off J, which collided with focus-down.
-      hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
-      hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
-      hl.bind(mainMod .. " + T", hl.dsp.layout("togglesplit"))
-      hl.bind(mainMod .. " + G", hl.dsp.group.toggle())
-      hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
-      hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "maximized" }))
-      hl.bind(mainMod .. " + SHIFT + P", hl.dsp.window.pin())
+      -- 5. Window state
+      -- togglesplit moved off J, which collided with focus-down.
+      hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }), { description = "Toggle floating" })
+      hl.bind(mainMod .. " + P", hl.dsp.window.pseudo(), { description = "Toggle pseudotile" })
+      hl.bind(mainMod .. " + T", hl.dsp.layout("togglesplit"), { description = "Toggle split direction" })
+      hl.bind(mainMod .. " + G", hl.dsp.group.toggle(), { description = "Toggle group" })
+      hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }), { description = "Fullscreen" })
+      hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "maximized" }), { description = "Maximise" })
+      hl.bind(mainMod .. " + SHIFT + P", hl.dsp.window.pin(), { description = "Pin window" })
 
-      -- Mouse: SUPER + drag to move/resize. This was simply not possible before.
-      hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
-      hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+      -- 6. Mouse
+      -- SUPER + drag to move/resize. This was simply not possible before.
+      hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true, description = "Drag to move window" })
+      hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true, description = "Drag to resize window" })
 
-      -- Scratchpad
-      hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
-      hl.bind(mainMod .. " + CTRL + S",  hl.dsp.window.move({ workspace = "special:magic" }))
+      -- 7. Scratchpad
+      hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"), { description = "Toggle scratchpad" })
+      hl.bind(mainMod .. " + CTRL + S",  hl.dsp.window.move({ workspace = "special:magic" }), { description = "Move window to scratchpad" })
 
-      -- Resize submap: SUPER+R then hjkl/arrows, ESCAPE to leave.
+      -- 8. Resize submap
+      -- SUPER+R then hjkl/arrows, ESCAPE to leave.
       hl.define_submap("resize", "reset", function()
-        hl.bind("h",      hl.dsp.window.resize({ x = -40, y = 0,   relative = true }), { repeating = true })
-        hl.bind("l",      hl.dsp.window.resize({ x = 40,  y = 0,   relative = true }), { repeating = true })
-        hl.bind("k",      hl.dsp.window.resize({ x = 0,   y = -40, relative = true }), { repeating = true })
-        hl.bind("j",      hl.dsp.window.resize({ x = 0,   y = 40,  relative = true }), { repeating = true })
-        hl.bind("left",   hl.dsp.window.resize({ x = -40, y = 0,   relative = true }), { repeating = true })
-        hl.bind("right",  hl.dsp.window.resize({ x = 40,  y = 0,   relative = true }), { repeating = true })
-        hl.bind("up",     hl.dsp.window.resize({ x = 0,   y = -40, relative = true }), { repeating = true })
-        hl.bind("down",   hl.dsp.window.resize({ x = 0,   y = 40,  relative = true }), { repeating = true })
-        hl.bind("escape", hl.dsp.submap("reset"))
-        hl.bind("return", hl.dsp.submap("reset"))
+        hl.bind("h",      hl.dsp.window.resize({ x = -40, y = 0,   relative = true }), { repeating = true, description = "Shrink horizontally" })
+        hl.bind("l",      hl.dsp.window.resize({ x = 40,  y = 0,   relative = true }), { repeating = true, description = "Grow horizontally" })
+        hl.bind("k",      hl.dsp.window.resize({ x = 0,   y = -40, relative = true }), { repeating = true, description = "Shrink vertically" })
+        hl.bind("j",      hl.dsp.window.resize({ x = 0,   y = 40,  relative = true }), { repeating = true, description = "Grow vertically" })
+        hl.bind("left",   hl.dsp.window.resize({ x = -40, y = 0,   relative = true }), { repeating = true, description = "Shrink horizontally" })
+        hl.bind("right",  hl.dsp.window.resize({ x = 40,  y = 0,   relative = true }), { repeating = true, description = "Grow horizontally" })
+        hl.bind("up",     hl.dsp.window.resize({ x = 0,   y = -40, relative = true }), { repeating = true, description = "Shrink vertically" })
+        hl.bind("down",   hl.dsp.window.resize({ x = 0,   y = 40,  relative = true }), { repeating = true, description = "Grow vertically" })
+        hl.bind("escape", hl.dsp.submap("reset"), { description = "Leave resize mode" })
+        hl.bind("return", hl.dsp.submap("reset"), { description = "Leave resize mode" })
       end)
-      hl.bind(mainMod .. " + R", hl.dsp.submap("resize"))
+      hl.bind(mainMod .. " + R", hl.dsp.submap("resize"), { description = "Resize mode" })
 
-      -- Move focus (arrows + vim keys)
-      hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
-      hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
-      hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "up" }))
-      hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
-      hl.bind(mainMod .. " + h", hl.dsp.focus({ direction = "left" }))
-      hl.bind(mainMod .. " + j", hl.dsp.focus({ direction = "down" }))
-      hl.bind(mainMod .. " + k", hl.dsp.focus({ direction = "up" }))
-      hl.bind(mainMod .. " + l", hl.dsp.focus({ direction = "right" }))
+      -- 9. Move focus
+      -- Arrows and vim keys are deliberately given the same labels: they are the
+      -- same action, and the cheatsheet prints the key beside the label, so the
+      -- pair of rows advertises that both work.
+      hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }), { description = "Focus left" })
+      hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }), { description = "Focus right" })
+      hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "up" }), { description = "Focus up" })
+      hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }), { description = "Focus down" })
+      hl.bind(mainMod .. " + h", hl.dsp.focus({ direction = "left" }), { description = "Focus left" })
+      hl.bind(mainMod .. " + j", hl.dsp.focus({ direction = "down" }), { description = "Focus down" })
+      hl.bind(mainMod .. " + k", hl.dsp.focus({ direction = "up" }), { description = "Focus up" })
+      hl.bind(mainMod .. " + l", hl.dsp.focus({ direction = "right" }), { description = "Focus right" })
 
-      -- Focus / throw windows across the three monitors
-      hl.bind(mainMod .. " + ALT + h", hl.dsp.focus({ monitor = "l" }))
-      hl.bind(mainMod .. " + ALT + l", hl.dsp.focus({ monitor = "r" }))
-      hl.bind(mainMod .. " + ALT + SHIFT + h", hl.dsp.window.move({ monitor = "l", follow = true }))
-      hl.bind(mainMod .. " + ALT + SHIFT + l", hl.dsp.window.move({ monitor = "r", follow = true }))
+      -- 10. Monitors
+      -- Focus / throw windows across the three monitors.
+      hl.bind(mainMod .. " + ALT + h", hl.dsp.focus({ monitor = "l" }), { description = "Focus monitor left" })
+      hl.bind(mainMod .. " + ALT + l", hl.dsp.focus({ monitor = "r" }), { description = "Focus monitor right" })
+      hl.bind(mainMod .. " + ALT + SHIFT + h", hl.dsp.window.move({ monitor = "l", follow = true }), { description = "Move window to left monitor" })
+      hl.bind(mainMod .. " + ALT + SHIFT + l", hl.dsp.window.move({ monitor = "r", follow = true }), { description = "Move window to right monitor" })
 
-      -- Switch / move-to workspaces on the current monitor (hyprsplit)
+      -- 11. Workspaces
+      -- Switch / move-to workspaces on the current monitor (hyprsplit).
+      -- The concatenated descriptions are intentional: the cheatsheet turns a
+      -- concatenation into a PREFIX rule, which is what categorises all twenty.
       for i = 1, 10 do
         local key = i % 10 -- 10 maps to key 0
-        hl.bind(mainMod .. " + " .. key,         hs.dsp.focus({ workspace = i }))
-        hl.bind(mainMod .. " + SHIFT + " .. key, hs.dsp.window.move({ workspace = i, follow = true }))
+        hl.bind(mainMod .. " + " .. key,         hs.dsp.focus({ workspace = i }), { description = "Workspace " .. i })
+        hl.bind(mainMod .. " + SHIFT + " .. key, hs.dsp.window.move({ workspace = i, follow = true }), { description = "Move window to workspace " .. i })
       end
 
-      -- Move window within the layout
-      hl.bind(mainMod .. " + SHIFT + left",  hl.dsp.window.move({ direction = "left" }))
-      hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ direction = "right" }))
-      hl.bind(mainMod .. " + SHIFT + up",    hl.dsp.window.move({ direction = "up" }))
-      hl.bind(mainMod .. " + SHIFT + down",  hl.dsp.window.move({ direction = "down" }))
-      hl.bind(mainMod .. " + SHIFT + h", hl.dsp.window.move({ direction = "left" }))
-      hl.bind(mainMod .. " + SHIFT + j", hl.dsp.window.move({ direction = "down" }))
-      hl.bind(mainMod .. " + SHIFT + k", hl.dsp.window.move({ direction = "up" }))
-      hl.bind(mainMod .. " + SHIFT + l", hl.dsp.window.move({ direction = "right" }))
+      -- 12. Move window
+      -- Within the layout.
+      hl.bind(mainMod .. " + SHIFT + left",  hl.dsp.window.move({ direction = "left" }), { description = "Move window left" })
+      hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ direction = "right" }), { description = "Move window right" })
+      hl.bind(mainMod .. " + SHIFT + up",    hl.dsp.window.move({ direction = "up" }), { description = "Move window up" })
+      hl.bind(mainMod .. " + SHIFT + down",  hl.dsp.window.move({ direction = "down" }), { description = "Move window down" })
+      hl.bind(mainMod .. " + SHIFT + h", hl.dsp.window.move({ direction = "left" }), { description = "Move window left" })
+      hl.bind(mainMod .. " + SHIFT + j", hl.dsp.window.move({ direction = "down" }), { description = "Move window down" })
+      hl.bind(mainMod .. " + SHIFT + k", hl.dsp.window.move({ direction = "up" }), { description = "Move window up" })
+      hl.bind(mainMod .. " + SHIFT + l", hl.dsp.window.move({ direction = "right" }), { description = "Move window right" })
 
-      -- Media, volume, mic and brightness.
+      -- 13. Media and hardware keys
       -- There were NO such binds on deadPc, so Noctalia's OSD -- enabled with
       -- fifteen kinds -- had nothing to display. Routing through `noctalia msg`
       -- rather than wpctl/brightnessctl is what makes the OSD fire.
       -- `locked` keeps them working on the lock screen; `repeating` lets a held
       -- key ramp.
-      hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("noctalia msg volume-up"),   { locked = true, repeating = true })
-      hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("noctalia msg volume-down"), { locked = true, repeating = true })
-      hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("noctalia msg volume-mute"), { locked = true })
-      hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("noctalia msg mic-mute"),    { locked = true })
+      hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("noctalia msg volume-up"),   { locked = true, repeating = true, description = "Volume up" })
+      hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("noctalia msg volume-down"), { locked = true, repeating = true, description = "Volume down" })
+      hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("noctalia msg volume-mute"), { locked = true, description = "Mute output" })
+      hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("noctalia msg mic-mute"),    { locked = true, description = "Mute microphone" })
 
-      hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("noctalia msg media toggle"),   { locked = true })
-      hl.bind("XF86AudioPause", hl.dsp.exec_cmd("noctalia msg media toggle"),   { locked = true })
-      hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("noctalia msg media next"),     { locked = true })
-      hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("noctalia msg media previous"), { locked = true })
-      hl.bind("XF86AudioStop",  hl.dsp.exec_cmd("noctalia msg media stop"),     { locked = true })
+      hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("noctalia msg media toggle"),   { locked = true, description = "Play/pause" })
+      hl.bind("XF86AudioPause", hl.dsp.exec_cmd("noctalia msg media toggle"),   { locked = true, description = "Play/pause" })
+      hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("noctalia msg media next"),     { locked = true, description = "Next track" })
+      hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("noctalia msg media previous"), { locked = true, description = "Previous track" })
+      hl.bind("XF86AudioStop",  hl.dsp.exec_cmd("noctalia msg media stop"),     { locked = true, description = "Stop playback" })
 
-      hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("noctalia msg brightness-up"),   { locked = true, repeating = true })
-      hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("noctalia msg brightness-down"), { locked = true, repeating = true })
+      hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("noctalia msg brightness-up"),   { locked = true, repeating = true, description = "Brightness up" })
+      hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("noctalia msg brightness-down"), { locked = true, repeating = true, description = "Brightness down" })
     '';
   };
 }
