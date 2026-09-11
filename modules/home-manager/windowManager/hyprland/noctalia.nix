@@ -88,6 +88,79 @@ in {
           # Indicator for populated scratchpads. SUPER+S got a scratchpad in
           # phase 5 with no way to tell whether anything was in it.
           "jamesfeeder/special-workspaces"
+
+          # The four above expose things this repo BUILT; this one exposes the
+          # toolchain it USES. `/zed` in the launcher lists recent Zed projects,
+          # read straight out of Zed's own sqlite store -- so there is no list to
+          # maintain here. Needs the sqlite3 CLI; see default.nix.
+          #
+          # It adds no bar widget -- it is a launcher provider only, which is why
+          # nothing in the bar layout below refers to it.
+          #
+          # Five others were enabled alongside it and then removed as not wanted:
+          # the same idea for nvim and the JetBrains IDEs, a colour picker, a
+          # nixpkgs update monitor, and a GitHub PR status pill.
+          "cleboost/zed-provider"
+
+          # Dev news in the bar. A generic RSS/Atom reader -- there is no
+          # TLDR-specific plugin and none is needed, because tldr.tech publishes
+          # real RSS at /api/rss/<edition> (verified: 200 + <rss>, 20 items,
+          # newest same-day). Feeds are set in plugin_settings at the bottom.
+          #
+          # Three entries: a `fetcher` service that polls and parses, the `badge`
+          # bar widget placed below, and a `Panel` listing the items --
+          # note the CAPITAL P in the panel id, which the IPC command needs:
+          #   noctalia msg panel-toggle nilsonlinux/rss-notifier:Panel
+          # (its README says the widget is called `indicator`; the manifest says
+          # `badge`, and the manifest is what the shell reads.)
+          #
+          # Only hard dependency is xdg-open, already in /run/current-system/sw.
+          "nilsonlinux/rss-notifier"
+
+          # NOT enabled: cleboost/ssh-launcher. It parses ~/.ssh/config, and
+          # that file does not exist on this host -- the provider would return
+          # an empty list forever. deadServer and deadPi are reached through
+          # deploy-rs (flake/modules/deploy.nix), not through an ssh config.
+          # Worth adding once an ~/.ssh/config exists.
+
+          # NOT enabled: jrohland/claudecode. It loads and its collector script
+          # is correct -- run by hand it exits 0 with real data -- but it can
+          # never report on THIS account, because the data collection is three
+          # times slower than the runtime will wait:
+          #
+          #   $ time bash .../claudecode/get-claude-usage --json
+          #   ~14.9 s  (twice, with pricing-cache.json and usage-cache.json
+          #             already warm, so this is not first-run cost)
+          #
+          # noctalia.runAsync's third argument is a timeout that DEFAULTS to
+          # 5000 ms (luau_host.cpp:59, clamped to [50, 60000]), and
+          # service.luau:44 calls it with two arguments -- so the fetch is
+          # killed at 5 s, every time, exactly:
+          #
+          #   19:35:48.080 started service 'jrohland/claudecode:service'
+          #   19:35:53.104 claudecode: get-claude-usage failed   (+5.024 s)
+          #   19:37:53.114 claudecode: get-claude-usage failed
+          #   19:39:53.114 claudecode: get-claude-usage failed
+          #
+          # The 15 s is this account's own history -- the script walks every
+          # session transcript under ~/.claude to total tokens, and there are
+          # 160 sessions / 16.7k messages of it. So it gets WORSE over time, and
+          # refresh_interval cannot help: the limit is per invocation, not per
+          # hour.
+          #
+          # Left out rather than worked around. The fix belongs upstream (pass a
+          # timeout to runAsync), and the alternative here -- vendoring a patched
+          # copy of the plugin out of the pinned path source -- is a lot of
+          # machinery to carry for one bar pill.
+          #
+          # Worth knowing if it is ever revisited: script_runtime.cpp:46 auto
+          # disables a plugin after kMaxConsecutiveTimeouts = 3, so leaving it on
+          # does not even fail quietly.
+          #
+          # For the record, since this is the one plugin in the set that reads a
+          # credential: it pulls .claudeAiOauth.accessToken out of
+          # ~/.claude/.credentials.json and calls api.anthropic.com with it
+          # (get-claude-usage:246-272).
         ];
 
         source = [
@@ -215,6 +288,21 @@ in {
               countdown_seconds = 5.0;
             }
           ];
+        };
+
+        # Overlays rounded black corners on every screen, so the desktop itself
+        # has the same corner treatment as the windows on it. 32 is the top of
+        # the 1..100 range the schema clamps to, and is deliberately larger than
+        # the 12px window rounding: a screen corner sits further from the eye
+        # than a window corner, so an equal radius reads as sharper.
+        #
+        # This is drawn per output, so it also softens the two OUTER corners of
+        # each side monitor. The inner ones butt against the neighbouring panel,
+        # where the rounding reads as a small notch in the seam rather than as a
+        # corner -- verify by eye before keeping.
+        screen_corners = {
+          enabled = true;
+          size = 32;
         };
 
         panel = {
@@ -409,7 +497,7 @@ in {
           capsule_group = [
             {
               id = "sys";
-              members = ["cpu" "temp" "ram" "network_rx" "network_tx"];
+              members = ["cpu" "temp" "ram" "gpu" "gpu_temp" "network_rx" "network_tx"];
               padding = 8.0;
               opacity = 0.55;
             }
@@ -431,7 +519,7 @@ in {
             }
             {
               id = "time";
-              members = ["clock" "notifications"];
+              members = ["clock" "notifications" "rss"];
               padding = 8.0;
               opacity = 0.55;
             }
@@ -456,6 +544,20 @@ in {
         monitors = ["DP-3"];
         position = "bottom_center";
         background_opacity = 0.92;
+
+        # All ~15 OSD kinds are on by default. `media` is the one that is pure
+        # duplication here: it fires on MPRIS play/pause, on every track change
+        # AND on per-player volume changes, while the bar already carries a
+        # permanent media capsule (group:media, with the spectrum) on the same
+        # monitor the OSD is pinned to. So a track change drew the same
+        # information twice, once transiently over the bottom of the screen.
+        #
+        # Everything else stays on deliberately -- volume, brightness and the
+        # lock keys have NO permanent bar presence, so for those the OSD is the
+        # only feedback there is.
+        kinds = {
+          media = false;
+        };
       };
 
       # v5 moved per-widget options out of the lane lists into [widget.<id>].
@@ -464,6 +566,85 @@ in {
       widget."control-center" = {
         custom_image = "${pkgs.nixos-icons}/share/icons/hicolor/96x96/apps/nix-snowflake-white.png";
         custom_image_colorize = true;
+      };
+
+      # GPU. There is no seeded `gpu` instance the way there is for cpu/temp/ram
+      # and the two network stats (config/widget_config.cpp:56-110 seeds ten
+      # instances and none of them is a GPU), so these two tables are what make
+      # the ids in the `sys` capsule resolve at all.
+      #
+      # Noctalia loads NVML directly and does NOT shell out to nvidia-smi
+      # (docs services/system-monitor.mdx:87). libnvidia-ml.so.1 is present via
+      # /run/opengl-driver/lib -> nvidia-x11-595.99.02, so this works on the
+      # proprietary driver this host already runs. It would NOT work on nouveau,
+      # which ships no NVML.
+      #
+      # Placed after `ram` and before the network pair so the capsule reads
+      # CPU -> memory -> GPU -> network rather than interleaving them.
+      #
+      # gpu_vram was considered instead of gpu_temp: on a 3070 the 8GB VRAM
+      # ceiling is the more common wall. Kept temp because the capsule already
+      # carries cpu_temp, so the pair reads as one thermal story -- swap the
+      # stat here if VRAM pressure turns out to matter more.
+      # Both carry an explicit glyph because the defaults made the GPU pair
+      # unreadable next to the CPU pair. What the stat glyphs actually resolve
+      # to (sysmon_widget.cpp:1086-1116 -> the alias table at
+      # render/text/glyph_registry.cpp:69-77):
+      #
+      #   cpu_usage  "cpu-usage"       -> brand-speedtest   (a speedometer)
+      #   cpu_temp   "cpu-temperature" -> flame
+      #   ram_used   "memory"          -> cpu               (a CPU chip!)
+      #   gpu_usage  "gpu-usage"       -> device-desktop     <- a whole PC
+      #   gpu_temp   "temperature"     -> temperature        (weather glyph)
+      #
+      # So the GPU read as a desktop tower sitting next to a CPU chip that
+      # actually meant RAM. Neither said "graphics".
+      #
+      # There is no GPU glyph to switch to: the bundled Tabler set (5958 names
+      # in assets/fonts/tabler.json) has no `gpu`, no `graphics`, and no
+      # `brand-nvidia` -- only `brand-amd`, which would be a lie on this card.
+      # So device identity is carried by 3D instead, which is what the unit is
+      # for, and the pair is legible by adjacency:
+      #
+      #   CPU -> speedometer + flame
+      #   GPU -> 3D badge     + thermometer
+      #
+      # thermometer (U+EF67) rather than leaving gpu_temp on the default
+      # `temperature` (U+EB38): the latter is Tabler's WEATHER glyph and the bar
+      # is one capsule away from a weather widget in the control centre.
+      # The unread-count badge. Grouped with `notifications` in the `time`
+      # capsule rather than getting its own pill: both are counters for things
+      # that arrived while you were not looking, so the bell and the feed count
+      # belong next to each other -- and it adds no new pill to a bar that
+      # already has five.
+      #
+      # Everything else is left at the manifest defaults, which are already
+      # right here:
+      #   notify_new                  true  -- wanted, notifications ON
+      #   max_notifications_per_cycle 5     -- a per-CYCLE budget shared across
+      #                                        all feeds (service.luau:713 makes
+      #                                        one and passes it to every feed),
+      #                                        not 5 per feed
+      #   refresh_minutes             30
+      #   show_feed_images            true  -- setting this plugin-level would be
+      #                                        pointless: the badge entry
+      #                                        redeclares it, and the entry value
+      #                                        wins (the shell warns about the
+      #                                        shadowing on every start)
+      widget.rss = {
+        type = "nilsonlinux/rss-notifier:badge";
+      };
+
+      widget.gpu = {
+        type = "sysmon";
+        stat = "gpu_usage";
+        glyph = "badge-3d";
+      };
+
+      widget.gpu_temp = {
+        type = "sysmon";
+        stat = "gpu_temp";
+        glyph = "thermometer";
       };
 
       # Reads the PipeWire monitor stream directly -- no cava needed. The two
@@ -1015,6 +1196,38 @@ in {
     #     that is the ungated picker thumbnail restored above.
     "noctalia/mpvpaper" = {
       video_directory = "/home/${vars.username}/.config/wallpapers/video";
+    };
+
+    # TLDR's tech and web-dev editions.
+    #
+    # The web-dev one MUST be /api/rss/dev, NOT /api/rss/webdev. The obvious
+    # spelling is real but answers 308 -> /api/rss/dev, and noctalia.http does
+    # not follow redirects: checkFeed (service.luau:703-708) drops any response
+    # where res.ok is false and logs NOTHING, so a redirecting URL is a feed
+    # that silently never appears. Confirmed the hard way -- `seen` held only
+    # the tech feed across two full fetch cycles.
+    #
+    # So verify a new edition WITHOUT curl -L before adding it; -L follows the
+    # redirect and makes a broken URL look fine. Editions that answer 200
+    # directly: tech, dev, ai, devops, data, crypto, marketing, design,
+    # product, founders, infosec. (`science` is 404 -- it does not exist.)
+    #
+    # Each RSS item is one day's whole newsletter, not one story, so this is
+    # ~2 new items and therefore ~2 notifications per day.
+    #
+    # No flood on first enable: finalizeFeed (service.luau:600-636) marks every
+    # item seen on a feed's FIRST fetch without notifying, without adding to the
+    # panel list and without incrementing unread. The consequence is that the
+    # panel is EMPTY until TLDR next publishes -- that is the design, not a
+    # broken fetch.
+    #
+    # Only the newest 8 items per feed are ever parsed (MAX_ITEMS in
+    # service.luau), which for a daily newsletter is over a week of back issues.
+    "nilsonlinux/rss-notifier" = {
+      feed_urls = [
+        "https://tldr.tech/api/rss/tech"
+        "https://tldr.tech/api/rss/dev"
+      ];
     };
   };
 }

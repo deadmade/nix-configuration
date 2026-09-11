@@ -36,6 +36,24 @@ with lib; {
     # screen and leaves the colours alone. Headless because nothing here needs
     # ffmpeg's GUI/SDL outputs; mpv already brings the codec libraries.
     ffmpeg-headless
+
+    # cleboost/zed-provider reads Zed's own recent-projects sqlite db, so it
+    # needs the sqlite3 CLI. The `bin` output carries it and is in
+    # meta.outputsToInstall, so the bare attribute is enough -- no `.bin`.
+    #
+    # The plugin's manifest also lists "zed" as a dependency, which is NOT the
+    # binary name here (zed-editor ships `zeditor`). Harmless on both counts:
+    # zed_provider.luau:123 execs `zeditor`, and a manifest dependency list is
+    # informational and never enforced -- the shell only renders it in Settings
+    # as "requires: ..." (settings_content_plugins.cpp:285).
+    #
+    # NOT added: jq. It was pulled in for jrohland/claudecode, which turned out
+    # to be unusable here (see the long note in noctalia.nix). The only other
+    # enabled plugin that mentions jq is raycursive/github-prs, and that is
+    # `gh --jq`, gh's own embedded expression engine -- verified against a PATH
+    # containing nothing but gh and bash, where `gh api user --jq .login` still
+    # exits 0.
+    sqlite
   ];
 
   # Noctalia's own `network` bar widget already speaks to NetworkManager, so
