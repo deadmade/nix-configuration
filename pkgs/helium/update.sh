@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-# Update the vendored Helium package to the latest imputnet/helium-linux release.
-# Bumps `version` and both per-system hashes in default.nix. Safe to run locally
-# (needs nix + curl) or from CI. Exits 0 with no changes when already current.
 set -euo pipefail
 
 repo="imputnet/helium-linux"
@@ -10,7 +7,6 @@ file="${dir}/default.nix"
 
 current="$(sed -nE 's/^[[:space:]]*version = "([^"]+)";/\1/p' "${file}" | head -n1)"
 
-# Resolve the latest tag from the releases/latest redirect (no API token / jq).
 latest="$(curl -fsSL -o /dev/null -w '%{url_effective}' "https://github.com/${repo}/releases/latest")"
 latest="${latest##*/}"
 
@@ -28,7 +24,6 @@ if [[ "${current}" == "${latest}" ]]; then
   exit 0
 fi
 
-# nix store prefetch-file --json emits a single-line {"hash":"sha256-...",...}.
 prefetch() {
   nix store prefetch-file --json --hash-type sha256 "$1" \
     | sed -E 's/.*"hash":"([^"]+)".*/\1/'

@@ -37,7 +37,6 @@
   ];
 
   wayland.windowManager.hyprland = {
-    # Lua config: hl.monitor() requires a table, not the legacy string form.
     settings = {
       monitor = [
         {
@@ -56,9 +55,6 @@
       ];
     };
 
-    # Lua config: hl.bind() takes (keys, dispatcher, opts), so the legacy
-    # comma-string bind form is expressed as raw Lua here (merged via
-    # types.lines into the same hyprland.lua as the shared module's binds).
     extraConfig = ''
       -- 14. Laptop keys
       -- Its own numbered heading so these do not inherit whatever section
@@ -76,37 +72,20 @@
     '';
   };
 
-  # Laptop idle posture: much tighter than the desktop, and it does suspend.
-  # mkForce because these leaves are already defined in the shared noctalia
-  # module -- without it, two definitions of the same leaf conflict.
   programs.noctalia.settings.idle = {
     pre_action_fade_seconds = lib.mkForce 2.0;
     behavior = {
-      lock.timeout = lib.mkForce 300.0; # 5 min
-      screen-off.timeout = lib.mkForce 360.0; # 6 min
+      lock.timeout = lib.mkForce 300.0;
+      screen-off.timeout = lib.mkForce 360.0;
       lock-and-suspend = {
         enabled = lib.mkForce true;
-        timeout = 900.0; # 15 min
+        timeout = 900.0;
       };
     };
   };
 
-  # Video wallpaper on battery. Different leaves from the shared module's
-  # video_directory, so these merge rather than conflict -- no mkForce needed.
   programs.noctalia.settings.plugin_settings."noctalia/mpvpaper" = {
-    # A maximised browser hides the wallpaper as completely as a fullscreen one
-    # does, and decoding a loop nobody can see is pure battery.
-    #
-    # NO-OP AS OF TODAY, kept deliberately: the mode is passed as
-    # `--auto-mode MAX`, which mpvpaper only gained after 1.8, and
-    # mpvpaper_service.luau:186-187 falls back to plain `--auto-pause` on 1.8 --
-    # which is what pkgs.mpvpaper currently is. Verified against the live
-    # process, whose argv carries no --auto-mode. This starts working on its own
-    # the moment nixpkgs ships a newer mpvpaper; nothing else has to change.
     auto_pause = "max";
-    # NOT set: mpv_options = "--panscan=1.0". The plugin hardcodes panscan=1.0
-    # into every launch (mpvpaper_service.luau:150), so the 1080p loops already
-    # fill this 1200p panel by cropping rather than letterboxing.
   };
 
   home.shellAliases = {

@@ -1,9 +1,3 @@
-# Builds a module registry from a directory tree:
-#   foo.nix                  -> foo = import ./foo.nix
-#   bar/   (has default.nix) -> bar = import ./bar   (module or hand-written registry)
-#   baz/   (no default.nix)  -> baz = nested registry (omitted when empty)
-# Dotfiles, non-nix files, symlinks, and empty directories are ignored.
-# A file and a directory producing the same name is an eval-time error.
 let
   registry = dir: let
     entries = builtins.readDir dir;

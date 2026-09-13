@@ -13,29 +13,8 @@
     outputs.nixosModules.core.optimize
   ];
 
-  # Override nixos-hardware's Raspberry Pi kernel with a mainline one.
-  #
-  # nixos-hardware/raspberry-pi/common/kernel.nix pins a tag of the
-  # raspberrypi/linux fork and builds it via nixpkgs' buildLinux. That only
-  # substitutes when the pin happens to match a derivation Hydra built, and it
-  # currently does not: linux-rpi-6.18.34-stable_20260609 returns 404 from
-  # cache.nixos.org, so deploying meant compiling a kernel under qemu-aarch64
-  # emulation on deadPc (abandoned after 1h20m on 24 cores).
-  #
-  # 6.12.97 is cached, and stays in the same 6.12 LTS series the Pi already
-  # runs (6.12.47), so this is the smallest change that makes deploys tractable.
-  # Verified against this host's requirements: dtbs/broadcom/bcm2711-rpi-4-b.dtb
-  # is present, every module named below resolves, and pcie-brcmstb,
-  # reset-raspberrypi and brcmfmac are all available.
-  #
-  # Tradeoff: loses Raspberry Pi Foundation patches — camera/unicam, hardware
-  # video codecs, some device-tree overlays. None are used by this headless host.
-  #
-  # nixos-hardware sets kernelPackages with lib.mkDefault, so a plain assignment
-  # is enough to override it.
   boot.kernelPackages = pkgs.linuxPackages_6_12;
 
-  # trim down initrd modules
   boot.supportedFilesystems = lib.mkForce ["vfat" "ext4"];
   boot.initrd = {
     includeDefaultModules = false;
@@ -43,10 +22,9 @@
       "ext4"
       "mmc_block"
 
-      # https://www.raspberrypi.com/documentation/computers/processors.html#bcm2835
       "bcm2835_dma"
       "i2c_bcm2835"
-      "vc4" # Broadcom VideoCore 4 graphics driver
+      "vc4"
     ];
     availableKernelModules = lib.mkForce [
       "mmc_block"
@@ -56,7 +34,6 @@
     ];
   };
 
-  # systemPackages
   environment.systemPackages = with pkgs; [
     vim
     curl
@@ -119,7 +96,6 @@
 
       publish.enable = true;
       publish.userServices = true;
-      #nssmdns4 = true;
     };
 
     restic.server = {
@@ -130,8 +106,6 @@
     };
   };
 
-  # virtualisation.docker.enable = true;
-
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [8000];
 
@@ -140,7 +114,6 @@
     useDHCP = lib.mkForce true;
   };
 
-  # forwarding
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = true;
     "net.ipv6.conf.all.forwarding" = true;
@@ -157,7 +130,7 @@
 
   users.users.admin = {
     isNormalUser = true;
-    extraGroups = ["wheel"]; # Enable ‘sudo’ for the user.
+    extraGroups = ["wheel"];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBHA2a226b67E3wsCDfY7kgrZCCXju7E+4HNrfykglZ3 manuel.schuelein@proton.me"
     ];
@@ -167,6 +140,6 @@
   nix.settings.trusted-users = ["admin" "deadmade" "nixos"];
 
   nixpkgs.hostPlatform = "aarch64-linux";
-  #nixpkgs.buildPlatform = "x86_64-linux"; # needed for cross compiling the sd image
+
   system.stateVersion = "25.05";
 }

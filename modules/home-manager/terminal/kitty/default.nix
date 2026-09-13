@@ -53,6 +53,6 @@
   };
 
   home.packages = with pkgs; [
-    jetbrains-mono # Ensure the font is installed
+    jetbrains-mono
   ];
 }

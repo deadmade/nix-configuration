@@ -6,8 +6,6 @@
 }: let
   lib = inputs.nixpkgs.lib;
 
-  # hosts/<name>/deploy.nix is a plain attrset, not a NixOS module: the host
-  # directory is imported as ./<name>, which resolves to default.nix only.
   deployFileFor = name: ../../hosts + "/${name}/deploy.nix";
 
   deployHosts = lib.filterAttrs (name: _: builtins.pathExists (deployFileFor name)) hostDefinitions;

@@ -1,5 +1,4 @@
 {vars, ...}: {
-  # # Install & Configure Git
   programs.git = {
     enable = true;
     lfs.enable = true;
@@ -11,6 +10,5 @@
     };
   };
 
-  # Install & Configure GitHub CLI
   programs.gh.enable = true;
 }

@@ -5,14 +5,12 @@
 }: {
   programs.zsh.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${vars.username} = {
     isNormalUser = true;
     description = vars.username;
-    shell = pkgs.zsh; #TODO Make this configurable
+    shell = pkgs.zsh;
     extraGroups = ["networkmanager" "wheel" "dialout"];
     packages = with pkgs; [
-      #home-manager
     ];
   };
 

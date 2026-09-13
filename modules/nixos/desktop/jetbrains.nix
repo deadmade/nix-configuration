@@ -20,11 +20,5 @@
   ];
 in {
   environment.systemPackages = with inputs.nix-jetbrains-plugins.lib; [
-    #(buildIdeWithPlugins pkgs "rider" pluginList)
-    #(buildIdeWithPlugins pkgs "webstorm" pluginList)
-    #(buildIdeWithPlugins pkgs "rust-rover" pluginList)
-    #(buildIdeWithPlugins pkgs "pycharm" pluginList)
-    #(buildIdeWithPlugins pkgs "jetbrains.datagrip")
-    #(pkgs.jetbrains.plugins.addPlugins pycharm (lib.attrValues plugins))
   ];
 }

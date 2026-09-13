@@ -1,7 +1,6 @@
 {
   description = "Deadmades's NixOS config";
 
-  # Set up caches for faster builds
   nixConfig = {
     extra-substituters = [
       "https://cache.nixos.org"
@@ -86,14 +85,6 @@
     #  url = "git+file:/home/deadmade/neovim-configuration";
     #};
 
-    nixcord = {
-      type = "github";
-      owner = "KaylorBen";
-      repo = "nixcord";
-      ref = "38592e01087877116adc2af0876aebb61083b531";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-jetbrains-plugins = {
       type = "github";
       owner = "theCapypara";
@@ -127,9 +118,6 @@
       url = "github:noctalia-dev/noctalia/cachix";
     };
 
-    # hyprsplit is now a Lua library (the C++ plugin is deprecated and does not
-    # build against Hyprland >=0.55). We only need its init.lua, so pull the repo
-    # as a non-flake source and require() it from the Lua config.
     hyprsplit = {
       url = "github:shezdy/hyprsplit";
       flake = false;
@@ -141,15 +129,7 @@
       repo = "chiplang-nix";
     };
 
-    freetube-nix = {
-      url = "path:/home/deadmade/FreeTube-Nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-    };
-
     gitluxe.url = "git+file:///home/deadmade/gitluxe";
-
-    tuitr.url = "github:deadmade/tuitr";
 
     nix-index-database = {
       url = "github:nix-community/nix-index-database";

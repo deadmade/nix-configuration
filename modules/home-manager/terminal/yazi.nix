@@ -1,6 +1,4 @@
 {
-  # SUPER+E opens `ghostty -e yazi`. thunar was bound there for months without
-  # ever being installed, so the key did nothing at all.
   programs.yazi = {
     enable = true;
     enableZshIntegration = true;

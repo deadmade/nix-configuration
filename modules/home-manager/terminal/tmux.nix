@@ -1,12 +1,12 @@
 {pkgs, ...}: {
   programs.tmux = {
-    enable = true; # Enable TMUX through Home Manager
+    enable = true;
     clock24 = true;
     shortcut = "space";
     baseIndex = 0;
-    keyMode = "vi"; # Vi-style key bindings
-    mouse = true; # Enable mouse support
-    terminal = "tmux-256color"; # Enable true color support
+    keyMode = "vi";
+    mouse = true;
+    terminal = "tmux-256color";
     plugins = with pkgs; [
       {
         plugin = tmuxPlugins.resurrect;
@@ -28,15 +28,6 @@
 
     extraConfig = ''
       set -g status-position top
-
-      # Noctalia's tmux template renders themes/noctalia.conf from the wallpaper
-      # palette. Its apply.sh deletes any existing noctalia source-file line,
-      # re-appends it at EOF, then `cmp -s` -- so if this identical line is
-      # already last, no write is attempted and the script proceeds to
-      # live-reload running servers instead of dying EACCES on this store symlink.
-      #
-      # Must be byte-exact and LAST. XDG_CONFIG_HOME is unset in this session, so
-      # apply.sh takes its $HOME branch and emits exactly this string.
       source-file -q "$HOME/.config/tmux/themes/noctalia.conf"
     '';
   };

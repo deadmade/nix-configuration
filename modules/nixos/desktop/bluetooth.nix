@@ -7,16 +7,11 @@
         Enable = "Source,Sink,Media,Socket";
       };
     };
-    powerOnBoot = true; # powers up the default Bluetooth controller on boot
+    powerOnBoot = true;
   };
 
   environment.systemPackages = with pkgs; [
   ];
 
   services.blueman.enable = true;
-
-  #wiegurad setup
-  # https://nixos.wiki/wiki/WireGuard
-  # nmcli connection import type wireguard file thefile.conf
-  # nmcli con up id NameOfTheConnection
 }

@@ -1,6 +1,5 @@
-# Custom packages, exposed through the `additions` overlay (see
-# overlays/default.nix) so they're available as `pkgs.<name>`.
 {pkgs}: {
+  ai-usagebar = pkgs.callPackage ./ai-usagebar {};
   helium = pkgs.callPackage ./helium {};
   claude-science = pkgs.callPackage ./claude-science {};
 }

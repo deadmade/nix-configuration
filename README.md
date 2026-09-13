@@ -8,6 +8,7 @@ Personal NixOS + Home Manager flake configuration for multiple hosts.
 - `modules/nixos/`: reusable NixOS modules grouped by domain (`core`, `desktop`, `virtualization`, `arion`)
 - `modules/home-manager/`: reusable Home Manager modules
 - `flake/modules/`: flake-parts wiring for outputs, host builders, and per-system tooling
+- `docs/`: living notes for humans and agents (`architecture.md`, `decisions.md`); `docs/superpowers/` is a historical design/plan archive
 
 ## Common commands
 

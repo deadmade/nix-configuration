@@ -6,7 +6,6 @@
   ...
 }: {
   imports = [
-    # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./mainboard.nix
 
@@ -46,30 +45,17 @@
     "riscv64-linux"
   ];
 
-  # Enable cross-compilation support
   nix.settings.extra-platforms = config.boot.binfmt.emulatedSystems;
 
-  networking.hostName = "deadPc"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.hostName = "deadPc";
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
-  #networking.networkmanager.enable = true;
-
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
   boot.kernelPackages = pkgs.linuxPackages_7_2;
 
-  # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = false;
   services.desktopManager.plasma6.enable = false;
 
-  # Enable CUPS to print documents.
   services.avahi = {
     enable = true;
     nssmdns4 = true;
@@ -85,22 +71,9 @@
     drivers = [pkgs.cnijfilter2 pkgs.canon-cups-ufr2];
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  # Noctalia's battery and power-profile surfaces had no data source at all:
-  # the shell logs `[upower] GetDisplayDevice failed` and `[power] power
-  # profiles refresh failed` on every start, and the control-centre
-  # power_profile tile was inert.
-  #
-  # The noctalia flake ships a NixOS module with a recommendedServices option
-  # that enables exactly these, but importing it alongside the home-manager
-  # module would define a SECOND systemd user service for the shell, so the
-  # two services are enabled directly instead.
   services.upower.enable = true;
   services.power-profiles-daemon.enable = true;
 
-  # Enable Pipewire (required for Wayland screen sharing)
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -108,26 +81,18 @@
     pulse.enable = true;
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.deadmade = {
     isNormalUser = true;
     description = "deadmade";
     extraGroups = ["networkmanager" "wheel"];
-    packages = with pkgs; [
-      #kdePackages.kate
-      #  thunderbird
-    ];
   };
 
-  # Enable automatic login for the user.
   services.displayManager.autoLogin.enable = false;
   services.displayManager.autoLogin.user = "deadmade";
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     tuigreet
-    #inputs.neovim-config.packages.${pkgs.stdenv.hostPlatform.system}.nvim
+    inputs.neovim-config.packages.${pkgs.stdenv.hostPlatform.system}.nvim
     inputs.chiplang-nix.packages.${pkgs.stdenv.hostPlatform.system}.depthfinder
     inputs.chiplang-nix.packages.${pkgs.stdenv.hostPlatform.system}.dfn-mounter
     inputs.gitluxe.packages.${pkgs.stdenv.hostPlatform.system}.default
@@ -143,22 +108,19 @@
         command = "${pkgs.tuigreet}/bin/tuigreet
         --issue
         --theme border=magenta;text=cyan;prompt=green;time=red;action=blue;button=yellow;container=black;input=red
-        --cmd Hyprland"; # start Hyprland with a TUI login manager
+        --cmd Hyprland";
       };
     };
   };
 
   hardware = {
     graphics.enable = true;
-    # Needed for 32-bit Wine to get GPU acceleration. Usually implied by
-    # programs.steam, which this host does not enable (no gaming profile).
+
     graphics.enable32Bit = true;
     nvidia = {
       open = false;
       powerManagement.enable = true;
-      # nixpkgs 26.05 still ships 595.71.05, whose nvidia/os-interface.c calls
-      # strncpy() — removed from the kernel API in Linux 7.2. NVIDIA switched it
-      # to strscpy() in 595.99.02. Drop this override once nixpkgs catches up.
+
       package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
         version = "595.99.02";
         sha256_64bit = "sha256-6HR3lYv3YwcFSTJL1a1slI66btIQ5EAFs+/4SUD24ew=";
@@ -173,30 +135,5 @@
     };
   };
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "24.11";
 }

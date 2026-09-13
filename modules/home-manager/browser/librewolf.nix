@@ -39,7 +39,7 @@ in {
         ublock-origin
         darkreader
         consent-o-matic
-        #gesturefy
+
         proton-pass
         sponsorblock
         skip-redirect
@@ -138,15 +138,15 @@ in {
       };
       search = {
         force = true;
-        default = "ddg"; # DuckDuckGo
-        privateDefault = "ddg"; #DuckDuckGo
+        default = "ddg";
+        privateDefault = "ddg";
       };
 
       settings = {
-        "privacy.clearOnShutdown_v2.cookiesAndStorage" = false; # Disable cookie clearing
-        "browser.urlbar.keepPanelOpenDuringImeComposition" = true; # Improve Firefox IME support
-        "media.eme.enabled" = true; # Enable DRM for e.g. Spotify
-        "privacy.resistFingerprinting.autoDeclineNoUserInputCanvasPrompts" = true; # Automatically decline Canvas request
+        "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
+        "browser.urlbar.keepPanelOpenDuringImeComposition" = true;
+        "media.eme.enabled" = true;
+        "privacy.resistFingerprinting.autoDeclineNoUserInputCanvasPrompts" = true;
         "dom.security.https_only_mode" = true;
         "browser.download.panel.shown" = false;
         "browser.toolbars.bookmarks.visibility" = "always";

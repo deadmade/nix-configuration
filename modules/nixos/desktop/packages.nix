@@ -20,7 +20,6 @@
     pkgs.unstable.legcord
     home-manager
     nautilus
-    inputs.tuitr.packages.${system}.default
   ];
 
   services.xserver.excludePackages = with pkgs; [xterm];
@@ -38,6 +37,6 @@
 
   programs.nano.enable = false;
 
-  services.gvfs.enable = true; # Mount, trash, and other functionalities
-  services.tumbler.enable = false; # Thumbnail support for images
+  services.gvfs.enable = true;
+  services.tumbler.enable = false;
 }

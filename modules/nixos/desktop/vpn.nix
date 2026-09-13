@@ -1,16 +1,16 @@
 {pkgs, ...}: {
   networking.firewall = {
-    allowedUDPPorts = [51820]; # Clients and peers can use the same port, see listenport
+    allowedUDPPorts = [51820];
   };
 
   networking.firewall.checkReversePath = false;
 
   environment.systemPackages = with pkgs; [
     pkgs.unstable.proton-vpn
-    pkgs.unstable.proton-vpn-cli # CLI fallback
-    pkgs.unstable.networkmanager-openvpn # OpenVPN plugin
-    pkgs.unstable.wireguard-tools # wg utility for WireGuard :contentReference[oaicite:0]{index=1}
-    pkgs.unstable.libsecret # Secret Service API
-    pkgs.unstable.openvpn # the openvpn binary, if you want that backend
+    pkgs.unstable.proton-vpn-cli
+    pkgs.unstable.networkmanager-openvpn
+    pkgs.unstable.wireguard-tools
+    pkgs.unstable.libsecret
+    pkgs.unstable.openvpn
   ];
 }

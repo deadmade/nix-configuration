@@ -5,7 +5,4 @@
   security.pam.services.hyprland.enableGnomeKeyring = true;
   security.apparmor.enable = true;
   security.polkit.enable = true;
-
-  #services.dbus.apparmor = "enabled";
-  #security.apparmor.enableCache = true;
 }

@@ -12,15 +12,13 @@
   ];
 
   services.solaar = {
-    enable = true; # Enable the service
-    package = pkgs.unstable.solaar; # The package to use
-    window = "hide"; # Show the window on startup (show, *hide*, only [window only])
-    batteryIcons = "regular"; # Which battery icons to use (*regular*, symbolic, solaar)
-    extraArgs = ""; # Extra arguments to pass to solaar on startup
+    enable = true;
+    package = pkgs.unstable.solaar;
+    window = "hide";
+    batteryIcons = "regular";
+    extraArgs = "";
   };
 
-  # Create systemd service
-  # https://github.com/PixlOne/logiops/blob/5547f52cadd2322261b9fbdf445e954b49dfbe21/src/logid/logid.service.in
   systemd.services.logiops = {
     description = "Logitech Configuration Daemon";
     startLimitIntervalSec = 0;
@@ -34,13 +32,10 @@
     };
   };
 
-  # Add a `udev` rule to restart `logiops` when the mouse is connected
-  # https://github.com/PixlOne/logiops/issues/239#issuecomment-1044122412
   services.udev.extraRules = ''
     ACTION=="change", SUBSYSTEM=="power_supply", ATTRS{manufacturer}=="Logitech", ATTRS{model_name}=="MX Master 3S", RUN{program}="${pkgs.systemd}/bin/systemctl --no-block try-restart logiops.service"
   '';
 
-  # Configuration for logiops
   environment.etc."logid.cfg".text = ''
     devices: ({
         name: "MX Master 3S";

@@ -39,9 +39,7 @@
     userSettings = {
       vim_mode = true;
       base_keymap = "JetBrains";
-      # Noctalia's zed template writes ~/.config/zed/themes/noctalia.json,
-      # which declares the family "Noctalia" with variants Dark / Light /
-      # Dark Transparent / Light Transparent. theme.mode is "dark".
+
       theme = lib.mkForce "Noctalia Dark";
       autosave = "on_focus_change";
       cli_default_open_behavior = "existing_window";
