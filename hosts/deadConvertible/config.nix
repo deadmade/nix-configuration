@@ -67,8 +67,16 @@
     pkgs.unstable.ladybird
   ];
 
-  networking.firewall.allowedTCPPorts = [7236 7250];
+  networking.firewall.allowedTCPPorts = [7236 7250 22];
   networking.firewall.allowedUDPPorts = [7236 5353];
+
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = true;
+      PermitRootLogin = "no";
+    };
+  };
 
   services.greetd = {
     enable = true;

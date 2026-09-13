@@ -32,8 +32,6 @@
   ];
 
   home.packages = with pkgs; [
-    pkgs.unstable.p3x-onenote
-    teams-for-linux
   ];
 
   wayland.windowManager.hyprland = {

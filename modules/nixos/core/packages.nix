@@ -14,7 +14,6 @@
     btop
     wl-clipboard
     superfile
-    kitty
   ];
 
   programs.nix-ld.enable = true;
